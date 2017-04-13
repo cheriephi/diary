@@ -1,0 +1,22 @@
+﻿<tests>
+      <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>0</day>
+    </add>
+      <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>32</day>
+    </add>
+      <add>
+            <year>2017</year>
+            <month>0</month>
+            <day>1</day>
+    </add>
+      <add>
+            <year>2017</year>
+            <month>13</month>
+            <day>1</day>
+    </add>
+</tests>

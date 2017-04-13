@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Diary/bin
+/Diary/obj
+/DiaryTest/bin
+/DiaryTest/obj
+/packages
+*.suo
