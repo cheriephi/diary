@@ -1,0 +1,23 @@
+﻿<tests>
+    <!--https://www.timeanddate.com/date/leapyear.html -->
+      <add>
+            <year>2020</year>
+            <isLeapYear>1</isLeapYear>
+    </add>
+      <add>
+            <year>2017</year>
+            <isLeapYear>0</isLeapYear>
+    </add>
+      <add>
+            <year>1980</year>
+            <isLeapYear>1</isLeapYear>
+    </add>
+      <add>
+            <year>1900</year>
+            <isLeapYear>0</isLeapYear>
+    </add>
+      <add>
+            <year>2000</year>
+            <isLeapYear>1</isLeapYear>
+    </add>
+</tests>

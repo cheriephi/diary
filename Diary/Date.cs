@@ -3,19 +3,22 @@
 namespace Diary
 {
     /// <summary>
-    /// Handles rudimentary date functionality
+    /// Handles generic date functionality
     /// </summary>
-    public class Date
+    public class Date: IComparable
     {
-        private int mJulianNumber; // Julian Day Number
-        private int mDay;
-        private int mMonth;
-        private int mYear;
+        /// <summary>
+        /// Julian Day Number
+        /// </summary>
+        private int mJulianNumber;
 
         #region Enums
-        public enum MONTH
+        /// <summary>
+        /// Calendar Months
+        /// </summary>
+        public enum Month
         {
-            JANUARY,
+            JANUARY = 1,
             FEBRUARY,
             MARCH,
             APRIL,
@@ -29,6 +32,9 @@ namespace Diary
             DECEMBER
         }
 
+        /// <summary>
+        /// Calendar days of week
+        /// </summary>
         public enum DayOfWeek
         {
             SUNDAY,
@@ -45,7 +51,7 @@ namespace Diary
         /// <summary>
         /// Creates arbitrary default date value
         /// </summary>
-        public Date() : this(1, 1, 1900) { }
+        public Date() : this(1, Month.JANUARY, 1900) { }
 
         /// <summary>
         /// Validates and initializes Date
@@ -54,23 +60,17 @@ namespace Diary
         /// <param name="month"></param>
         /// <param name="year"></param>
         /// <remarks>Only the simplest validations currently implemented due to project scope</remarks>
-        public Date(int day, int month, int year)
+        public Date(int day, Month month, int year)
         {
             //Validate inputs
-            if (day < 1 || day > 31)
+            var lastDayOfMonth = GetLastDayOfMonth(month, year);
+            if (day < 1 || day > lastDayOfMonth)
             {
                 throw new ArgumentOutOfRangeException("day", String.Format("Parameter value: <{0}>.", day));
             }
-            if (month < 1 || month > 12)
-            {
-                throw new ArgumentOutOfRangeException("month", String.Format("Parameter value: <{0}>.", month));
-            }
 
             //Initialize data
-            this.mJulianNumber = ToJulianNumber(day, month, year);
-            //Initialize the calendar fields as well to reduce the repitition in extracting this from the JulianNumber class
-            //This has the down side of creating object versus function scoped fields, but adheres to the Don't Repeat Yourself principle
-            FromJulianNumber(mJulianNumber, ref mDay, ref mMonth, ref mYear);
+            this.mJulianNumber = ToJulianNumber(day, (int)month, year);
         }
         #endregion
 
@@ -80,17 +80,29 @@ namespace Diary
         /// </summary>
         /// <returns></returns>
         public int GetDay()
-        {
-            return mDay;
+        {   
+            int day = 0;
+            int month = 0;
+            int year = 0;
+            
+            FromJulianNumber(mJulianNumber, ref day, ref month, ref year);
+
+            return day;
         }
 
         /// <summary>
-        /// Returns the calendar month number (1 - 12).
+        /// Returns the calendar month.
         /// </summary>
         /// <returns></returns>
-        public int GetMonth()
+        public Month GetMonth()
         {
-            return mMonth;
+            int day = 0;
+            int month = 0;
+            int year = 0;
+
+            FromJulianNumber(mJulianNumber, ref day, ref month, ref year);
+
+            return (Month)month;
         }
 
         /// <summary>
@@ -99,7 +111,13 @@ namespace Diary
         /// <returns></returns>
         public int GetYear()
         {
-           return mYear;
+            int day = 0;
+            int month = 0;
+            int year = 0;
+
+            FromJulianNumber(mJulianNumber, ref day, ref month, ref year);
+
+            return year;
         }
 
         /// <summary>
@@ -114,6 +132,7 @@ namespace Diary
         }
         #endregion
 
+        #region Julian Conversion
         /// <summary>
         /// Converts the input calendar values to a julian number
         /// </summary>
@@ -152,5 +171,115 @@ namespace Diary
             month = j + 2 - (12 * l);
             year = 100 * (n - 49) + i + l;
         }
+        #endregion
+
+        #region Comparisons
+        /// <summary>
+        /// Returns how the current Date sorts in comparison to the input compareDate
+        /// </summary>
+        /// <remarks>Implements IComparable</remarks>
+        /// <param name="compareDate"></param>
+        /// <returns>
+        /// -1 if the current date sorts before
+        /// 0 for equal sort
+        /// 1 if the current date sorts after
+        /// </returns>
+        /// <remarks>Evaluates sort order by Julian Number comparison</remarks>
+        public int CompareTo(object compareDate) {
+            Date compare = compareDate as Date;
+            var compareJulianNumber = ToJulianNumber(compare.GetDay(), (int)compare.GetMonth(), compare.GetYear());
+
+            int result = 0;
+            if (mJulianNumber > compareJulianNumber)
+            {
+                result = 1;
+            }
+            else if (mJulianNumber < compareJulianNumber)
+            {
+                result = -1;
+            }
+
+            return result;
+        } 
+
+        /// <summary>
+        /// Returns whether the current date is between the input start and end dates, using inclusive logic.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        /// <remarks>Julian Number comparisons are used</remarks>
+        public Boolean IsBetween(Date start, Date end) {
+            var startJulianNumber = ToJulianNumber(start.GetDay(), (int)start.GetMonth(), start.GetYear());
+            var endJulianNumber = ToJulianNumber(end.GetDay(), (int)end.GetMonth(), end.GetYear());
+
+            Boolean isBetween = (mJulianNumber >= startJulianNumber && mJulianNumber <= endJulianNumber);
+   
+            return isBetween;
+        }
+        #endregion
+
+        #region Math
+        /// <summary>
+        /// Adds the specified number of days to the Date
+        /// </summary>
+        /// <param name="days"></param>
+        public void AddDays(int days)
+        {
+            mJulianNumber += days;
+        }
+
+        /// <summary>
+        /// Subtracts the specified number of days to the Date
+        /// </summary>
+        /// <param name="days"></param>
+        public void SubtractDays(int days)
+        {
+            mJulianNumber -= days;
+        }
+        #endregion
+
+        #region Date Lookups
+        /// <summary>
+        /// Returns whether or not the input year is a leap year
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        /// <remarks>Implemented by julian number conversion, subtracting a day from the first of March and determining if the month has 29 days</remarks>
+        public static bool IsLeapYear(int year)
+        {
+            var firstDayofMarchJulianNumber = ToJulianNumber(1, 3, year);
+
+            int leapYearDay = 0;
+            int leapYearMonth = 0;
+            int leapYearYear = 0;
+
+            FromJulianNumber(firstDayofMarchJulianNumber - 1, ref leapYearDay, ref leapYearMonth, ref leapYearYear);
+
+            bool isLeapYear = (leapYearDay == 29);
+
+            return isLeapYear;
+        }
+
+        /// <summary>
+        /// Returns the last calendar day number of the input month and year
+        /// </summary>
+        /// <param name="month"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        /// <remarks>Implemented via julian number conversion and subtracting a day from the first of the next month</remarks>
+        public static int GetLastDayOfMonth(Month month, int year)
+        {
+            var firstDayOfNextMonthJulianNumber = ToJulianNumber(1, (int)month + 1, year);
+
+            int lastDayOfMonthDay = 0;
+            int lastDayOfMonthMonth = 0;
+            int lastDayOfMonthYear = 0;
+
+            FromJulianNumber(firstDayOfNextMonthJulianNumber - 1, ref lastDayOfMonthDay, ref lastDayOfMonthMonth, ref lastDayOfMonthYear);
+
+            return lastDayOfMonthDay;
+        }
+        #endregion
     }
 }

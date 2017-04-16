@@ -1,0 +1,29 @@
+﻿<tests>
+      <add>
+            <year>2000</year>
+            <month>1</month>
+            <day>1</day>
+            <compareYear>2000</compareYear>
+            <compareMonth>1</compareMonth>
+            <compareDay>1</compareDay>
+            <expectedResult>0</expectedResult>
+    </add>
+      <add>
+            <year>2000</year>
+            <month>1</month>
+            <day>1</day>
+            <compareYear>2000</compareYear>
+            <compareMonth>1</compareMonth>
+            <compareDay>2</compareDay>
+            <expectedResult>-1</expectedResult>
+    </add>
+      <add>
+            <year>2000</year>
+            <month>1</month>
+            <day>1</day>
+            <compareYear>1999</compareYear>
+            <compareMonth>12</compareMonth>
+            <compareDay>31</compareDay>
+            <expectedResult>1</expectedResult>
+    </add>
+</tests>

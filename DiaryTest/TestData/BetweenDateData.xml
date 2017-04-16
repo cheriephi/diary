@@ -1,0 +1,26 @@
+﻿<tests>
+      <add>
+            <startYear>1999</startYear>
+            <startMonth>12</startMonth>
+            <startDay>31</startDay>
+            <endYear>2000</endYear>
+            <endMonth>1</endMonth>
+            <endDay>1</endDay>
+            <year>2000</year>
+            <month>1</month>
+            <day>1</day>
+            <isBetween>1</isBetween>
+    </add>
+      <add>
+            <startYear>1999</startYear>
+            <startMonth>12</startMonth>
+            <startDay>31</startDay>
+            <endYear>2000</endYear>
+            <endMonth>1</endMonth>
+            <endDay>1</endDay>
+            <year>2000</year>
+            <month>1</month>
+            <day>2</day>
+            <isBetween>0</isBetween>
+    </add>
+</tests>

@@ -1,5 +1,5 @@
 ﻿<tests>
-    <!--http://www.calculatorcat.com/date/day-of-week.html -->
+    <!-- http://www.calculatorcat.com/date/day-of-week.html -->
       <add>
             <year>0050</year>
             <month>1</month>
