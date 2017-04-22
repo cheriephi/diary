@@ -51,7 +51,7 @@ namespace Diary
         /// <summary>
         /// Creates arbitrary default date value
         /// </summary>
-        public Date() : this(1, Month.JANUARY, 1900) { }
+        public Date() : this(1, Month.JANUARY, 1900) {}
 
         /// <summary>
         /// Validates and initializes Date
@@ -140,7 +140,7 @@ namespace Diary
         /// <param name="month"></param>
         /// <param name="year"></param>
         /// <returns>Julian Number</returns>
-        /// <see cref="https://en.wikipedia.org/wiki/Julian_day#Julian_date_calculation"/>
+        /// <see href="https://en.wikipedia.org/wiki/Julian_day#Julian_date_calculation"/>
         public static int ToJulianNumber(int day, int month, int year)
         {
             int julianNumber = (1461 * (year + 4800 + (month - 14) / 12)) / 4 +

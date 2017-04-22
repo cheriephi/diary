@@ -1,7 +1,6 @@
 ﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Globalization;
 
 namespace DiaryTest
 {
@@ -22,6 +21,26 @@ namespace DiaryTest
         /// </summary>
         public TestContext TestContext { get; set; }
 
+        #region Helper Methods
+        /// <summary>
+        /// Formats the input elements as a string
+        /// </summary>
+        /// <returns>yyyy-mm-dd</returns>
+        public static string ToString(int day, int month, int year)
+        {
+            return String.Format("{0}-{1}-{2}", year.ToString("0000"), month.ToString("00"), day.ToString("00"));
+        }
+
+        /// <summary>
+        /// Returns the class' identifying properties to support meaningful equality checks and debugging
+        /// </summary>
+        /// <returns>yyyy-MM-dd</returns>
+        public static string ToString(Date date)
+        {
+            return ToString(date.GetDay(), (int)date.GetMonth(), date.GetYear());
+        }
+        #endregion
+
         #region Constructor Tests
         /// <summary>
         /// Simple single scenario test of default constructor
@@ -29,10 +48,10 @@ namespace DiaryTest
         [TestMethod]
         public void DefaultConstructorTest()
         {
-            var expectedDate = new DateTestSubclass(1, Date.Month.JANUARY, 1900);
-            var actualDate = new DateTestSubclass();
+            var expected = ToString(1, 1, 1900);
+            var actual = ToString(new Date());
 
-            Assert.AreEqual(expectedDate.ToString(), actualDate.ToString());
+            Assert.AreEqual(expected, actual);
         }
         
         /// <summary>
@@ -47,10 +66,10 @@ namespace DiaryTest
             var expectedMonth = (Date.Month)expectedMonthNumber;
             var expectedDay = int.Parse(TestContext.DataRow["day"].ToString());
 
-            var expectedDateString = DateTestSubclass.ToString(expectedDay, expectedMonthNumber, expectedYear);
-            var actualDate = new DateTestSubclass(expectedDay, expectedMonth, expectedYear);
+            var expected = ToString(expectedDay, expectedMonthNumber, expectedYear);
+            var actual = ToString(new Date(expectedDay, expectedMonth, expectedYear));
 
-            Assert.AreEqual(expectedDateString, actualDate.ToString());
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -125,14 +144,10 @@ namespace DiaryTest
             int actualDay = 0;
             Date.FromJulianNumber(julian, ref actualDay, ref actualMonth, ref actualYear);
 
-            var actualDateString = DateTestSubclass.ToString(actualDay, actualMonth, actualYear);
-            //Is the output value a date? Build a date string; ensuring first century dates are zero padded
-            DateTime actualDate;
-            Assert.IsTrue(DateTime.TryParseExact(actualDateString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out actualDate));
+            var actual = ToString(actualDay, actualMonth, actualYear);
+            var expected = ToString(expectedDay, expectedMonth, expectedYear);
 
-            var expectedDateString = DateTestSubclass.ToString(expectedDay, expectedMonth, expectedYear);
-
-            Assert.AreEqual(expectedDateString, actualDateString, "Input Julian Number:<{0}>.", julian);
+            Assert.AreEqual(expected, actual, "Input Julian Number:<{0}>.", julian);
         }
         #endregion
 
@@ -152,14 +167,14 @@ namespace DiaryTest
             var compareMonth = (Date.Month)int.Parse(TestContext.DataRow["compareMonth"].ToString());
             var compareDay = int.Parse(TestContext.DataRow["compareDay"].ToString());
 
-            var expectedResult = int.Parse(TestContext.DataRow["expectedResult"].ToString());
+            var expected = int.Parse(TestContext.DataRow["expectedResult"].ToString());
 
-            var date = new DateTestSubclass(day, month, year);
-            var compareDate = new DateTestSubclass(compareDay, compareMonth, compareYear);
+            var date = ToString(new Date(day, month, year));
+            var compareDate = ToString(new Date(compareDay, compareMonth, compareYear));
 
-            var actualResult = date.CompareTo(compareDate);
+            var actual = date.CompareTo(compareDate);
 
-            Assert.AreEqual(expectedResult, actualResult, "Input Date:<{0}>. Input Compare Date:<{1}>.", date, compareDate);
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", date, compareDate);
         }
 
         /// <summary>
@@ -182,15 +197,15 @@ namespace DiaryTest
             var day = int.Parse(TestContext.DataRow["day"].ToString());
 
             var expectedIsBetweenString = TestContext.DataRow["isBetween"].ToString();
-            bool expectedIsBetween = (expectedIsBetweenString == "1");
+            bool expected = (expectedIsBetweenString == "1");
 
-            var startDate = new DateTestSubclass(startDay, startMonth, startYear);
-            var endDate = new DateTestSubclass(endDay, endMonth, endYear);
-            var date = new DateTestSubclass(day, month, year);
+            var startDate = new Date(startDay, startMonth, startYear);
+            var endDate = new Date(endDay, endMonth, endYear);
+            var date = new Date(day, month, year);
 
-            var actualIsBetween = date.IsBetween(startDate, endDate);
+            var actual = date.IsBetween(startDate, endDate);
 
-            Assert.AreEqual(expectedIsBetween, actualIsBetween, "Input Date:<{0}>. Input Start Date:<{1}>. Input End Date:<{2}>.", date, startDate, endDate);
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Start Date:<{1}>. Input End Date:<{2}>.", ToString(date), ToString(startDate), ToString(endDate));
         }
         #endregion
 
@@ -201,12 +216,12 @@ namespace DiaryTest
         [TestMethod]
         public void AddDaysTest()
         {
-            var expectedDate = new DateTestSubclass(3, Date.Month.JANUARY, 1900);
-            var actualDate = new DateTestSubclass();
+            var expected = new Date(3, Date.Month.JANUARY, 1900);
+            var actual = new Date();
 
-            actualDate.AddDays(2);
+            actual.AddDays(2);
 
-            Assert.AreEqual(expectedDate.ToString(), actualDate.ToString());
+            Assert.AreEqual(ToString(expected), ToString(actual));
         }
 
         /// <summary>
@@ -215,12 +230,12 @@ namespace DiaryTest
         [TestMethod]
         public void SubtractDaysTest()
         {
-            var expectedDate = new DateTestSubclass(30, Date.Month.DECEMBER, 1899);
-            var actualDate = new DateTestSubclass();
+            var expected = new Date(30, Date.Month.DECEMBER, 1899);
+            var actual = new Date();
 
-            actualDate.SubtractDays(2);
+            actual.SubtractDays(2);
 
-            Assert.AreEqual(expectedDate.ToString(), actualDate.ToString());
+            Assert.AreEqual(ToString(expected), ToString(actual));
         }
         #endregion
 
@@ -234,11 +249,11 @@ namespace DiaryTest
         {
             var year = int.Parse(TestContext.DataRow["year"].ToString());
             var isLeapYearString = TestContext.DataRow["isLeapYear"].ToString();
-            bool expectedIsLeapYear = (isLeapYearString == "1");
+            bool expected = (isLeapYearString == "1");
 
-            var actualIsLeapYear = Date.IsLeapYear(year);
+            var actual = Date.IsLeapYear(year);
 
-            Assert.AreEqual(expectedIsLeapYear, actualIsLeapYear, "Input Year:<{0}>.", year);
+            Assert.AreEqual(expected, actual, "Input Year:<{0}>.", year);
         }
 
         /// <summary>
@@ -251,11 +266,11 @@ namespace DiaryTest
             var year = int.Parse(TestContext.DataRow["year"].ToString());
             var monthNumber = int.Parse(TestContext.DataRow["month"].ToString());
             var month = (Date.Month)monthNumber;
-            var expectedLastDayOfMonth = int.Parse(TestContext.DataRow["day"].ToString());
+            var expected = int.Parse(TestContext.DataRow["day"].ToString());
 
-            var actualLastDayOfMonth = Date.GetLastDayOfMonth(month, year);
+            var actual = Date.GetLastDayOfMonth(month, year);
 
-            Assert.AreEqual(expectedLastDayOfMonth, actualLastDayOfMonth, "Input Year:<{0}>. Input Month:<{1}>.", year, monthNumber);
+            Assert.AreEqual(expected, actual, "Input Year:<{0}>. Input Month:<{1}>.", year, monthNumber);
         }
         #endregion
     }
