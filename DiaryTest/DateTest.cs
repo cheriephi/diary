@@ -63,7 +63,7 @@ namespace DiaryTest
         [TestMethod]
         public void DefaultConstructorTest()
         {
-            Date date = new Date();
+            var date = new Date();
             DateIsEqualTest(date, 1900, 1, 1);
         }
 
@@ -76,7 +76,7 @@ namespace DiaryTest
             var expectedMonth = (Date.Month)expectedMonthNumber;
             var expectedDay = int.Parse(TestContext.DataRow["day"].ToString());
 
-            Date date = new Date(expectedDay, expectedMonth, expectedYear);
+            var date = new Date(expectedDay, expectedMonth, expectedYear);
             DateIsEqualTest(date, expectedYear, expectedMonthNumber, expectedDay);
         }
 
@@ -89,7 +89,7 @@ namespace DiaryTest
             var expectedMonth = (Date.Month)int.Parse(TestContext.DataRow["month"].ToString());
             var expectedDay = int.Parse(TestContext.DataRow["day"].ToString());
 
-            Date date = new Date(expectedDay, expectedMonth, expectedYear);
+            var date = new Date(expectedDay, expectedMonth, expectedYear);
         }
         #endregion
 
@@ -180,8 +180,8 @@ namespace DiaryTest
 
             var expectedResult = int.Parse(TestContext.DataRow["expectedResult"].ToString());
 
-            Date date = new Date(day, month, year);
-            Date compareDate = new Date(compareDay, compareMonth, compareYear);
+            var date = new Date(day, month, year);
+            var compareDate = new Date(compareDay, compareMonth, compareYear);
 
             var actualResult = date.CompareTo(compareDate);
 
@@ -213,9 +213,9 @@ namespace DiaryTest
             var expectedIsBetweenString = TestContext.DataRow["isBetween"].ToString();
             bool expectedIsBetween = (expectedIsBetweenString == "1");
 
-            Date startDate = new Date(startDay, startMonth, startYear);
-            Date endDate = new Date(endDay, endMonth, endYear);
-            Date date = new Date(day, month, year);
+            var startDate = new Date(startDay, startMonth, startYear);
+            var endDate = new Date(endDay, endMonth, endYear);
+            var date = new Date(day, month, year);
 
             var actualIsBetween = date.IsBetween(startDate, endDate);
 
@@ -230,7 +230,7 @@ namespace DiaryTest
         [TestMethod]
         public void AddDaysTest()
         {
-            Date date = new Date();
+            var date = new Date();
             date.AddDays(2);
             DateIsEqualTest(date, 1900, 1, 3);
         }
@@ -241,7 +241,7 @@ namespace DiaryTest
         [TestMethod]
         public void SubtractDaysTest()
         {
-            Date date = new Date();
+            var date = new Date();
             date.SubtractDays(2);
             DateIsEqualTest(date, 1899, 12, 30);
         }
