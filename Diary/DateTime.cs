@@ -1,12 +1,14 @@
-﻿namespace Diary
+﻿using System;
+
+namespace Diary
 {
     /// <summary>
     /// Handles generic date time functionality.
     /// </summary>
     /// <see cref="Date">For more detailed design explanations</see>
-    public class DateTime
+    public class DateTime : IComparable
     {
-        private long mMinutes;
+        private long mTotalMinutes;
 
         private const long MINUTESINHOUR = 60;
         private const long MINUTESINDAY = MINUTESINHOUR * 24;
@@ -27,11 +29,7 @@
         /// <param name="minutes"></param>
         public DateTime(Date date, int hours, int minutes)
         {
-            var julianNumber = (long)(Date.ToJulianNumber(date.GetDay(), (int)date.GetMonth(), date.GetYear()));
-
-            var julianMinutes = (julianNumber * MINUTESINDAY);
-
-            mMinutes = julianMinutes + ((long)hours * MINUTESINHOUR) + (long)minutes;
+            mTotalMinutes = GetTotalMinutes(date, hours, minutes);
         }
 
         /// <summary>
@@ -48,7 +46,7 @@
         /// <returns></returns>
         public Date GetDate()
         {
-            var julianNumber = (int)(mMinutes / MINUTESINDAY);
+            var julianNumber = (int)(mTotalMinutes / MINUTESINDAY);
 
             int day = 0;
             int month = 0;
@@ -64,8 +62,24 @@
         /// <returns></returns>
         public int GetHours()
         {
-            var minutes = mMinutes % MINUTESINDAY;
+            var minutes = mTotalMinutes % MINUTESINDAY;
             return (int)(minutes / MINUTESINHOUR);
+        }
+
+        /// <summary>
+        /// Returns the associated number of Julian minutes based on the inputs
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="hours"></param>
+        /// <param name="minutes"></param>
+        /// <returns></returns>
+        private long GetTotalMinutes(Date date, int hours, int minutes)
+        {
+            var julianNumber = (long)(Date.ToJulianNumber(date.GetDay(), (int)date.GetMonth(), date.GetYear()));
+
+            var julianMinutes = (julianNumber * MINUTESINDAY);
+
+            return julianMinutes + ((long)hours * MINUTESINHOUR) + (long)minutes;
         }
 
         /// <summary>
@@ -74,8 +88,40 @@
         /// <returns></returns>
         public int GetMinutes()
         {
-            return (int)(mMinutes % MINUTESINHOUR);
+            return (int)(mTotalMinutes % MINUTESINHOUR);
         }
+        #endregion
+
+        #region Comparisons
+        /// <summary>
+        /// Returns how the current DateTime sorts in comparison to the input compareDate
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        /// <see cref="Date.CompareTo(object)">For further explanation</see>
+        public int CompareTo(object dateTime)
+        {
+            if (!(dateTime is DateTime))
+            {
+                throw new ArgumentException("Object is not a DateTime");
+            }
+            var compare = dateTime as DateTime;
+
+            var compareMinutes = GetTotalMinutes(compare.GetDate(), compare.GetHours(), compare.GetMinutes());
+
+            int result = 0;
+            if (mTotalMinutes > compareMinutes)
+            {
+                result = 1;
+            }
+            else if (mTotalMinutes < compareMinutes)
+            {
+                result = -1;
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

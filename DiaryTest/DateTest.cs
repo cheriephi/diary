@@ -210,12 +210,26 @@ namespace DiaryTest
 
             var expected = int.Parse(TestContext.DataRow["expectedResult"].ToString());
 
-            var date = ToString(new Date(day, month, year));
-            var compareDate = ToString(new Date(compareDay, compareMonth, compareYear));
+            var date = new Date(day, month, year);
+            var compareDate = new Date(compareDay, compareMonth, compareYear);
 
             var actual = date.CompareTo(compareDate);
 
-            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", date, compareDate);
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", ToString(date), ToString(compareDate));
+        }
+
+
+        /// <summary>
+        /// Validates the CompareTo method properly handles invalid object input types
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentException))]
+        public void CompareToInvalidObjectTest()
+        {
+            var date = new Diary.Date();
+            var compare = 0;
+
+            var actual = date.CompareTo(compare);
         }
 
         /// <summary>

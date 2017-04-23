@@ -154,5 +154,49 @@ namespace DiaryTest
             Assert.AreEqual(expected, DateTest.ToString(actualDate), "After");
         }
         #endregion
+
+        #region Comparison Tests
+        /// <summary>
+        /// Data testing of CompareTo function
+        /// </summary>
+        [TestMethod]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\CompareDateTimeData.xml", "add", DataAccessMethod.Sequential)]
+        public void CompareToTest()
+        {
+            var year = int.Parse(TestContext.DataRow["year"].ToString());
+            var month = (Date.Month)int.Parse(TestContext.DataRow["month"].ToString());
+            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var hours = int.Parse(TestContext.DataRow["hours"].ToString());
+            var minutes = int.Parse(TestContext.DataRow["minutes"].ToString());
+
+            var compareYear = int.Parse(TestContext.DataRow["compareYear"].ToString());
+            var compareMonth = (Date.Month)int.Parse(TestContext.DataRow["compareMonth"].ToString());
+            var compareDay = int.Parse(TestContext.DataRow["compareDay"].ToString());
+            var compareHours = int.Parse(TestContext.DataRow["compareHours"].ToString());
+            var compareMinutes = int.Parse(TestContext.DataRow["compareMinutes"].ToString());
+
+            var expected = int.Parse(TestContext.DataRow["expectedResult"].ToString());
+
+            var dateTime = new Diary.DateTime(new Date(day, month, year), hours, minutes);
+            var compareDateTime = new Diary.DateTime(new Date(compareDay, compareMonth, compareYear), compareHours, compareMinutes);
+
+            var actual = dateTime.CompareTo(compareDateTime);
+
+            Assert.AreEqual(expected, actual, "Input DateTime:<{0}>. Input Compare DateTime:<{1}>.", ToString(dateTime), ToString(compareDateTime));
+        }
+
+        /// <summary>
+        /// Validates the CompareTo method properly handles invalid object input types
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentException))]
+        public void CompareToInvalidObjectTest()
+        {
+            var dateTime = new Diary.DateTime();
+            var compare = 0;
+
+            var actual = dateTime.CompareTo(compare);
+        }
+        #endregion
     }
 }

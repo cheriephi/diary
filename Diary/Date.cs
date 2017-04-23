@@ -178,15 +178,20 @@ namespace Diary
         /// Returns how the current Date sorts in comparison to the input compareDate
         /// </summary>
         /// <remarks>Implements IComparable</remarks>
-        /// <param name="compareDate"></param>
+        /// <param name="date"></param>
         /// <returns>
         /// -1 if the current date sorts before
         /// 0 for equal sort
         /// 1 if the current date sorts after
         /// </returns>
-        /// <remarks>Evaluates sort order by Julian Number comparison</remarks>
-        public int CompareTo(object compareDate) {
-            Date compare = compareDate as Date;
+        public int CompareTo(object date)
+        {
+            var compare = date as Date;
+            if (!(date is Date))
+            {
+                throw new ArgumentException("Object is not a Date");
+            }
+
             var compareJulianNumber = ToJulianNumber(compare.GetDay(), (int)compare.GetMonth(), compare.GetYear());
 
             int result = 0;
