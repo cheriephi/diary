@@ -58,7 +58,7 @@ namespace DiaryTest
         /// Data testing that the constructor properly initializes fields based on inputs
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
         public void InputDateConstructorTest()
         {
             var expectedYear = int.Parse(TestContext.DataRow["year"].ToString());
@@ -76,7 +76,7 @@ namespace DiaryTest
         /// Validates the constructor throws an exception if invalid inputs are passed in
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\InvalidDateData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\InvalidDateData.xml", "add", DataAccessMethod.Sequential)]
         [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
         public void InvalidInputDateConstructorTest()
         {
@@ -93,7 +93,7 @@ namespace DiaryTest
         /// Data testing of days of weeks.
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
         public void DayOfWeekTest()
         {
             var expectedYear = int.Parse(TestContext.DataRow["year"].ToString());
@@ -154,7 +154,7 @@ namespace DiaryTest
         /// Data testing to a julian number.
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
         public void ToJulianNumberTest()
         {
             var year = int.Parse(TestContext.DataRow["year"].ToString());
@@ -172,7 +172,7 @@ namespace DiaryTest
         /// </summary>
         /// <seealso href="https://msdn.microsoft.com/en-us/library/dd260048.aspx"/>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
         public void FromJulianNumberTest()
         {
             var julian = int.Parse(TestContext.DataRow["julian"].ToString());
@@ -197,7 +197,7 @@ namespace DiaryTest
         /// Data testing of CompareTo function
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\CompareDateData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\CompareDateData.xml", "add", DataAccessMethod.Sequential)]
         public void CompareToTest()
         {
             var year = int.Parse(TestContext.DataRow["year"].ToString());
@@ -236,7 +236,7 @@ namespace DiaryTest
         /// Data testing of IsBetween function
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\BetweenDateData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\BetweenDateData.xml", "add", DataAccessMethod.Sequential)]
         public void IsBetweenTest()
         {
             var startYear = int.Parse(TestContext.DataRow["startYear"].ToString());
@@ -299,7 +299,7 @@ namespace DiaryTest
         /// Data testing that the leap year is calculated properly
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\LeapYearData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\LeapYearData.xml", "add", DataAccessMethod.Sequential)]
         public void IsLeapYearTest()
         {
             var year = int.Parse(TestContext.DataRow["year"].ToString());
@@ -315,7 +315,7 @@ namespace DiaryTest
         /// Data testing that the last day of the month is calculated properly
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\LastDayOfMonthData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\LastDayOfMonthData.xml", "add", DataAccessMethod.Sequential)]
         public void GetLastDayOfMonthTest()
         {
             var year = int.Parse(TestContext.DataRow["year"].ToString());

@@ -65,7 +65,7 @@ namespace DiaryTest
         /// Validates that non-conforming hours and minutes get translated into a meaningful date value.
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTimeData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTime\DateTimeData.xml", "add", DataAccessMethod.Sequential)]
         public void InputDateConstructorOverflowTest()
         {
             var expectedYear = int.Parse(TestContext.DataRow["year"].ToString());
@@ -160,7 +160,7 @@ namespace DiaryTest
         /// Data testing of CompareTo function
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\CompareDateTimeData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTime\CompareDateTimeData.xml", "add", DataAccessMethod.Sequential)]
         public void CompareToTest()
         {
             var year = int.Parse(TestContext.DataRow["year"].ToString());
@@ -202,7 +202,7 @@ namespace DiaryTest
         /// Data testing of IsBetween function
         /// </summary>
         [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\BetweenDateTimeData.xml", "add", DataAccessMethod.Sequential)]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTime\BetweenDateTimeData.xml", "add", DataAccessMethod.Sequential)]
         public void IsBetweenTest()
         {
             var startYear = int.Parse(TestContext.DataRow["startYear"].ToString());
