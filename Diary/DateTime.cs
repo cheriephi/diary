@@ -122,6 +122,21 @@ namespace Diary
             return result;
         }
 
+        /// <summary>
+        /// Returns whether the current DateTime is between the input start and end DateTimes, using inclusive logic.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public Boolean IsBetween(DateTime start, DateTime end)
+        {
+            var startMinutes = GetTotalMinutes(start.GetDate(), start.GetHours(), start.GetMinutes());
+            var endMinutes = GetTotalMinutes(end.GetDate(), end.GetHours(), end.GetMinutes());
+
+            Boolean isBetween = (mTotalMinutes >= startMinutes && mTotalMinutes <= endMinutes);
+
+            return isBetween;
+        }
         #endregion
     }
 }

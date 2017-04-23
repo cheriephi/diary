@@ -213,7 +213,6 @@ namespace Diary
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        /// <remarks>Julian Number comparisons are used</remarks>
         public Boolean IsBetween(Date start, Date end) {
             var startJulianNumber = ToJulianNumber(start.GetDay(), (int)start.GetMonth(), start.GetYear());
             var endJulianNumber = ToJulianNumber(end.GetDay(), (int)end.GetMonth(), end.GetYear());

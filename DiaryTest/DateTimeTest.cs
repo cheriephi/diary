@@ -197,6 +197,43 @@ namespace DiaryTest
 
             var actual = dateTime.CompareTo(compare);
         }
+
+        /// <summary>
+        /// Data testing of IsBetween function
+        /// </summary>
+        [TestMethod]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\BetweenDateTimeData.xml", "add", DataAccessMethod.Sequential)]
+        public void IsBetweenTest()
+        {
+            var startYear = int.Parse(TestContext.DataRow["startYear"].ToString());
+            var startMonth = (Date.Month)int.Parse(TestContext.DataRow["startMonth"].ToString());
+            var startDay = int.Parse(TestContext.DataRow["startDay"].ToString());
+            var startHours = int.Parse(TestContext.DataRow["startHours"].ToString());
+            var startMinutes = int.Parse(TestContext.DataRow["startMinutes"].ToString());
+
+            var endYear = int.Parse(TestContext.DataRow["endYear"].ToString());
+            var endMonth = (Date.Month)int.Parse(TestContext.DataRow["endMonth"].ToString());
+            var endDay = int.Parse(TestContext.DataRow["endDay"].ToString());
+            var endHours = int.Parse(TestContext.DataRow["endHours"].ToString());
+            var endMinutes = int.Parse(TestContext.DataRow["endMinutes"].ToString());
+
+            var year = int.Parse(TestContext.DataRow["year"].ToString());
+            var month = (Date.Month)int.Parse(TestContext.DataRow["month"].ToString());
+            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var hours = int.Parse(TestContext.DataRow["hours"].ToString());
+            var minutes = int.Parse(TestContext.DataRow["minutes"].ToString());
+
+            var expectedIsBetweenString = TestContext.DataRow["isBetween"].ToString();
+            bool expected = (expectedIsBetweenString == "1");
+
+            var startDateTime = new Diary.DateTime(new Date(startDay, startMonth, startYear), startHours, startMinutes);
+            var endDateTime = new Diary.DateTime(new Date(endDay, endMonth, endYear), endHours, endMinutes);
+            var dateTime = new Diary.DateTime(new Date(day, month, year), hours, minutes);
+
+            var actual = dateTime.IsBetween(startDateTime, endDateTime);
+
+            Assert.AreEqual(expected, actual, "Input DateTime:<{0}>. Input Start DateTime:<{1}>. Input End DateTime:<{2}>.", ToString(dateTime), ToString(startDateTime), ToString(endDateTime));
+        }
         #endregion
     }
 }
