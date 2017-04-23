@@ -108,6 +108,47 @@ namespace DiaryTest
         }
         #endregion
 
+        #region Aliasing Tests
+        /// <summary>
+        /// Tests that the Year field cannot be modified outside of its accessor.
+        /// </summary>
+        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
+        /// <remarks>Primitive value types are not vulnerable to this bug; but this highlights differences in behavior between value and reference types</remarks>
+        [TestMethod]
+        public void GetYearAliasingTest()
+        {
+            var date = new Diary.Date();
+
+            var expected = 1900;
+            var actual = date.GetYear();
+            Assert.AreEqual(expected, actual, "Original");
+
+            actual = 1;
+            actual = date.GetYear();
+
+            Assert.AreEqual(expected, actual, "After");
+        }
+
+        /// <summary>
+        /// Tests that the Month field cannot be modified outside of its accessor.
+        /// </summary>
+        /// <remarks>Testing an Enum type</remarks>
+        [TestMethod]
+        public void GetMonthAliasingTest()
+        {
+            var date = new Diary.Date();
+
+            var expected = Date.Month.JANUARY;
+            var actual = date.GetMonth();
+            Assert.AreEqual(expected, actual, "Original");
+
+            actual = Date.Month.FEBRUARY;
+            actual = date.GetMonth();
+
+            Assert.AreEqual(expected, actual, "After");
+        }
+        #endregion
+
         #region Julian Number Tests
         /// <summary>
         /// Data testing to a julian number.
