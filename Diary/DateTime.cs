@@ -6,11 +6,10 @@
     /// <see cref="Date">For more detailed design explanations</see>
     public class DateTime
     {
-        private Date mDate;
-        private int mMinutes;
+        private long mMinutes;
 
-        private const int MINUTESINHOUR = 60;
-        private const int MINUTESINDAY = MINUTESINHOUR * 24;
+        private const long MINUTESINHOUR = 60;
+        private const long MINUTESINDAY = MINUTESINHOUR * 24;
 
         #region Constructors
         /// <summary>
@@ -26,14 +25,11 @@
         /// <param name="minutes"></param>
         public DateTime(Date date, int hours, int minutes)
         {
-            var totalMinutes = (hours * MINUTESINHOUR) + minutes;
+            var julianNumber = (long)(Date.ToJulianNumber(date.GetDay(), (int)date.GetMonth(), date.GetYear()));
 
-            var minutesInDay = (totalMinutes % MINUTESINDAY);
+            var julianMinutes = (julianNumber * MINUTESINDAY);
 
-            //Create a new instance of Date to protect against aliasing bugs
-            mDate = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
-
-            mMinutes = minutesInDay;
+            mMinutes = julianMinutes + ((long)hours * MINUTESINHOUR) + (long)minutes;
         }
 
         /// <summary>
@@ -50,8 +46,14 @@
         /// <returns></returns>
         public Date GetDate()
         {
-            //Create a new instance to protect against aliasing bugs
-            return new Date(mDate.GetDay(), mDate.GetMonth(), mDate.GetYear());
+            var julianNumber = (int)(mMinutes / MINUTESINDAY);
+
+            int day = 0;
+            int month = 0;
+            int year = 0;
+            Date.FromJulianNumber(julianNumber, ref day, ref month, ref year);
+          
+            return new Date(day, (Date.Month)month, year);
         }
 
         /// <summary>
@@ -60,7 +62,8 @@
         /// <returns></returns>
         public int GetHours()
         {
-            return mMinutes / MINUTESINHOUR;
+            var minutes = mMinutes % MINUTESINDAY;
+            return (int)(minutes / MINUTESINHOUR);
         }
 
         /// <summary>
@@ -69,7 +72,7 @@
         /// <returns></returns>
         public int GetMinutes()
         {
-            return mMinutes % MINUTESINHOUR;
+            return (int)(mMinutes % MINUTESINHOUR);
         }
         #endregion
     }
