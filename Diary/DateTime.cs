@@ -7,8 +7,10 @@
     public class DateTime
     {
         private Date mDate;
-        private int mHours;
         private int mMinutes;
+
+        private const int MINUTESINHOUR = 60;
+        private const int MINUTESINDAY = MINUTESINHOUR * 24;
 
         #region Constructors
         /// <summary>
@@ -24,10 +26,14 @@
         /// <param name="minutes"></param>
         public DateTime(Date date, int hours, int minutes)
         {
+            var totalMinutes = (hours * MINUTESINHOUR) + minutes;
+
+            var minutesInDay = (totalMinutes % MINUTESINDAY);
+
             //Create a new instance of Date to protect against aliasing bugs
             mDate = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
-            mHours = hours;
-            mMinutes = minutes;
+
+            mMinutes = minutesInDay;
         }
 
         /// <summary>
@@ -54,7 +60,7 @@
         /// <returns></returns>
         public int GetHours()
         {
-            return mHours;
+            return mMinutes / MINUTESINHOUR;
         }
 
         /// <summary>
@@ -63,7 +69,7 @@
         /// <returns></returns>
         public int GetMinutes()
         {
-            return mMinutes;
+            return mMinutes % MINUTESINHOUR;
         }
         #endregion
     }
