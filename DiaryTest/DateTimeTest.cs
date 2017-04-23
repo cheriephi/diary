@@ -235,5 +235,21 @@ namespace DiaryTest
             Assert.AreEqual(expected, actual, "Input DateTime:<{0}>. Input Start DateTime:<{1}>. Input End DateTime:<{2}>.", ToString(dateTime), ToString(startDateTime), ToString(endDateTime));
         }
         #endregion
+
+        #region Math Tests
+        /// <summary>
+        /// Tests the AddTime method
+        /// </summary>
+        [TestMethod]
+        public void AddTimeTest()
+        {
+            var expected = new Diary.DateTime(new Date(1, Date.Month.JANUARY, 1900), 1, 1);
+            var actual = new Diary.DateTime(new Date(1, Date.Month.JANUARY, 1900), 0, 0);
+
+            actual.AddTime(1, 1);
+
+            Assert.AreEqual(ToString(expected), ToString(actual));
+        }
+        #endregion
     }
 }

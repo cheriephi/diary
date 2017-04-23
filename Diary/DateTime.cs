@@ -79,7 +79,18 @@ namespace Diary
 
             var julianMinutes = (julianNumber * MINUTESINDAY);
 
-            return julianMinutes + ((long)hours * MINUTESINHOUR) + (long)minutes;
+            return julianMinutes + GetTotalMinutes(hours, minutes);
+        }
+
+        /// <summary>
+        /// Returns the associated number of Julian minutes based on the inputs
+        /// </summary>
+        /// <param name="hours"></param>
+        /// <param name="minutes"></param>
+        /// <returns></returns>
+        private long GetTotalMinutes(int hours, int minutes)
+        {
+            return ((long)hours * MINUTESINHOUR) + (long)minutes;
         }
 
         /// <summary>
@@ -136,6 +147,17 @@ namespace Diary
             Boolean isBetween = (mTotalMinutes >= startMinutes && mTotalMinutes <= endMinutes);
 
             return isBetween;
+        }
+        #endregion
+
+        #region Math
+        /// <summary>
+        /// Adds the specified time to the DateTime
+        /// </summary>
+        /// <param name="days"></param>
+        public void AddTime(int hours, int minutes)
+        {
+            mTotalMinutes += GetTotalMinutes(hours, minutes);
         }
         #endregion
     }
