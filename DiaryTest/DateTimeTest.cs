@@ -76,10 +76,28 @@ namespace DiaryTest
 
         #region Aliasing Tests
         /// <summary>
+        /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
+        /// </summary>
+        [TestMethod]
+        public void InputDateConstructorAliasingTest()
+        {
+            var date = new Date();
+            var dateTime = new Diary.DateTime(date, 0, 0);
+
+            var expected = ToString(new Diary.DateTime());
+            var actual = ToString(dateTime);
+            Assert.AreEqual(expected, actual, "Original");
+
+            date.AddDays(1);
+            actual = ToString(dateTime);
+
+            Assert.AreEqual(expected, actual, "After");
+        }
+
+
+        /// <summary>
         /// Tests that the Hours field cannot be modified outside of its accessor.
         /// </summary>
-        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
-        /// <remarks>Primitive value types are not vulnerable to this bug; but this highlights differences in behavior between value and reference types</remarks>
         [TestMethod]
         public void GetHoursAliasingTest()
         {
@@ -98,7 +116,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the Date field cannot be modified outside its accessor.
         /// </summary>
-        /// <seealso cref="GetHoursAliasingTest">For more context on the problem</seealso>
+        /// <seealso cref="DateTest.GetYearAliasingTest">For more context on the problem</seealso>
         [TestMethod]
         public void GetDateAliasingTest()
         {

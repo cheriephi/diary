@@ -24,7 +24,8 @@
         /// <param name="minutes"></param>
         public DateTime(Date date, int hours, int minutes)
         {
-            mDate = date;
+            //Create a new instance of Date to protect against aliasing bugs
+            mDate = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
             mHours = hours;
             mMinutes = minutes;
         }
