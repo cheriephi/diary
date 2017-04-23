@@ -62,6 +62,28 @@ namespace DiaryTest
         }
 
         /// <summary>
+        /// Validates that non-conforming hours and minutes get translated into a meaningful date value.
+        /// </summary>
+        [TestMethod]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTimeData.xml", "add", DataAccessMethod.Sequential)]
+        public void InputDateConstructorOverflowTest()
+        {
+            var expectedYear = int.Parse(TestContext.DataRow["year"].ToString());
+            var expectedMonthNumber = int.Parse(TestContext.DataRow["month"].ToString());
+            var expectedMonth = (Date.Month)expectedMonthNumber;
+            var expectedDay = int.Parse(TestContext.DataRow["day"].ToString());
+            var expectedHours = int.Parse(TestContext.DataRow["hours"].ToString());
+            var expectedMinutes = int.Parse(TestContext.DataRow["minutes"].ToString());
+
+            var date = new Date(expectedDay, expectedMonth, expectedYear);
+
+            var expected = TestContext.DataRow["expected"].ToString();
+            var actual = ToString(new Diary.DateTime(date, expectedHours, expectedMinutes));
+
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Hours:<{1}>. Minutes:<{2}>.", DateTest.ToString(date), expectedHours, expectedMinutes);
+        }
+
+        /// <summary>
         /// Single scenario constructor(DateTime) test
         /// </summary>
         [TestMethod]

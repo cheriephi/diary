@@ -18,7 +18,9 @@
         public DateTime() : this(new Date(), 0, 0) {}
         
         /// <summary>
-        /// Initializes DateTime based on inputs.
+        /// Initializes DateTime based on inputs. Handles overflow / underflows.
+        /// For example, if more than 24 hours in a day are passed in; this increases the date.
+        /// If a negative time value is passed in, it gets adjusted into the equivalent positive value.
         /// </summary>
         /// <param name="date"></param>
         /// <param name="hours"></param>
@@ -52,7 +54,7 @@
             int month = 0;
             int year = 0;
             Date.FromJulianNumber(julianNumber, ref day, ref month, ref year);
-          
+
             return new Date(day, (Date.Month)month, year);
         }
 
