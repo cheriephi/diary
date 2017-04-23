@@ -28,6 +28,12 @@
             mHours = hours;
             mMinutes = minutes;
         }
+
+        /// <summary>
+        /// Initializes DateTime based on inputs.
+        /// </summary>
+        /// <param name="dateTime"></param>
+        public DateTime(DateTime dateTime) : this(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes()) {}
         #endregion
 
         #region Accessors
@@ -37,7 +43,8 @@
         /// <returns></returns>
         public Date GetDate()
         {
-            return mDate;
+            //Create a new instance to protect against aliasing bugs
+            return new Date(mDate.GetDay(), mDate.GetMonth(), mDate.GetYear());
         }
 
         /// <summary>

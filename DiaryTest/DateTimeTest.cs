@@ -1,6 +1,6 @@
-﻿using System;
-using Diary;
+﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace DiaryTest
 {
@@ -23,9 +23,13 @@ namespace DiaryTest
         /// <returns>yyyy-MM-dd hh:mm</returns>
         public static string ToString(Diary.DateTime dateTime)
         {
-            return String.Format("{0} {1}:{2}", DateTest.ToString(dateTime.GetDate()), dateTime.GetHours().ToString("00"), dateTime.GetMinutes().ToString("00"));
+            return ToString(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes());
         }
 
+        public static string ToString(Date date, int hours, int minutes)
+        {
+            return String.Format("{0} {1}:{2}", DateTest.ToString(date), hours.ToString("00"), minutes.ToString("00"));
+        }
         #endregion
 
         #region Constructor Tests
@@ -39,6 +43,75 @@ namespace DiaryTest
             var actual = ToString(new Diary.DateTime());
 
             Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Single scenario test that the constructor properly initializes fields based on inputs
+        /// </summary>
+        [TestMethod]
+        public void InputDateConstructorTest()
+        {
+            var expectedDate = new Date(30, Date.Month.APRIL, 2017);
+            var expectedHours = 3;
+            var expectedMinutes = 42;
+
+            var expected = ToString(expectedDate, expectedHours, expectedMinutes);
+            var actual = ToString(new Diary.DateTime(expectedDate, expectedHours, expectedMinutes));
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Single scenario constructor(DateTime) test
+        /// </summary>
+        [TestMethod]
+        public void InputDateTimeConstructorTest()
+        {
+            var expected = new Diary.DateTime(new Date(1, Date.Month.DECEMBER, 2000), 8, 15);
+            var actual = new Diary.DateTime(expected);
+
+            Assert.AreEqual(ToString(expected), ToString(actual));
+        }
+        #endregion
+
+        #region Aliasing Tests
+        /// <summary>
+        /// Tests that the Hours field cannot be modified outside of its accessor.
+        /// </summary>
+        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
+        /// <remarks>Primitive value types are not vulnerable to this bug; but this highlights differences in behavior between value and reference types</remarks>
+        [TestMethod]
+        public void GetHoursAliasingTest()
+        {
+            var dateTime = new Diary.DateTime();
+
+            var expected = 0;
+            var actual = dateTime.GetHours();
+            Assert.AreEqual(expected, actual, "Original");
+
+            actual = 1;
+            actual = dateTime.GetHours();
+
+            Assert.AreEqual(expected, actual, "After");
+        }
+
+        /// <summary>
+        /// Tests that the Date field cannot be modified outside its accessor.
+        /// </summary>
+        /// <seealso cref="GetHoursAliasingTest">For more context on the problem</seealso>
+        [TestMethod]
+        public void GetDateAliasingTest()
+        {
+            var dateTime = new Diary.DateTime();
+
+            var expected = "1900-01-01";
+            var actualDate = dateTime.GetDate();
+            Assert.AreEqual(expected, DateTest.ToString(actualDate), "Original");
+
+            actualDate.AddDays(1);
+            actualDate = dateTime.GetDate();
+
+            Assert.AreEqual(expected, DateTest.ToString(actualDate), "After");
         }
         #endregion
     }
