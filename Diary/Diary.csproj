@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contact.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="DateTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

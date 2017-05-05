@@ -53,6 +53,7 @@
     <Compile Include="DateTest.cs" />
     <Compile Include="DateTimeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ContactTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
