@@ -7,7 +7,7 @@ namespace DiaryTest
     /// <summary>
     /// Summary description for DateTimeTest
     /// </summary>
-    /// <seealso cref="DateTest">For more detailed design explanations</see>
+    /// <seealso cref="DateTest">For more detailed design explanations</seealso>
     [TestClass]
     public class DateTimeTest
     {
@@ -106,12 +106,12 @@ namespace DiaryTest
             var date = new Date();
             var dateTime = new Diary.DateTime(date, 0, 0);
 
-            var expected = ToString(new Diary.DateTime());
-            var actual = ToString(dateTime);
+            var expected = 1;
+            var actual = dateTime.GetDate().GetDay();
             Assert.AreEqual(expected, actual, "Original");
 
             date.AddDays(1);
-            actual = ToString(dateTime);
+            actual = dateTime.GetDate().GetDay();
 
             Assert.AreEqual(expected, actual, "After");
         }
