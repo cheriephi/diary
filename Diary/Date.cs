@@ -51,7 +51,7 @@ namespace Diary
         /// <summary>
         /// Creates arbitrary default date value
         /// </summary>
-        public Date() : this(1, Month.JANUARY, 1900) { }
+        public Date() : this(1, Month.JANUARY, 1900) {}
 
         /// <summary>
         /// Validates and initializes Date
@@ -140,7 +140,7 @@ namespace Diary
         /// <param name="month"></param>
         /// <param name="year"></param>
         /// <returns>Julian Number</returns>
-        /// <see cref="https://en.wikipedia.org/wiki/Julian_day#Julian_date_calculation"/>
+        /// <see href="https://en.wikipedia.org/wiki/Julian_day#Julian_date_calculation"/>
         public static int ToJulianNumber(int day, int month, int year)
         {
             int julianNumber = (1461 * (year + 4800 + (month - 14) / 12)) / 4 +
@@ -178,15 +178,20 @@ namespace Diary
         /// Returns how the current Date sorts in comparison to the input compareDate
         /// </summary>
         /// <remarks>Implements IComparable</remarks>
-        /// <param name="compareDate"></param>
+        /// <param name="date"></param>
         /// <returns>
         /// -1 if the current date sorts before
         /// 0 for equal sort
         /// 1 if the current date sorts after
         /// </returns>
-        /// <remarks>Evaluates sort order by Julian Number comparison</remarks>
-        public int CompareTo(object compareDate) {
-            Date compare = compareDate as Date;
+        public int CompareTo(object date)
+        {
+            var compare = date as Date;
+            if (!(date is Date))
+            {
+                throw new ArgumentException("Object is not a Date");
+            }
+
             var compareJulianNumber = ToJulianNumber(compare.GetDay(), (int)compare.GetMonth(), compare.GetYear());
 
             int result = 0;
@@ -208,7 +213,6 @@ namespace Diary
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        /// <remarks>Julian Number comparisons are used</remarks>
         public Boolean IsBetween(Date start, Date end) {
             var startJulianNumber = ToJulianNumber(start.GetDay(), (int)start.GetMonth(), start.GetYear());
             var endJulianNumber = ToJulianNumber(end.GetDay(), (int)end.GetMonth(), end.GetYear());

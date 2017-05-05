@@ -1,0 +1,50 @@
+﻿<tests>
+      <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>15</day>
+            <hours>12</hours>
+            <minutes>61</minutes>
+            <expected>2017-04-15 13:01</expected>
+    </add>
+      <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>15</day>
+            <hours>12</hours>
+            <minutes>1441</minutes>
+            <expected>2017-04-16 12:01</expected>
+    </add>
+    <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>15</day>
+            <hours>12</hours>
+            <minutes>-61</minutes>
+            <expected>2017-04-15 10:59</expected>
+    </add>
+    <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>15</day>
+            <hours>12</hours>
+            <minutes>-1441</minutes>
+            <expected>2017-04-14 11:59</expected>
+    </add>
+      <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>15</day>
+            <hours>25</hours>
+            <minutes>1</minutes>
+            <expected>2017-04-16 01:01</expected>
+    </add>
+      <add>
+            <year>2017</year>
+            <month>4</month>
+            <day>15</day>
+            <hours>-25</hours>
+            <minutes>1</minutes>
+            <expected>2017-04-13 23:01</expected>
+    </add>
+</tests>
