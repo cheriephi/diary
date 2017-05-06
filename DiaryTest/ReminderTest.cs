@@ -11,16 +11,54 @@ namespace DiaryTest
     [TestClass]
     public class ReminderTest
     {
+        #region Helper Methods
+        /// <summary>
+        /// Builder factory pattern (a creational design pattern), to enable anoymous creation of the System Under Test, but parameterize necessary values.
+        /// The object can be incrementally built passed on parameters.
+        /// This keeps tests clutter free from in-line setup and minimizes obscure tests.
+        /// </summary>
+        internal class ReminderBuilder
+        {
+            private String label = "";
+            private Date date = new Date();
+            private String details = "";
+
+            internal ReminderBuilder SetLabel(String label)
+            {
+                this.label = label;
+                return this;
+            }
+
+            internal ReminderBuilder SetDate(Date date)
+            {
+                this.date = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
+                return this;
+            }
+
+            internal ReminderBuilder SetDetails(String details)
+            {
+                this.details = details;
+                return this;
+            }
+
+            internal Reminder Build()
+            {
+                var reminder = new Reminder(label, date, details);
+                return reminder;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// Simple data test of GetLabel method.
         /// </summary>
         [TestMethod]
         public void GetLabelTest()
         {
-            var label = "Test Label";
-            var expected = label;
+            var expected = "Test Label";
 
-            var reminder = new Reminder(label, new Date(), "");
+            var reminder = new ReminderBuilder().SetLabel(expected).Build();
+
             var actual = reminder.GetLabel();
 
             Assert.AreEqual(expected, actual);
@@ -32,10 +70,9 @@ namespace DiaryTest
         [TestMethod]
         public void GetDetailsTest()
         {
-            var details = "Test Details";
-            var expected = details;
+            var expected = "Test Details";
 
-            var reminder = new Reminder("", new Date(), details);
+            var reminder = new ReminderBuilder().SetDetails(expected).Build();
             var actual = reminder.GetDetails();
 
             Assert.AreEqual(expected, actual);
@@ -47,9 +84,10 @@ namespace DiaryTest
         [TestMethod]
         public void IsRepeatingTest()
         {
-            var reminder = new Reminder("", new Date(), "");
-            var actual = reminder.IsRepeating();
             var expected = false;
+
+            var reminder = new ReminderBuilder().Build();
+            var actual = reminder.IsRepeating();
 
             Assert.AreEqual(expected, actual);
         }
@@ -61,8 +99,8 @@ namespace DiaryTest
         public void IsOccuringOnTest()
         {
             var reminderDate = new Date(30, Date.Month.SEPTEMBER, 2000);
-            var reminder = new Reminder("", reminderDate, "");
-            
+            var reminder = new ReminderBuilder().SetDate(reminderDate).Build();
+
             var actualBefore = reminder.IsOccuringOn(new Date(29, Date.Month.SEPTEMBER, 2000));
             var actualOn = reminder.IsOccuringOn(reminderDate);
             var actualAfter = reminder.IsOccuringOn(new Date(2, Date.Month.SEPTEMBER, 2000));
@@ -81,7 +119,7 @@ namespace DiaryTest
         public void IsOccuringOnAliasingTest()
         {
             var date = new Date();
-            var reminder = new Reminder("", date, "");
+            var reminder = new ReminderBuilder().SetDate(date).Build(); 
 
             var expected = true;
             var actual = reminder.IsOccuringOn(date);
