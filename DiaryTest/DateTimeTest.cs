@@ -107,9 +107,11 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
+        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
         [TestMethod]
         public void InputDateConstructorAliasingTest()
         {
+            // Validate the system is working as expected under normal conditions.
             var date = new Date();
             var dateTime = new Diary.DateTime(date, 0, 0);
 
@@ -117,16 +119,20 @@ namespace DiaryTest
             var actual = dateTime.GetDate().GetDay();
             Assert.AreEqual(expected, actual, "Original");
 
+            // Now modify the reference value outside the System Under Test accessors.
             date.AddDays(1);
+
+            // Look up what the System Under Test says its data is again.
             actual = dateTime.GetDate().GetDay();
 
+            // The data should not have changed.
             Assert.AreEqual(expected, actual, "After");
         }
 
         /// <summary>
         /// Tests that the Date field cannot be modified outside its accessor.
         /// </summary>
-        /// <seealso cref="DateTest.GetMonthAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
         [TestMethod]
         public void GetDateAliasingTest()
         {
@@ -138,6 +144,7 @@ namespace DiaryTest
             Assert.AreEqual(expected, actual, "Original");
 
             actualDate.AddDays(1);
+
             actualDate = dateTime.GetDate();
             actual = actualDate.GetDay();
 

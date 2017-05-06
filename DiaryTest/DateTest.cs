@@ -108,28 +108,6 @@ namespace DiaryTest
         }
         #endregion
 
-        #region Aliasing Tests
-        /// <summary>
-        /// Tests that the Month field cannot be modified outside of its accessor.
-        /// </summary>
-        /// <remarks>Testing an Enum type</remarks>
-        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
-        [TestMethod]
-        public void GetMonthAliasingTest()
-        {
-            var date = new Diary.Date();
-
-            var expected = Date.Month.JANUARY;
-            var actual = date.GetMonth();
-            Assert.AreEqual(expected, actual, "Original");
-
-            actual = Date.Month.FEBRUARY;
-            actual = date.GetMonth();
-
-            Assert.AreEqual(expected, actual, "After");
-        }
-        #endregion
-
         #region Julian Number Tests
         /// <summary>
         /// Data testing to a julian number.
