@@ -8,16 +8,17 @@ namespace Diary
     public abstract class CalendarEvent
     {
         /// <summary>
-        /// Creates a calendar event
+        /// Creates a calendar event.
         /// </summary>
         /// <param name="label"></param>
+        /// <remarks>Events occuring in the past are not handled different than those in the future.</remarks>
         public CalendarEvent(String label)
         {
             mLabel = label;
         }
         
         /// <summary>
-        /// Returns the event label
+        /// Returns the event label.
         /// </summary>
         /// <returns></returns>
         public String GetLabel()
@@ -26,15 +27,15 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns whether the event is repeating
+        /// Returns whether the event is repeating.
         /// </summary>
         /// <returns></returns>
         public abstract Boolean IsRepeating();
 
         /// <summary>
-        /// Returns whether the event occurs on the date in question
+        /// Returns whether the event occurs on the date in question.
         /// </summary>
-        /// <remarks>sic "Occuring"</remarks>
+        /// <remarks>sic "Occuring".</remarks>
         /// <param name="date"></param>
         /// <returns></returns>
         public abstract Boolean IsOccuringOn(Date date);

@@ -5,14 +5,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DiaryTest
 {
     /// <summary>
-    /// Tests the Reminder class
+    /// Tests the Reminder class.
     /// </summary>
-    /// <seealso cref="ContactTest">For more detailed design explanations</seealso>
+    /// <seealso cref="ContactTest">For more detailed design explanations.</seealso>
     [TestClass]
     public class ReminderTest
     {
         /// <summary>
-        /// Simple data test of GetLabel method
+        /// Simple data test of GetLabel method.
         /// </summary>
         [TestMethod]
         public void GetLabelTest()
@@ -27,7 +27,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of GetDetails method
+        /// Simple data test of GetDetails method.
         /// </summary>
         [TestMethod]
         public void GetDetailsTest()
@@ -42,7 +42,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of IsRepeating method
+        /// Simple data test of IsRepeating method.
         /// </summary>
         [TestMethod]
         public void IsRepeatingTest()
@@ -55,7 +55,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Tests the boundaries around the IsOccuring method for a simple scenario
+        /// Tests the boundaries around the IsOccuring method for a simple scenario.
         /// </summary>
         [TestMethod]
         public void IsOccuringOnTest()

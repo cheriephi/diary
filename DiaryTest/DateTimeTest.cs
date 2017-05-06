@@ -5,20 +5,20 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Summary description for DateTimeTest
+    /// Summary description for DateTimeTest.
     /// </summary>
-    /// <seealso cref="DateTest">For more detailed design explanations</seealso>
+    /// <seealso cref="DateTest">For more detailed design explanations.</seealso>
     [TestClass]
     public class DateTimeTest
     {
         /// <summary>
-        /// Required context for data driven testing
+        /// Required context for data driven testing.
         /// </summary>
         public TestContext TestContext { get; set; }
 
         #region Helper Methods
         /// <summary>
-        /// Returns the class' identifying properties to support meaningful equality checks and debugging
+        /// Returns the class' identifying properties to support meaningful equality checks and debugging.
         /// </summary>
         /// <returns>yyyy-MM-dd hh:mm</returns>
         public static string ToString(Diary.DateTime dateTime)
@@ -26,6 +26,13 @@ namespace DiaryTest
             return ToString(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes());
         }
 
+        /// <summary>
+        /// Returns the class' identifying properties to support meaningful equality checks and debugging.
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="hours"></param>
+        /// <param name="minutes"></param>
+        /// <returns>yyyy-MM-dd hh:mm</returns>
         public static string ToString(Date date, int hours, int minutes)
         {
             return String.Format("{0} {1}:{2}", DateTest.ToString(date), hours.ToString("00"), minutes.ToString("00"));
@@ -34,7 +41,7 @@ namespace DiaryTest
 
         #region Constructor Tests
         /// <summary>
-        /// Simple single scenario test of default constructor
+        /// Simple single scenario test of default constructor.
         /// </summary>
         [TestMethod]
         public void DefaultConstructorTest()
@@ -46,7 +53,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Single scenario test that the constructor properly initializes fields based on inputs
+        /// Single scenario test that the constructor properly initializes fields based on inputs.
         /// </summary>
         [TestMethod]
         public void InputDateConstructorTest()
@@ -84,7 +91,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Single scenario constructor(DateTime) test
+        /// Single scenario constructor(DateTime) test.
         /// </summary>
         [TestMethod]
         public void InputDateTimeConstructorTest()
@@ -116,48 +123,31 @@ namespace DiaryTest
             Assert.AreEqual(expected, actual, "After");
         }
 
-
-        /// <summary>
-        /// Tests that the Hours field cannot be modified outside of its accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetHoursAliasingTest()
-        {
-            var dateTime = new Diary.DateTime();
-
-            var expected = 0;
-            var actual = dateTime.GetHours();
-            Assert.AreEqual(expected, actual, "Original");
-
-            actual = 1;
-            actual = dateTime.GetHours();
-
-            Assert.AreEqual(expected, actual, "After");
-        }
-
         /// <summary>
         /// Tests that the Date field cannot be modified outside its accessor.
         /// </summary>
-        /// <seealso cref="DateTest.GetYearAliasingTest">For more context on the problem</seealso>
+        /// <seealso cref="DateTest.GetMonthAliasingTest">For more context on the problem.</seealso>
         [TestMethod]
         public void GetDateAliasingTest()
         {
             var dateTime = new Diary.DateTime();
 
-            var expected = "1900-01-01";
+            var expected = 1;
             var actualDate = dateTime.GetDate();
-            Assert.AreEqual(expected, DateTest.ToString(actualDate), "Original");
+            var actual = actualDate.GetDay();
+            Assert.AreEqual(expected, actual, "Original");
 
             actualDate.AddDays(1);
             actualDate = dateTime.GetDate();
+            actual = actualDate.GetDay();
 
-            Assert.AreEqual(expected, DateTest.ToString(actualDate), "After");
+            Assert.AreEqual(expected, actual, "After");
         }
         #endregion
 
         #region Comparison Tests
         /// <summary>
-        /// Data testing of CompareTo function
+        /// Data testing of CompareTo function.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTime\CompareDateTimeData.xml", "add", DataAccessMethod.Sequential)]
@@ -186,7 +176,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Validates the CompareTo method properly handles invalid object input types
+        /// Validates the CompareTo method properly handles invalid object input types.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(System.ArgumentException))]
@@ -199,7 +189,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Data testing of IsBetween function
+        /// Data testing of IsBetween function.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTime\BetweenDateTimeData.xml", "add", DataAccessMethod.Sequential)]
@@ -238,7 +228,7 @@ namespace DiaryTest
 
         #region Math Tests
         /// <summary>
-        /// Tests the AddTime method
+        /// Tests the AddTime method.
         /// </summary>
         [TestMethod]
         public void AddTimeTest()

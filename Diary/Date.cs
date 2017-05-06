@@ -3,7 +3,7 @@
 namespace Diary
 {
     /// <summary>
-    /// Handles generic date functionality
+    /// Handles generic date functionality.
     /// </summary>
     public class Date: IComparable
     {
@@ -49,17 +49,17 @@ namespace Diary
 
         #region Constructors
         /// <summary>
-        /// Creates arbitrary default date value
+        /// Creates arbitrary default date value.
         /// </summary>
         public Date() : this(1, Month.JANUARY, 1900) {}
 
         /// <summary>
-        /// Validates and initializes Date
+        /// Validates and initializes Date.
         /// </summary>
         /// <param name="day"></param>
         /// <param name="month"></param>
         /// <param name="year"></param>
-        /// <remarks>Only the simplest validations currently implemented due to project scope</remarks>
+        /// <remarks>Only the simplest validations currently implemented due to project scope.</remarks>
         public Date(int day, Month month, int year)
         {
             //Validate inputs
@@ -134,7 +134,7 @@ namespace Diary
 
         #region Julian Conversion
         /// <summary>
-        /// Converts the input calendar values to a julian number
+        /// Converts the input calendar values to a julian number.
         /// </summary>
         /// <param name="day"></param>
         /// <param name="month"></param>
@@ -151,9 +151,9 @@ namespace Diary
         }
 
         /// <summary>
-        /// Converts the input julian number to a calendar value
+        /// Converts the input julian number to a calendar value.
         /// </summary>
-        /// <remarks>See ToJulianNumber method</remarks>
+        /// <remarks>See ToJulianNumber method.</remarks>
         /// <param name="julianNumber"></param>
         /// <param name="day"></param>
         /// <param name="month"></param>
@@ -175,9 +175,9 @@ namespace Diary
 
         #region Comparisons
         /// <summary>
-        /// Returns how the current Date sorts in comparison to the input compareDate
+        /// Returns how the current Date sorts in comparison to the input compareDate.
         /// </summary>
-        /// <remarks>Implements IComparable</remarks>
+        /// <remarks>Implements IComparable.</remarks>
         /// <param name="date"></param>
         /// <returns>
         /// -1 if the current date sorts before
@@ -225,7 +225,7 @@ namespace Diary
 
         #region Math
         /// <summary>
-        /// Adds the specified number of days to the Date
+        /// Adds the specified number of days to the Date.
         /// </summary>
         /// <param name="days"></param>
         public void AddDays(int days)
@@ -234,7 +234,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Subtracts the specified number of days to the Date
+        /// Subtracts the specified number of days to the Date.
         /// </summary>
         /// <param name="days"></param>
         public void SubtractDays(int days)
@@ -245,43 +245,47 @@ namespace Diary
 
         #region Date Lookups
         /// <summary>
-        /// Returns whether or not the input year is a leap year
+        /// Returns whether or not the input year is a leap year.
         /// </summary>
         /// <param name="year"></param>
         /// <returns></returns>
-        /// <remarks>Implemented by julian number conversion, subtracting a day from the first of March and determining if the month has 29 days</remarks>
         public static bool IsLeapYear(int year)
         {
+            // Convert March 1 of the input year to a julian number.
             var firstDayofMarchJulianNumber = ToJulianNumber(1, 3, year);
 
+            // Look up the julian number for the previous day to March 1.
             int leapYearDay = 0;
             int leapYearMonth = 0;
             int leapYearYear = 0;
 
             FromJulianNumber(firstDayofMarchJulianNumber - 1, ref leapYearDay, ref leapYearMonth, ref leapYearYear);
 
+            // Return whether or not the julian number found is equal to 29; a leap year date.
             bool isLeapYear = (leapYearDay == 29);
 
             return isLeapYear;
         }
 
         /// <summary>
-        /// Returns the last calendar day number of the input month and year
+        /// Returns the last calendar day number of the input month and year.
         /// </summary>
         /// <param name="month"></param>
         /// <param name="year"></param>
         /// <returns></returns>
-        /// <remarks>Implemented via julian number conversion and subtracting a day from the first of the next month</remarks>
         public static int GetLastDayOfMonth(Month month, int year)
         {
+            // Get the julian number for the first day of the next month.
             var firstDayOfNextMonthJulianNumber = ToJulianNumber(1, (int)month + 1, year);
 
+            // Look up the julian number for the previous day.
             int lastDayOfMonthDay = 0;
             int lastDayOfMonthMonth = 0;
             int lastDayOfMonthYear = 0;
 
             FromJulianNumber(firstDayOfNextMonthJulianNumber - 1, ref lastDayOfMonthDay, ref lastDayOfMonthMonth, ref lastDayOfMonthYear);
 
+            // Return the day portion of the value returned.
             return lastDayOfMonthDay;
         }
         #endregion

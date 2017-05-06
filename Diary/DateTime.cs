@@ -5,7 +5,7 @@ namespace Diary
     /// <summary>
     /// Handles generic date time functionality.
     /// </summary>
-    /// <see cref="Date">For more detailed design explanations</see>
+    /// <see cref="Date">For more detailed design explanations.</see>
     public class DateTime : IComparable
     {
         private long mTotalMinutes;
@@ -67,7 +67,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns the associated number of Julian minutes based on the inputs
+        /// Returns the associated number of Julian minutes based on the inputs.
         /// </summary>
         /// <param name="date"></param>
         /// <param name="hours"></param>
@@ -83,7 +83,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns the associated number of Julian minutes based on the inputs
+        /// Returns the associated number of Julian minutes based on the inputs.
         /// </summary>
         /// <param name="hours"></param>
         /// <param name="minutes"></param>
@@ -105,11 +105,11 @@ namespace Diary
 
         #region Comparisons
         /// <summary>
-        /// Returns how the current DateTime sorts in comparison to the input compareDate
+        /// Returns how the current DateTime sorts in comparison to the input compareDate.
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        /// <see cref="Date.CompareTo(object)">For further explanation</see>
+        /// <see cref="Date.CompareTo(object)">For further explanation.</see>
         public int CompareTo(object dateTime)
         {
             if (!(dateTime is DateTime))
@@ -152,7 +152,7 @@ namespace Diary
 
         #region Math
         /// <summary>
-        /// Adds the specified time to the DateTime
+        /// Adds the specified time to the DateTime.
         /// </summary>
         /// <param name="days"></param>
         public void AddTime(int hours, int minutes)
