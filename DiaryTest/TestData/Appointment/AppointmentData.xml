@@ -1,0 +1,58 @@
+﻿<tests>
+    <add>
+        <!-- Zero duration.-->
+        <startYear>2005</startYear>
+        <startMonth>7</startMonth>
+        <startDay>4</startDay>
+        <startHours>13</startHours>
+        <startMinutes>30</startMinutes>
+        <endYear>2005</endYear>
+        <endMonth>7</endMonth>
+        <endDay>4</endDay>
+        <endHours>13</endHours>
+        <endMinutes>30</endMinutes>
+        <durationMinutes>0</durationMinutes>
+    </add>
+    <add>
+        <!-- Short duration.-->
+        <startYear>2005</startYear>
+        <startMonth>7</startMonth>
+        <startDay>4</startDay>
+        <startHours>13</startHours>
+        <startMinutes>30</startMinutes>
+        <endYear>2005</endYear>
+        <endMonth>7</endMonth>
+        <endDay>4</endDay>
+        <endHours>14</endHours>
+        <endMinutes>5</endMinutes>
+        <durationMinutes>35</durationMinutes>
+    </add>
+    <add>
+        <!-- Long duration.-->
+        <startYear>2005</startYear>
+        <startMonth>7</startMonth>
+        <startDay>4</startDay>
+        <startHours>13</startHours>
+        <startMinutes>30</startMinutes>
+        <endYear>2005</endYear>
+        <endMonth>7</endMonth>
+        <endDay>5</endDay>
+        <endHours>13</endHours>
+        <endMinutes>25</endMinutes>
+        <durationMinutes>1435</durationMinutes>
+    </add>
+    <add>
+        <!-- Negative duration.-->
+        <startYear>2005</startYear>
+        <startMonth>7</startMonth>
+        <startDay>4</startDay>
+        <startHours>13</startHours>
+        <startMinutes>30</startMinutes>
+        <endYear>2005</endYear>
+        <endMonth>7</endMonth>
+        <endDay>4</endDay>
+        <endHours>12</endHours>
+        <endMinutes>40</endMinutes>
+        <durationMinutes>-50</durationMinutes>
+    </add>
+</tests>

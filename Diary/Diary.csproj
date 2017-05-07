@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Appointment.cs" />
     <Compile Include="CalendarEvent.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="Date.cs" />

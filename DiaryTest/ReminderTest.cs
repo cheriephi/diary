@@ -50,6 +50,28 @@ namespace DiaryTest
         #endregion
 
         /// <summary>
+        /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
+        /// </summary>
+        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        [TestMethod]
+        public void ConstructorAliasingTest()
+        {
+            var date = new Date();
+            var reminder = new ReminderBuilder().SetDate(date).Build();
+
+            var expected = true;
+            var actual = reminder.IsOccuringOn(date);
+            Assert.AreEqual(expected, actual, "Original");
+
+            date.AddDays(1);
+
+            expected = false;
+            actual = reminder.IsOccuringOn(date);
+
+            Assert.AreEqual(expected, actual, "After");
+        }
+        
+        /// <summary>
         /// Simple data test of GetLabel method.
         /// </summary>
         [TestMethod]
@@ -59,9 +81,7 @@ namespace DiaryTest
 
             var reminder = new ReminderBuilder().SetLabel(expected).Build();
 
-            var actual = reminder.GetLabel();
-
-            Assert.AreEqual(expected, actual);
+            CalendarEventTest.GetLabelTest(reminder, expected);
         }
 
         /// <summary>
@@ -87,9 +107,8 @@ namespace DiaryTest
             var expected = false;
 
             var reminder = new ReminderBuilder().Build();
-            var actual = reminder.IsRepeating();
 
-            Assert.AreEqual(expected, actual);
+            CalendarEventTest.IsRepeatingTest(reminder, expected);
         }
 
         /// <summary>
@@ -101,36 +120,10 @@ namespace DiaryTest
             var reminderDate = new Date(30, Date.Month.SEPTEMBER, 2000);
             var reminder = new ReminderBuilder().SetDate(reminderDate).Build();
 
-            var actualBefore = reminder.IsOccuringOn(new Date(29, Date.Month.SEPTEMBER, 2000));
-            var actualOn = reminder.IsOccuringOn(reminderDate);
-            var actualAfter = reminder.IsOccuringOn(new Date(2, Date.Month.SEPTEMBER, 2000));
+            var expectedStartDate = reminderDate;
+            var expectedEndDate = new Date(reminderDate.GetDay(), reminderDate.GetMonth(), reminderDate.GetYear());
 
-            var expected = "False;True;False";
-            var actual = String.Join(";", new Boolean[] { actualBefore, actualOn, actualAfter });
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
-        /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
-        [TestMethod]
-        public void IsOccuringOnAliasingTest()
-        {
-            var date = new Date();
-            var reminder = new ReminderBuilder().SetDate(date).Build(); 
-
-            var expected = true;
-            var actual = reminder.IsOccuringOn(date);
-            Assert.AreEqual(expected, actual, "Original");
-
-            date.AddDays(1);
-
-            expected = false;
-            actual = reminder.IsOccuringOn(date);
-
-            Assert.AreEqual(expected, actual, "After");
+            CalendarEventTest.IsOccuringOnTest(reminder, expectedStartDate, expectedEndDate);
         }
     }
 }
