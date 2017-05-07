@@ -21,10 +21,11 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns the reminder details
+        /// Returns the reminder details.
         /// </summary>
         /// <returns></returns>
-        public String GetDetails() {
+        public String GetDetails()
+        {
             return mDetails;
         }
 

@@ -49,7 +49,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns the appointment start.
+        /// Returns the appointment start time.
         /// </summary>
         /// <returns></returns>
         public DateTime GetStartTime()
@@ -58,7 +58,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns the appointment duration.
+        /// Returns the appointment end time.
         /// </summary>
         /// <returns></returns>
         public DateTime GetEndTime()
