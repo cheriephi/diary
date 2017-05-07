@@ -12,56 +12,6 @@ namespace DiaryTest
     [TestClass]
     public class AppointmentTest
     {
-        #region Helper Methods
-        /// <summary>
-        /// Appointment creation method.
-        /// </summary>
-        /// <seealso cref="ReminderTest.ReminderBuilder">For more context on the problem.</seealso>
-        internal class AppointmentBuilder
-        {
-            private String label = "";
-            private Diary.DateTime occurs = new Diary.DateTime();
-            private int durationMinutes = 0;
-            private String details = "";
-
-            internal AppointmentBuilder SetLabel(String label)
-            {
-                this.label = label;
-                return this;
-            }
-
-            internal AppointmentBuilder SetDateTime(Diary.DateTime occurs)
-            {
-                this.occurs = new Diary.DateTime(occurs);
-                return this;
-            }
-
-            internal AppointmentBuilder SetDurationMinutes(int durationMinutes)
-            {
-                this.durationMinutes = durationMinutes;
-                return this;
-            }
-
-            internal AppointmentBuilder SetDetails(String details)
-            {
-                this.details = details;
-                return this;
-            }
-
-            internal Appointment Build()
-            {
-                // Add descriptive info to the label if we don't have an explicit one provided. This provide identifying information for debugging.
-                if (label == String.Empty)
-                {
-                    label = String.Format("Label for Event <{0}>.", DateTimeTest.ToString(occurs));
-                }
-
-                var appointment = new Appointment(label, occurs, durationMinutes, details);
-                return appointment;
-            }
-        }
-        #endregion
-
         /// <summary>
         /// Required context for data driven testing.
         /// </summary>
@@ -76,7 +26,7 @@ namespace DiaryTest
         public void ConstructorAliasingTest()
         {
             var dateTime = new Diary.DateTime();
-            var appointment = new AppointmentBuilder().SetDateTime(dateTime).Build();
+            var appointment = new AppointmentBuilder().SetOccurs(dateTime).Build();
 
             var expected = 0;
             var actual = appointment.GetStartTime().GetMinutes();
@@ -140,7 +90,7 @@ namespace DiaryTest
             // Create appointment and exercise the method under test.
             var expectedStartDate = new Date(startDay, (Date.Month)startMonth, startYear);
             var appointmentTime = new Diary.DateTime(expectedStartDate, startHours, startMinutes);
-            var appointment = new AppointmentBuilder().SetDateTime(appointmentTime).SetDurationMinutes(durationMinutes).Build();
+            var appointment = new AppointmentBuilder().SetOccurs(appointmentTime).SetDurationMinutes(durationMinutes).Build();
             var expectedEndDate = new Date(endDay, (Date.Month)endMonth, endYear);
 
             CalendarEventTest.IsOccuringOnTest(appointment, expectedStartDate, expectedEndDate);
@@ -155,7 +105,7 @@ namespace DiaryTest
             var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
             var expected = DateTimeTest.ToString(appointmentStartTime);
 
-            var appointment = new AppointmentBuilder().SetDateTime(appointmentStartTime).Build();
+            var appointment = new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
             var actualStartTime = appointment.GetStartTime();
 
             var actual = DateTimeTest.ToString(actualStartTime);
@@ -208,7 +158,7 @@ namespace DiaryTest
 
             // Create appointment and exercise the method under test.
             var appointmentStartTime = new Diary.DateTime(new Date(startDay, (Date.Month)startMonth, startYear), startHours, startMinutes);
-            var appointment = new AppointmentBuilder().SetDateTime(appointmentStartTime).SetDurationMinutes(durationMinutes).Build();
+            var appointment = new AppointmentBuilder().SetOccurs(appointmentStartTime).SetDurationMinutes(durationMinutes).Build();
             var actualEndTime = appointment.GetEndTime();
 
             // Validate results.
