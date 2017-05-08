@@ -4,7 +4,7 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Appointment creation method.
+    /// Appointment creator.
     /// </summary>
     /// <seealso cref="ReminderBuilder">For more context on the problem.</seealso>
     internal class AppointmentBuilder
@@ -14,10 +14,20 @@ namespace DiaryTest
         private int durationMinutes = 0;
         private String details = "";
 
+        internal String GetLabel()
+        {
+            return label;
+        }
+
         internal AppointmentBuilder SetLabel(String label)
         {
             this.label = label;
             return this;
+        }
+
+        internal Diary.DateTime GetOccurs()
+        {
+            return occurs;
         }
 
         internal AppointmentBuilder SetOccurs(Diary.DateTime occurs)
@@ -26,10 +36,20 @@ namespace DiaryTest
             return this;
         }
 
+        internal int GetDurationMinutes()
+        {
+            return durationMinutes;
+        }
+
         internal AppointmentBuilder SetDurationMinutes(int durationMinutes)
         {
             this.durationMinutes = durationMinutes;
             return this;
+        }
+
+        internal String GetDetails()
+        {
+            return details;
         }
 
         internal AppointmentBuilder SetDetails(String details)
@@ -38,7 +58,7 @@ namespace DiaryTest
             return this;
         }
 
-        internal Appointment Build()
+        internal virtual Appointment Build()
         {
             // Add descriptive info to the label if we don't have an explicit one provided. This provide identifying information for debugging.
             if (label == String.Empty)

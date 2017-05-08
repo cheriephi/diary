@@ -54,6 +54,8 @@
     <Compile Include="AppointmentTest.cs" />
     <Compile Include="DateTest.cs" />
     <Compile Include="DateTimeTest.cs" />
+    <Compile Include="Builders\PeriodicAppointmentBuilder.cs" />
+    <Compile Include="PeriodicAppointmentTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContactTest.cs" />
     <Compile Include="ReminderBuilder.cs" />

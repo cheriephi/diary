@@ -154,7 +154,8 @@ namespace Diary
         /// <summary>
         /// Adds the specified time to the DateTime.
         /// </summary>
-        /// <param name="days"></param>
+        /// <param name="hours"></param>
+        /// <param name="minutes"></param>
         public void AddTime(int hours, int minutes)
         {
             mTotalMinutes += GetTotalMinutes(hours, minutes);
