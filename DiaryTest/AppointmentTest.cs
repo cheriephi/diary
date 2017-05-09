@@ -54,22 +54,6 @@ namespace DiaryTest
             CalendarEventTest.GetLabelTest(appointment, expected);
         }
 
-        /// <summary>
-        /// Tests the GetStartTime method using polymorphism.
-        /// </summary>
-        /// <param name="builder"></param>
-        internal void GetStartTimeTest(AppointmentBuilder builder)
-        {
-            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
-            var expected = DateTimeTest.ToString(appointmentStartTime);
-
-            var appointment = builder.SetOccurs(appointmentStartTime).Build();
-            var actualStartTime = appointment.GetStartTime();
-
-            var actual = DateTimeTest.ToString(actualStartTime);
-
-            Assert.AreEqual(expected, actual);
-        }
 
         /// <summary>
         /// Tests that the StartTime field cannot be modified outside of its accessor.
@@ -183,12 +167,18 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Appointment start time test.
+        /// Tests the Appointment.GetStartTime method.
         /// </summary>
         [TestMethod]
         public void GetStartTimeTest()
         {
-            GetStartTimeTest(new AppointmentBuilder());
+            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
+            var expected = DateTimeTest.ToString(appointmentStartTime);
+
+            var appointment = new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
+            var actual = DateTimeTest.ToString(appointment.GetStartTime());
+
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>

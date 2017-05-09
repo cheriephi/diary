@@ -53,7 +53,17 @@ namespace DiaryTest
         [TestMethod]
         public void GetStartTimeTest()
         {
-            new AppointmentTest().GetStartTimeTest(new PeriodicAppointmentBuilder());
+            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
+            var builder = new PeriodicAppointmentBuilder();
+            builder.SetOccurs(appointmentStartTime);
+            builder.SetNotToExceedDateTime(appointmentStartTime);
+
+            var appointment = builder.Build();
+
+            var expected = DateTimeTest.ToString(appointmentStartTime);
+            var actual = DateTimeTest.ToString(appointment.GetStartTime());
+
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
