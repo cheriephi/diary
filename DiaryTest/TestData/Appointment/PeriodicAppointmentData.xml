@@ -1,0 +1,43 @@
+﻿<tests>
+    <add>
+        <!--Every other day for a few days-->
+        <firstOccursYear>2017</firstOccursYear>
+        <firstOccursMonth>1</firstOccursMonth>
+        <firstOccursDay>1</firstOccursDay>
+        <firstOccursHours>0</firstOccursHours>
+        <firstOccursMinutes>0</firstOccursMinutes>
+        <notToExceedYear>2017</notToExceedYear>
+        <notToExceedMonth>1</notToExceedMonth>
+        <notToExceedDay>6</notToExceedDay>
+        <notToExceedHours>0</notToExceedHours>
+        <notToExceedMinutes>0</notToExceedMinutes>
+        <durationMinutes>0</durationMinutes>
+        <periodHours>48</periodHours>
+        <occurences>
+            <occurence>
+                <startYear>2017</startYear>
+                <startMonth>1</startMonth>
+                <startDay>1</startDay>
+                <endYear>2017</endYear>
+                <endMonth>1</endMonth>
+                <endDay>1</endDay>
+            </occurence>
+            <occurence>
+                <startYear>2017</startYear>
+                <startMonth>1</startMonth>
+                <startDay>3</startDay>
+                <endYear>2017</endYear>
+                <endMonth>1</endMonth>
+                <endDay>3</endDay>
+            </occurence>
+            <occurence>
+                <startYear>2017</startYear>
+                <startMonth>1</startMonth>
+                <startDay>5</startDay>
+                <endYear>2017</endYear>
+                <endMonth>1</endMonth>
+                <endDay>5</endDay>
+            </occurence>
+        </occurences>
+    </add>
+</tests>

@@ -43,7 +43,7 @@ namespace DiaryTest
 
         #region Constructor Tests
         /// <summary>
-        /// Simple single scenario test of default constructor
+        /// Simple single scenario test of default constructor.
         /// </summary>
         [TestMethod]
         public void DefaultConstructorTest()
@@ -55,7 +55,7 @@ namespace DiaryTest
         }
         
         /// <summary>
-        /// Data testing that the constructor properly initializes fields based on inputs
+        /// Data testing that the constructor properly initializes fields based on inputs.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
@@ -73,7 +73,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Validates the constructor throws an exception if invalid inputs are passed in
+        /// Validates the constructor throws an exception if invalid inputs are passed in.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\InvalidDateData.xml", "add", DataAccessMethod.Sequential)]
@@ -105,47 +105,6 @@ namespace DiaryTest
             var actualDayOfWeek = date.GetDayOfWeek().ToString().ToUpper();
 
             Assert.AreEqual(expectedDayOfWeek, actualDayOfWeek);
-        }
-        #endregion
-
-        #region Aliasing Tests
-        /// <summary>
-        /// Tests that the Year field cannot be modified outside of its accessor.
-        /// </summary>
-        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
-        /// <remarks>Primitive value types are not vulnerable to this bug; but this highlights differences in behavior between value and reference types</remarks>
-        [TestMethod]
-        public void GetYearAliasingTest()
-        {
-            var date = new Diary.Date();
-
-            var expected = 1900;
-            var actual = date.GetYear();
-            Assert.AreEqual(expected, actual, "Original");
-
-            actual = 1;
-            actual = date.GetYear();
-
-            Assert.AreEqual(expected, actual, "After");
-        }
-
-        /// <summary>
-        /// Tests that the Month field cannot be modified outside of its accessor.
-        /// </summary>
-        /// <remarks>Testing an Enum type</remarks>
-        [TestMethod]
-        public void GetMonthAliasingTest()
-        {
-            var date = new Diary.Date();
-
-            var expected = Date.Month.JANUARY;
-            var actual = date.GetMonth();
-            Assert.AreEqual(expected, actual, "Original");
-
-            actual = Date.Month.FEBRUARY;
-            actual = date.GetMonth();
-
-            Assert.AreEqual(expected, actual, "After");
         }
         #endregion
 
@@ -194,7 +153,7 @@ namespace DiaryTest
 
         #region Comparison Tests
         /// <summary>
-        /// Data testing of CompareTo function
+        /// Data testing of CompareTo function.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\CompareDateData.xml", "add", DataAccessMethod.Sequential)]
@@ -220,7 +179,7 @@ namespace DiaryTest
 
 
         /// <summary>
-        /// Validates the CompareTo method properly handles invalid object input types
+        /// Validates the CompareTo method properly handles invalid object input types.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(System.ArgumentException))]
@@ -233,7 +192,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Data testing of IsBetween function
+        /// Data testing of IsBetween function.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\BetweenDateData.xml", "add", DataAccessMethod.Sequential)]
@@ -266,7 +225,7 @@ namespace DiaryTest
 
         #region Math Tests
         /// <summary>
-        /// Tests the AddDays method
+        /// Tests the AddDays method.
         /// </summary>
         [TestMethod]
         public void AddDaysTest()
@@ -280,7 +239,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Tests the SubtractDays method
+        /// Tests the SubtractDays method.
         /// </summary>
         [TestMethod]
         public void SubtractDaysTest()
@@ -296,7 +255,7 @@ namespace DiaryTest
 
         #region Date Lookup Tests
         /// <summary>
-        /// Data testing that the leap year is calculated properly
+        /// Data testing that the leap year is calculated properly.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\LeapYearData.xml", "add", DataAccessMethod.Sequential)]
@@ -312,7 +271,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Data testing that the last day of the month is calculated properly
+        /// Data testing that the last day of the month is calculated properly.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\LastDayOfMonthData.xml", "add", DataAccessMethod.Sequential)]
