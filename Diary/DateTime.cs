@@ -109,7 +109,7 @@ namespace Diary
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        /// <see cref="Date.CompareTo(object)">For further explanation.</see>
+        /// <see cref="Date.CompareTo(object)">For further explanation about the CompareTo method behavior.</see>
         public int CompareTo(object dateTime)
         {
             if (!(dateTime is DateTime))

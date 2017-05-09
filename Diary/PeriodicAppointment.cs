@@ -19,9 +19,15 @@ namespace Diary
         public PeriodicAppointment(String label, DateTime firstOccurs, int durationMinutes, DateTime notToExceedDateTime, int periodHours, String details)
             : base(label, firstOccurs, durationMinutes, details)
         {
+            // If the first occurrence exceeds the max occurrence window; throw an error.
+            if (base.GetEndTime().CompareTo(notToExceedDateTime) > 0)
+            {
+                throw new ArgumentOutOfRangeException("durationMinutes", String.Format("Parameter value: <{0}>. Duration exceeds the value date range specified for the periodic appointment.", durationMinutes));
+            }
+
             mNotToExceedDateTime = new DateTime(notToExceedDateTime);
             mPeriodHours = periodHours;
-    }
+        }
         
         /// <summary>
         /// Returns true. Periodic appointments are repeating; even if the occurrences evaluate to be just one.

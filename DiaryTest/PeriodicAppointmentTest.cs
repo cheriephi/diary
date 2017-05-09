@@ -164,6 +164,22 @@ namespace DiaryTest
         }
 
         /// <summary>
+        /// Tests that periodic appointments won't allow an appointment with a duration longer than the window allowed by the firstOccurs and notToExceedDateTime parameters.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentOutOfRangeException))]
+        public void InvalidDurationForEndDateTest()
+        {
+            var severalDaysWorthOfMinutes = 1440 * 3;
+
+            PeriodicAppointmentBuilder builder = new PeriodicAppointmentBuilder();
+            builder.SetOccurs(new Diary.DateTime());
+            builder.SetDurationMinutes(severalDaysWorthOfMinutes);
+            builder.SetNotToExceedDateTime(new Diary.DateTime());
+            var appointment = builder.Build();
+        }
+
+        /// <summary>
         /// Tests that the notToExceedDateTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
         /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
