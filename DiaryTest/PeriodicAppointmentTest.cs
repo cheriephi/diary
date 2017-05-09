@@ -207,7 +207,6 @@ namespace DiaryTest
 
             var builder = new PeriodicAppointmentBuilder();
             builder.SetOccurs(occurs);
-            builder.SetDurationMinutes(1);
             builder.SetPeriodHours(24);
             builder.SetNotToExceedDateTime(notToExceedDateTime);
             var appointment = builder.Build();
