@@ -19,7 +19,7 @@ namespace Diary
         public PeriodicAppointment(String label, DateTime firstOccurs, int durationMinutes, DateTime notToExceedDateTime, int periodHours, String details)
             : base(label, firstOccurs, durationMinutes, details)
         {
-            mNotToExceedDateTime = notToExceedDateTime;
+            mNotToExceedDateTime = new DateTime(notToExceedDateTime);
             mPeriodHours = periodHours;
     }
         

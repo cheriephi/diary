@@ -10,7 +10,6 @@ namespace DiaryTest
     [TestClass]
     public class PeriodicAppointmentTest
     {
-        //TODO: Test aliasing on constructor notToExceedDateTime
         /// <summary>
         /// Required context for data driven testing.
         /// </summary>
@@ -162,6 +161,36 @@ namespace DiaryTest
                     CalendarEventTest.IsOccuringOnTest(appointment, expectedStartDate, expectedEndDate);
                 }
             }
+        }
+
+        /// <summary>
+        /// Tests that the notToExceedDateTime field passed into the constructor cannot be modified outside of its accessor.
+        /// </summary>
+        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        [TestMethod]
+        public void ConstructorNotToExceedDateTimeAliasingTest()
+        {
+            var occurs = new DateTime(new Date(1, Date.Month.JANUARY, 2000), 0, 0);
+            var notToExceedDateTime = new Diary.DateTime(occurs);
+
+            var occurenceDate = new Date(2, Date.Month.JANUARY, 2000);
+
+            var builder = new PeriodicAppointmentBuilder();
+            builder.SetOccurs(occurs);
+            builder.SetDurationMinutes(1);
+            builder.SetPeriodHours(24);
+            builder.SetNotToExceedDateTime(notToExceedDateTime);
+            var appointment = builder.Build();
+
+            var expected = false;
+            var actual = appointment.IsOccuringOn(occurenceDate);
+            Assert.AreEqual(expected, actual, "Original");
+
+            notToExceedDateTime.AddTime(100, 0);
+
+            actual = appointment.IsOccuringOn(occurenceDate);
+
+            Assert.AreEqual(expected, actual, "After");
         }
     }
 }

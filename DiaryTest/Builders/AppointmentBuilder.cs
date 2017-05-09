@@ -6,7 +6,7 @@ namespace DiaryTest
     /// <summary>
     /// Appointment creator.
     /// </summary>
-    /// <seealso cref="ReminderBuilder">For more context on the problem.</seealso>
+    /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
     internal class AppointmentBuilder
     {
         private String label = "";

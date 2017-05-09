@@ -1,12 +1,11 @@
 ﻿using Diary;
-using System;
 
 namespace DiaryTest
 {
     /// <summary>
     /// Periodic Appointment creator.
     /// </summary>
-    /// <seealso cref="ReminderBuilder">For more context on the problem.</seealso>
+    /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
     internal class PeriodicAppointmentBuilder : AppointmentBuilder
     {
         private Diary.DateTime notToExceedDateTime = new Diary.DateTime();
@@ -14,7 +13,8 @@ namespace DiaryTest
         
         internal PeriodicAppointmentBuilder SetNotToExceedDateTime(Diary.DateTime notToExceedDateTime)
         {
-            this.notToExceedDateTime = new Diary.DateTime(notToExceedDateTime);
+            // Directly use the reference passed so we can later test for aliasing bugs.
+            this.notToExceedDateTime = notToExceedDateTime;
             return this;
         }
 
