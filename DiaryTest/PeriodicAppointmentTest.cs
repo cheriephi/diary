@@ -102,7 +102,7 @@ namespace DiaryTest
             var occurs = new Diary.DateTime(new Date(startDay, (Date.Month)startMonth, startYear), startHours, startMinutes);
             var endTime = new Diary.DateTime(new Date(endDay, (Date.Month)endMonth, endYear), endHours, endMinutes);
 
-            new AppointmentTest().GetEndTimeTest(new PeriodicAppointmentBuilder(), occurs, endTime, durationMinutes);
+            new AppointmentTest().GetEndTimeTest(new PeriodicAppointmentBuilder().SetNotToExceedDateTime(endTime), occurs, endTime, durationMinutes);
         }
 
         /// <summary>
