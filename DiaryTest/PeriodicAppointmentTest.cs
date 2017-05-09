@@ -111,7 +111,11 @@ namespace DiaryTest
         [TestMethod]
         public void GetDurationMinutesTest()
         {
-            new AppointmentTest().GetDurationMinutesTest(new PeriodicAppointmentBuilder());
+            var builder = new PeriodicAppointmentBuilder();
+            builder.SetOccurs(new DateTime(new Date(1, Date.Month.JANUARY, 2003), 0, 0));
+            builder.SetNotToExceedDateTime(new DateTime(new Date(2, Date.Month.JANUARY, 2003), 0, 0));
+
+            new AppointmentTest().GetDurationMinutesTest(builder);
         }
 
         /// <summary>
