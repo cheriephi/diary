@@ -18,6 +18,7 @@ namespace Diary
         /// </summary>
         public enum Month
         {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
             JANUARY = 1,
             FEBRUARY,
             MARCH,
@@ -30,6 +31,7 @@ namespace Diary
             OCTOBER,
             NOVEMBER,
             DECEMBER
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         }
 
         /// <summary>
@@ -37,6 +39,7 @@ namespace Diary
         /// </summary>
         public enum DayOfWeek
         {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
             SUNDAY,
             MONDAY,
             TUESDAY,
@@ -44,6 +47,7 @@ namespace Diary
             THURSDAY,
             FRIDAY,
             SATURDAY
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         }
         #endregion
 

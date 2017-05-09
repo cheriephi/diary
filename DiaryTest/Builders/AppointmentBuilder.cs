@@ -33,6 +33,13 @@ namespace DiaryTest
         internal AppointmentBuilder SetOccurs(Diary.DateTime occurs)
         {
             this.occurs = new Diary.DateTime(occurs);
+
+            // Add descriptive info to the label if we don't have an explicit one provided. This provide identifying information for debugging.
+            if (label == String.Empty)
+            {
+                label = String.Format("Event Label <{0}>.", DateTimeTest.ToString(occurs));
+            }
+
             return this;
         }
 
@@ -60,12 +67,6 @@ namespace DiaryTest
 
         internal virtual Appointment Build()
         {
-            // Add descriptive info to the label if we don't have an explicit one provided. This provide identifying information for debugging.
-            if (label == String.Empty)
-            {
-                label = String.Format("Label for Event <{0}>.", DateTimeTest.ToString(occurs));
-            }
-
             var appointment = new Appointment(label, occurs, durationMinutes, details);
             return appointment;
         }

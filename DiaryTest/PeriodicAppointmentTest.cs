@@ -1,5 +1,6 @@
 ﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data;
 
 namespace DiaryTest
 {
@@ -9,6 +10,7 @@ namespace DiaryTest
     [TestClass]
     public class PeriodicAppointmentTest
     {
+        //TODO: Test aliasing on constructor notToExceedDateTime
         /// <summary>
         /// Required context for data driven testing.
         /// </summary>
@@ -101,6 +103,65 @@ namespace DiaryTest
         public void GetDurationMinutesTest()
         {
             new AppointmentTest().GetDurationMinutesTest(new PeriodicAppointmentBuilder());
+        }
+
+        /// <summary>
+        /// Data testing of IsOcurringOn method.
+        /// </summary>
+        /// <see href="http://stackoverflow.com/questions/25541795/nested-xml-for-data-driven-unit-test"/>
+        [TestMethod]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Appointment\PeriodicAppointmentData.xml", "add", DataAccessMethod.Sequential)]
+        public void IsOccuringOnTest()
+        {
+            // Get input occurence data for test.
+            var firstOccursYear = int.Parse(TestContext.DataRow["firstOccursYear"].ToString());
+            var firstOccursMonth = int.Parse(TestContext.DataRow["firstOccursMonth"].ToString());
+            var firstOccursDay = int.Parse(TestContext.DataRow["firstOccursDay"].ToString());
+            var firstOccursHours = int.Parse(TestContext.DataRow["firstOccursHours"].ToString());
+            var firstOccursMinutes = int.Parse(TestContext.DataRow["firstOccursMinutes"].ToString());
+
+            var notToExceedYear = int.Parse(TestContext.DataRow["notToExceedYear"].ToString());
+            var notToExceedMonth = int.Parse(TestContext.DataRow["notToExceedMonth"].ToString());
+            var notToExceedDay = int.Parse(TestContext.DataRow["notToExceedDay"].ToString());
+            var notToExceedHours = int.Parse(TestContext.DataRow["notToExceedHours"].ToString());
+            var notToExceedMinutes = int.Parse(TestContext.DataRow["notToExceedMinutes"].ToString());
+
+            var durationMinutes = int.Parse(TestContext.DataRow["durationMinutes"].ToString());
+            var periodHours = int.Parse(TestContext.DataRow["periodHours"].ToString());
+
+            // Create the periodic appointment, deriving the overall start and end date
+            var firstOccurs = new Diary.DateTime(new Date(firstOccursDay, (Date.Month)firstOccursMonth, firstOccursYear), firstOccursHours, firstOccursMinutes);
+            var notToExceedDateTime = new Diary.DateTime(new Date(notToExceedDay, (Date.Month)notToExceedMonth, notToExceedYear), notToExceedHours, notToExceedMinutes);
+
+            PeriodicAppointmentBuilder builder = new PeriodicAppointmentBuilder();
+            builder.SetOccurs(firstOccurs);
+            builder.SetDurationMinutes(durationMinutes);
+            builder.SetNotToExceedDateTime(notToExceedDateTime);
+            builder.SetPeriodHours(periodHours);
+            var appointment = builder.Build();
+
+            // Look up and evaluate each occurence
+            DataRow[] occurencesRows = TestContext.DataRow.GetChildRows("add_occurences");
+
+            foreach (DataRow occurenceRow in occurencesRows)
+            {
+                DataRow[] occurenceDatePartRows = occurenceRow.GetChildRows("occurences_occurence");
+                foreach (DataRow occurenceDatePart in occurenceDatePartRows)
+                { 
+                    var startYear = int.Parse(occurenceDatePart["startYear"].ToString());
+                    var startMonth = int.Parse(occurenceDatePart["startMonth"].ToString());
+                    var startDay = int.Parse(occurenceDatePart["startDay"].ToString());
+
+                    var endYear = int.Parse(occurenceDatePart["endYear"].ToString());
+                    var endMonth = int.Parse(occurenceDatePart["endMonth"].ToString());
+                    var endDay = int.Parse(occurenceDatePart["endDay"].ToString());
+
+                    var expectedStartDate = new Date(startDay, (Date.Month)startMonth, startYear);
+                    var expectedEndDate = new Date(endDay, (Date.Month)endMonth, endYear);
+
+                    CalendarEventTest.IsOccuringOnTest(appointment, expectedStartDate, expectedEndDate);
+                }
+            }
         }
     }
 }
