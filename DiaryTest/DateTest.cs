@@ -108,49 +108,6 @@ namespace DiaryTest
         }
         #endregion
 
-        #region Julian Number Tests
-        /// <summary>
-        /// Data testing to a julian number.
-        /// </summary>
-        [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
-        public void ToJulianNumberTest()
-        {
-            var year = int.Parse(TestContext.DataRow["year"].ToString());
-            var month = int.Parse(TestContext.DataRow["month"].ToString());
-            var day = int.Parse(TestContext.DataRow["day"].ToString());
-
-            var expectedResult = int.Parse(TestContext.DataRow["julian"].ToString());
-            var actualResult = Date.ToJulianNumber(day, month, year);
-
-            Assert.AreEqual(expectedResult, actualResult, "Input Year:<{0}>. Month:<{1}>. Day:<{2}>.", year, month, day);
-        }
-
-        /// <summary>
-        /// Data testing from a julian number.
-        /// </summary>
-        /// <seealso href="https://msdn.microsoft.com/en-us/library/dd260048.aspx"/>
-        [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
-        public void FromJulianNumberTest()
-        {
-            var julian = int.Parse(TestContext.DataRow["julian"].ToString());
-            var expectedYear = int.Parse(TestContext.DataRow["year"].ToString());
-            var expectedMonth = int.Parse(TestContext.DataRow["month"].ToString());
-            var expectedDay = int.Parse(TestContext.DataRow["day"].ToString());
-
-            int actualYear = 0;
-            int actualMonth = 0;
-            int actualDay = 0;
-            Date.FromJulianNumber(julian, ref actualDay, ref actualMonth, ref actualYear);
-
-            var actual = ToString(actualDay, actualMonth, actualYear);
-            var expected = ToString(expectedDay, expectedMonth, expectedYear);
-
-            Assert.AreEqual(expected, actual, "Input Julian Number:<{0}>.", julian);
-        }
-        #endregion
-
         #region Comparison Tests
         /// <summary>
         /// Data testing of CompareTo function.

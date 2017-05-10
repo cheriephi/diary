@@ -1,6 +1,6 @@
 ﻿<tests>
     <add>
-        <!--Every other day for a few days-->
+        <!--Every other day for a few days.-->
         <firstOccursYear>2017</firstOccursYear>
         <firstOccursMonth>1</firstOccursMonth>
         <firstOccursDay>1</firstOccursDay>

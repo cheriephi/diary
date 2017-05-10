@@ -1,10 +1,10 @@
 ﻿<tests>
     <!-- http://www.calculatorcat.com/date/day-of-week.html -->
       <add>
+           <!--Really, really old.-->
             <year>0050</year>
             <month>1</month>
             <day>5</day>
-            <julian>1739327</julian>
             <!--  http://aa.usno.navy.mil/data/docs/JulianDate.php and feedback from Luke Gilfeather -->
             <dayOfWeek>WEDNESDAY</dayOfWeek>
     </add>
@@ -12,21 +12,19 @@
             <year>1957</year>
             <month>2</month>
             <day>1</day>
-            <julian>2435871</julian>
             <dayOfWeek>FRIDAY</dayOfWeek>
     </add>
       <add>
             <year>1492</year>
             <month>3</month>
             <day>15</day>
-            <julian>2266076</julian>
             <dayOfWeek>TUESDAY</dayOfWeek>
     </add>
       <add>
-            <year>2050</year>
+            <!--Future.-->
+            <year>2050</year>
             <month>12</month>
             <day>25</day>
-            <julian>2470166</julian>
             <dayOfWeek>SUNDAY</dayOfWeek>
     </add>
 </tests>

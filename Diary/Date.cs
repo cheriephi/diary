@@ -145,7 +145,7 @@ namespace Diary
         /// <param name="year"></param>
         /// <returns>Julian Number</returns>
         /// <see href="https://en.wikipedia.org/wiki/Julian_day#Julian_date_calculation"/>
-        public static int ToJulianNumber(int day, int month, int year)
+        private static int ToJulianNumber(int day, int month, int year)
         {
             int julianNumber = (1461 * (year + 4800 + (month - 14) / 12)) / 4 +
                 (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 -
@@ -162,7 +162,7 @@ namespace Diary
         /// <param name="day"></param>
         /// <param name="month"></param>
         /// <param name="year"></param>
-        public static void FromJulianNumber(int julianNumber, ref int day, ref int month, ref int year)
+        private static void FromJulianNumber(int julianNumber, ref int day, ref int month, ref int year)
         {
             int l = julianNumber + 68569;
             int n = (4 * l) / 146097;
