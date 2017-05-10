@@ -14,7 +14,7 @@ namespace Diary
 
         #region Enums
         /// <summary>
-        /// Calendar Months
+        /// Calendar Months.
         /// </summary>
         public enum Month
         {
@@ -35,7 +35,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Calendar days of week
+        /// Calendar days of week.
         /// </summary>
         public enum DayOfWeek
         {
@@ -66,14 +66,14 @@ namespace Diary
         /// <remarks>Only the simplest validations currently implemented due to project scope.</remarks>
         public Date(int day, Month month, int year)
         {
-            //Validate inputs
+            // Validate inputs.
             var lastDayOfMonth = GetLastDayOfMonth(month, year);
             if (day < 1 || day > lastDayOfMonth)
             {
                 throw new ArgumentOutOfRangeException("day", String.Format("Parameter value: <{0}>.", day));
             }
 
-            //Initialize data
+            // Initialize data.
             this.mJulianNumber = ToJulianNumber(day, (int)month, year);
         }
         #endregion
@@ -157,7 +157,7 @@ namespace Diary
         /// <summary>
         /// Converts the input julian number to a calendar value.
         /// </summary>
-        /// <remarks>See ToJulianNumber method.</remarks>
+        /// <see cref="ToJulianNumber(int, int, int)"/>
         /// <param name="julianNumber"></param>
         /// <param name="day"></param>
         /// <param name="month"></param>
@@ -196,14 +196,12 @@ namespace Diary
                 throw new ArgumentException("Object is not a Date");
             }
 
-            var compareJulianNumber = ToJulianNumber(compare.GetDay(), (int)compare.GetMonth(), compare.GetYear());
-
             int result = 0;
-            if (mJulianNumber > compareJulianNumber)
+            if (mJulianNumber > compare.mJulianNumber)
             {
                 result = 1;
             }
-            else if (mJulianNumber < compareJulianNumber)
+            else if (mJulianNumber < compare.mJulianNumber)
             {
                 result = -1;
             }
@@ -217,11 +215,9 @@ namespace Diary
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public Boolean IsBetween(Date start, Date end) {
-            var startJulianNumber = ToJulianNumber(start.GetDay(), (int)start.GetMonth(), start.GetYear());
-            var endJulianNumber = ToJulianNumber(end.GetDay(), (int)end.GetMonth(), end.GetYear());
-
-            Boolean isBetween = (mJulianNumber >= startJulianNumber && mJulianNumber <= endJulianNumber);
+        public Boolean IsBetween(Date start, Date end)
+        {
+            var isBetween = (mJulianNumber >= start.mJulianNumber && mJulianNumber <= end.mJulianNumber);
    
             return isBetween;
         }
@@ -255,20 +251,12 @@ namespace Diary
         /// <returns></returns>
         public static bool IsLeapYear(int year)
         {
-            // Convert March 1 of the input year to a julian number.
-            var firstDayofMarchJulianNumber = ToJulianNumber(1, 3, year);
-
-            // Look up the julian number for the previous day to March 1.
-            int leapYearDay = 0;
-            int leapYearMonth = 0;
-            int leapYearYear = 0;
-
-            FromJulianNumber(firstDayofMarchJulianNumber - 1, ref leapYearDay, ref leapYearMonth, ref leapYearYear);
-
-            // Return whether or not the julian number found is equal to 29; a leap year date.
-            bool isLeapYear = (leapYearDay == 29);
-
-            return isLeapYear;
+            // Look up March 1 of the input year.
+            var firstDayofMarch = new Date(1, Month.MARCH, year);
+            // Look up the previous day to March 1.
+            firstDayofMarch.mJulianNumber -= 1;
+            // Return whether or not the day found is equal to 29; a leap year date.
+            return (firstDayofMarch.GetDay() == 29);
         }
 
         /// <summary>

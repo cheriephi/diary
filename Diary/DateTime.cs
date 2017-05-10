@@ -118,14 +118,12 @@ namespace Diary
             }
             var compare = dateTime as DateTime;
 
-            var compareMinutes = GetTotalMinutes(compare.GetDate(), compare.GetHours(), compare.GetMinutes());
-
             int result = 0;
-            if (mTotalMinutes > compareMinutes)
+            if (mTotalMinutes > compare.mTotalMinutes)
             {
                 result = 1;
             }
-            else if (mTotalMinutes < compareMinutes)
+            else if (mTotalMinutes < compare.mTotalMinutes)
             {
                 result = -1;
             }
@@ -141,10 +139,7 @@ namespace Diary
         /// <returns></returns>
         public Boolean IsBetween(DateTime start, DateTime end)
         {
-            var startMinutes = GetTotalMinutes(start.GetDate(), start.GetHours(), start.GetMinutes());
-            var endMinutes = GetTotalMinutes(end.GetDate(), end.GetHours(), end.GetMinutes());
-
-            Boolean isBetween = (mTotalMinutes >= startMinutes && mTotalMinutes <= endMinutes);
+            var isBetween = (this.CompareTo(start) >= 0) && (this.CompareTo(end) <= 0);
 
             return isBetween;
         }
