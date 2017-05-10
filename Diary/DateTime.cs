@@ -6,7 +6,7 @@ namespace Diary
     /// Handles generic date time functionality.
     /// </summary>
     /// <see cref="Date">For more detailed design explanations.</see>
-    public class DateTime : IComparable
+    public class DateTime : IComparable<DateTime>
     {
         private Date mDate;
         private int mElapsedMinutes;
@@ -77,14 +77,8 @@ namespace Diary
         /// <param name="dateTime"></param>
         /// <returns></returns>
         /// <see cref="Date.CompareTo(object)">For further explanation about the CompareTo method behavior.</see>
-        public int CompareTo(object dateTime)
+        public int CompareTo(DateTime compare)
         {
-            if (!(dateTime is DateTime))
-            {
-                throw new ArgumentException("Object is not a DateTime");
-            }
-            var compare = dateTime as DateTime;
-
             var result = mDate.CompareTo(compare.GetDate());
 
             if (result == 0)

@@ -5,7 +5,7 @@ namespace Diary
     /// <summary>
     /// Handles generic date functionality.
     /// </summary>
-    public class Date : IComparable
+    public class Date : IComparable<Date>
     {
         /// <summary>
         /// Julian Day Number
@@ -177,14 +177,8 @@ namespace Diary
         /// 0 for equal sort
         /// 1 if the current date sorts after
         /// </returns>
-        public int CompareTo(object date)
+        public int CompareTo(Date compare)
         {
-            var compare = date as Date;
-            if (!(date is Date))
-            {
-                throw new ArgumentException("Object is not a Date");
-            }
-
             int result = 0;
             if (mJulianNumber > compare.mJulianNumber)
             {

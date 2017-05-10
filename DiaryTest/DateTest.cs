@@ -134,20 +134,6 @@ namespace DiaryTest
             Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", ToString(date), ToString(compareDate));
         }
 
-
-        /// <summary>
-        /// Validates the CompareTo method properly handles invalid object input types.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(System.ArgumentException))]
-        public void CompareToInvalidObjectTest()
-        {
-            var date = new Diary.Date();
-            var compare = 0;
-
-            var actual = date.CompareTo(compare);
-        }
-
         /// <summary>
         /// Data testing of IsBetween function.
         /// </summary>

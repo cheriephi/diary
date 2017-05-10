@@ -183,19 +183,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Validates the CompareTo method properly handles invalid object input types.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(System.ArgumentException))]
-        public void CompareToInvalidObjectTest()
-        {
-            var dateTime = new Diary.DateTime();
-            var compare = 0;
-
-            var actual = dateTime.CompareTo(compare);
-        }
-
-        /// <summary>
         /// Data testing of IsBetween function.
         /// </summary>
         [TestMethod]
