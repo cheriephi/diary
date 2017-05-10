@@ -5,7 +5,7 @@ namespace Diary
     /// <summary>
     /// Handles generic date functionality.
     /// </summary>
-    public class Date: IComparable
+    public class Date : IComparable
     {
         /// <summary>
         /// Julian Day Number
@@ -55,7 +55,7 @@ namespace Diary
         /// <summary>
         /// Creates arbitrary default date value.
         /// </summary>
-        public Date() : this(1, Month.JANUARY, 1900) {}
+        public Date() : this(1, Month.JANUARY, 1900) { }
 
         /// <summary>
         /// Validates and initializes Date.
@@ -84,14 +84,10 @@ namespace Diary
         /// </summary>
         /// <returns></returns>
         public int GetDay()
-        {   
-            int day = 0;
-            int month = 0;
-            int year = 0;
-            
-            FromJulianNumber(mJulianNumber, ref day, ref month, ref year);
+        {
+            var dateParts = FromJulianNumber(mJulianNumber);
 
-            return day;
+            return dateParts[0];
         }
 
         /// <summary>
@@ -100,13 +96,9 @@ namespace Diary
         /// <returns></returns>
         public Month GetMonth()
         {
-            int day = 0;
-            int month = 0;
-            int year = 0;
+            var dateParts = FromJulianNumber(mJulianNumber);
 
-            FromJulianNumber(mJulianNumber, ref day, ref month, ref year);
-
-            return (Month)month;
+            return (Month)dateParts[1];
         }
 
         /// <summary>
@@ -115,13 +107,9 @@ namespace Diary
         /// <returns></returns>
         public int GetYear()
         {
-            int day = 0;
-            int month = 0;
-            int year = 0;
+            var dateParts = FromJulianNumber(mJulianNumber);
 
-            FromJulianNumber(mJulianNumber, ref day, ref month, ref year);
-
-            return year;
+            return dateParts[2];
         }
 
         /// <summary>
@@ -132,7 +120,7 @@ namespace Diary
         {
             var dayOfWeekIndex = (mJulianNumber + 1) % 7;
             var dayOfWeek = (DayOfWeek)dayOfWeekIndex;
-            return dayOfWeek; 
+            return dayOfWeek;
         }
         #endregion
 
@@ -159,10 +147,8 @@ namespace Diary
         /// </summary>
         /// <see cref="ToJulianNumber(int, int, int)"/>
         /// <param name="julianNumber"></param>
-        /// <param name="day"></param>
-        /// <param name="month"></param>
-        /// <param name="year"></param>
-        private static void FromJulianNumber(int julianNumber, ref int day, ref int month, ref int year)
+        /// <returns></returns>
+        private static int[] FromJulianNumber(int julianNumber)
         {
             int l = julianNumber + 68569;
             int n = (4 * l) / 146097;
@@ -170,10 +156,13 @@ namespace Diary
             int i = (4000 * (l + 1)) / 1461001;
             l = l - (1461 * i) / 4 + 31;
             int j = (80 * l) / 2447;
-            day = l - (2447 * j) / 80;
+            int day = l - (2447 * j) / 80;
             l = j / 11;
-            month = j + 2 - (12 * l);
-            year = 100 * (n - 49) + i + l;
+            int month = j + 2 - (12 * l);
+            int year = 100 * (n - 49) + i + l;
+
+            var dateParts = new int[3] { day, month, year };
+            return dateParts;
         }
         #endregion
 
@@ -271,14 +260,10 @@ namespace Diary
             var firstDayOfNextMonthJulianNumber = ToJulianNumber(1, (int)month + 1, year);
 
             // Look up the julian number for the previous day.
-            int lastDayOfMonthDay = 0;
-            int lastDayOfMonthMonth = 0;
-            int lastDayOfMonthYear = 0;
-
-            FromJulianNumber(firstDayOfNextMonthJulianNumber - 1, ref lastDayOfMonthDay, ref lastDayOfMonthMonth, ref lastDayOfMonthYear);
+            var dateParts = FromJulianNumber(firstDayOfNextMonthJulianNumber - 1);
 
             // Return the day portion of the value returned.
-            return lastDayOfMonthDay;
+            return dateParts[0];
         }
         #endregion
     }
