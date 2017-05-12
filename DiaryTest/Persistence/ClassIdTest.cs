@@ -1,8 +1,6 @@
 ﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Configuration;
-using System.IO;
 
 namespace DiaryTest
 {
@@ -13,47 +11,28 @@ namespace DiaryTest
     [TestClass]
     public unsafe class ClassIdTest
     {
-        private String mPersistenceFilePath;
-        private String mPersistenceBackupFilePath;
+        private TransientPersistenceFreshFixture fixture;
 
         #region Test Initialize and Cleanup Methods
         /// <summary>
-        /// Resets any persisted settings so the tests can proceed in a repeatable and deterministic manner.
+        /// Resets the environment.
         /// </summary>
-        /// <remarks>The persistence file path is copied as a link from the System Under Test's app.config file.</remarks>
+        /// <see cref="TransientPersistenceFreshFixture"/>
         [TestInitialize]
         public void Init()
         {
-            mPersistenceFilePath = ConfigurationManager.AppSettings["PersistenceClassFilePath"];
-            mPersistenceBackupFilePath = Path.GetDirectoryName(mPersistenceFilePath) + @"/ClassId" + System.DateTime.Now.Ticks + ".txt";
-
-            if (File.Exists(mPersistenceFilePath))
-            {
-                if (File.Exists(mPersistenceBackupFilePath))
-                {
-                    File.Delete(mPersistenceBackupFilePath);
-                }
-                File.Move(mPersistenceFilePath, mPersistenceBackupFilePath);
-            }
+            fixture = new TransientPersistenceFreshFixture("ClassId");
+            fixture.Init();
         }
 
         /// <summary>
         /// Reverts the environment back to its original state.
         /// </summary>
+        /// <see cref="TransientPersistenceFreshFixture"/>
         [TestCleanup]
         public void Cleanup()
         {
-            // Clean up.
-            if (File.Exists(mPersistenceFilePath))
-            {
-                File.Delete(mPersistenceFilePath);
-            }
-
-            // Restore the system to its original state.
-            if (File.Exists(mPersistenceBackupFilePath))
-            {
-                File.Move(mPersistenceBackupFilePath, mPersistenceFilePath);
-            }
+            fixture.Cleanup();
         }
         #endregion
 

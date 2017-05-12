@@ -15,7 +15,7 @@ namespace Diary
     public class ClassId : IComparable<ClassId>
     {
         private int mClassId;
-        private static String mPersistenceFilePath = ConfigurationManager.AppSettings["PersistenceClassFilePath"];
+        private static String mPersistenceFilePath = ConfigurationManager.AppSettings["PersistenceClassIdFilePath"];
 
         /// <summary>
         /// Each time a ClassId instance is created; the last used value will be read and returned.
