@@ -79,6 +79,6 @@ namespace Diary
 
         private DateTime mStarts;   // Data and time the event starts.
         private int mDurationMinutes;
-        private String mDetails;  // String to be associated with notification.
+        // NOTE: Not used private String mDetails;  // String to be associated with notification.
     }
 }
