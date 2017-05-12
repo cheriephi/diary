@@ -221,5 +221,28 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual, "After");
         }
+
+        #region Persistence Tests
+        /// <summary>
+        /// Tests the ClassId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetClassIdTest()
+        {
+            var periodicAppointment = new PeriodicAppointmentBuilder().Build();
+            new DiaryProductTest().GetClassIdTest(periodicAppointment, "PeriodicAppointment");
+        }
+
+        /// <summary>
+        /// Tests the ObjectId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetObjectIdTest()
+        {
+            var objectId = new ObjectId();
+            var periodicAppointment = new PeriodicAppointmentBuilder().SetObjectId(objectId).Build();
+            new DiaryProductTest().GetObjectIdTest(periodicAppointment, objectId);
+        }
+        #endregion
     }
 }

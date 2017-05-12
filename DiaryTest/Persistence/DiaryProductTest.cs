@@ -51,9 +51,7 @@ namespace DiaryTest
         {
             var objectId = new ObjectId();
             var product = new DiaryProduct(new ClassId(""), objectId);
-            var expected = 1;
-            var actual = product.GetObjectId().AsInt();
-            Assert.AreEqual(expected, actual);
+            GetObjectIdTest(product, objectId);
         }
 
         /// <summary>
@@ -62,12 +60,35 @@ namespace DiaryTest
         [TestMethod]
         public void GetClassIdTest()
         {
-            var classId = new ClassId("FractalsAreCool");
+            var className = "Fonzie";
+            var classId = new ClassId(className);
             var product = new DiaryProduct(classId, new ObjectId());
-            var expected = 1;
-            var actual = Convert.ToInt32(product.GetClassId().ToString());
+            GetClassIdTest(product, className);
+        }
+
+        /// <summary>
+        /// Tests GetClassId method using polymorphism.
+        /// </summary>
+        internal void GetClassIdTest(DiaryProduct product, String className)
+        {
+            var classId = product.GetClassId();
+            var productClassId = new ClassId(className);
+
+            var expected = 0;
+            var actual = classId.CompareTo(productClassId);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Tests the ObjectId method using polymorphism.
+        /// </summary>
+        [TestMethod]
+        public void GetObjectIdTest(DiaryProduct product, ObjectId objectId)
+        {
+            var actual = product.GetObjectId();
+
+            Assert.AreEqual(objectId.AsInt(), actual.AsInt());
         }
     }
 }

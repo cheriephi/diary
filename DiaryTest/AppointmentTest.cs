@@ -91,7 +91,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of DurationMinutes method using polymorphism..
+        /// Simple data test of DurationMinutes method using polymorphism.
         /// </summary>
         internal void GetDurationMinutesTest(AppointmentBuilder builder)
         {
@@ -227,5 +227,28 @@ namespace DiaryTest
         {
             GetDurationMinutesTest(new AppointmentBuilder());
         }
+
+        #region Persistence Tests
+        /// <summary>
+        /// Tests the ClassId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetClassIdTest()
+        {
+            var appointment = new AppointmentBuilder().Build();
+            new DiaryProductTest().GetClassIdTest(appointment, "Appointment");
+        }
+
+        /// <summary>
+        /// Tests the ObjectId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetObjectIdTest()
+        {
+            var objectId = new ObjectId();
+            var appointment = new AppointmentBuilder().SetObjectId(objectId).Build();
+            new DiaryProductTest().GetObjectIdTest(appointment, objectId);
+        }
+        #endregion
     }
 }

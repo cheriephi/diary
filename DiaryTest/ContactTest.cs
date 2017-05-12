@@ -5,7 +5,7 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Tests the Contact class
+    /// Tests the Contact class.
     /// </summary>
     /// <remarks>Tests the constructor via its accessors. Strings are immutable so no aliasing tests are required.</remarks>
     [TestClass]
@@ -19,7 +19,7 @@ namespace DiaryTest
         {
             var firstName = "First";
             var lastName = "Last";
-            var contact = new Contact(firstName, lastName, "");
+            var contact = new Contact(new ObjectId(), firstName, lastName, "");
 
             // Concatenate the results so all the values can be compared at once
             var expected = String.Concat(firstName, ",", lastName);
@@ -36,11 +36,34 @@ namespace DiaryTest
         public void GetContactInfo()
         {
             var expected = "Contact Info";
-            var contact = new Contact("", "", expected);
+            var contact = new Contact(new ObjectId(), "", "", expected);
 
             var actual = contact.GetContactInfo();
 
             Assert.AreEqual(expected, actual);
         }
+
+        #region Persistence Tests
+        /// <summary>
+        /// Tests the ClassId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetClassIdTest()
+        {
+            var contact = new Contact(new ObjectId(), "", "", "");
+            new DiaryProductTest().GetClassIdTest(contact, "Contact");
+        }
+
+        /// <summary>
+        /// Tests the ObjectId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetObjectIdTest()
+        {
+            var objectId = new ObjectId();
+            var contact = new Contact(objectId, "", "", "");
+            new DiaryProductTest().GetObjectIdTest(contact, objectId);
+        }
+        #endregion
     }
 }

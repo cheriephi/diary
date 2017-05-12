@@ -5,15 +5,16 @@ namespace Diary
     /// <summary>
     /// Stores Contact information
     /// </summary>
-    public class Contact
+    public class Contact : DiaryProduct
     {
         /// <summary>
         /// Creates a Contact
         /// </summary>
+        /// <param name="objectId"></param>
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="contactInfo"></param>
-        public Contact(String firstName, String lastName, String contactInfo)
+        public Contact(ObjectId objectId, String firstName, String lastName, String contactInfo) : base(new ClassId("Contact"), objectId)
         {
             mFirstName = firstName;
             mLastName = lastName;

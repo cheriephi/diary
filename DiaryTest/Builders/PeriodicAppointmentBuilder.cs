@@ -10,7 +10,7 @@ namespace DiaryTest
     {
         private Diary.DateTime notToExceedDateTime = new Diary.DateTime();
         private int periodHours = 0;
-        
+
         internal PeriodicAppointmentBuilder SetNotToExceedDateTime(Diary.DateTime notToExceedDateTime)
         {
             // Directly use the reference passed so we can later test for aliasing bugs.
@@ -26,7 +26,7 @@ namespace DiaryTest
 
         internal override Appointment Build()
         {
-            var periodicAppointment = new PeriodicAppointment(base.GetLabel(), base.GetOccurs(), base.GetDurationMinutes(), notToExceedDateTime, periodHours, base.GetDetails());
+            var periodicAppointment = new PeriodicAppointment(base.GetObjectId(), base.GetLabel(), base.GetOccurs(), base.GetDurationMinutes(), notToExceedDateTime, periodHours, base.GetDetails());
             return periodicAppointment;
         }
     }

@@ -10,12 +10,27 @@ namespace Diary
         /// <summary>
         /// Creates an appointment.
         /// </summary>
+        /// <param name="objectId"></param>
         /// <param name="label"></param>
         /// <param name="occurs"></param>
-        /// <param name="durationMinutes">Negative minutes are transformed to be zero.</param>
+        /// <param name="durationMinutes"></param>
+        /// <param name="details"></param>
+        public Appointment(ObjectId objectId, String label, DateTime occurs, int durationMinutes, String details) 
+            : this(new ClassId("Appointment"), objectId, label, occurs, durationMinutes, details)
+        {
+        }
+
+        /// <summary>
+        /// Creates an appointment.
+        /// </summary>
+        /// <param name="classId"></param>
+        /// <param name="objectId"></param>
+        /// <param name="label"></param>
+        /// <param name="occurs"></param>
+        /// <param name="durationMinutes">Negative minutes are transformed to zero.</param>
         /// <param name="details"></param>
         /// <remarks>details is not part of the accessors; so there is no way to test it.</remarks>
-        public Appointment(String label, DateTime occurs, int durationMinutes, String details) : base(label)
+        protected Appointment(ClassId classId, ObjectId objectId, String label, DateTime occurs, int durationMinutes, String details) : base(classId, objectId, label)
         {
             mStarts = new DateTime(occurs);
             mDurationMinutes = durationMinutes;

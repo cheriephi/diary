@@ -9,10 +9,22 @@ namespace DiaryTest
     /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
     internal class AppointmentBuilder
     {
+        private ObjectId objectId = new ObjectId();
         private String label = "";
         private Diary.DateTime occurs = new Diary.DateTime();
         private int durationMinutes = 0;
         private String details = "";
+
+        internal ObjectId GetObjectId()
+        {
+            return objectId;
+        }
+
+        internal AppointmentBuilder SetObjectId(ObjectId objectId)
+        {
+            this.objectId = objectId;
+            return this;
+        }
 
         internal String GetLabel()
         {
@@ -67,7 +79,7 @@ namespace DiaryTest
 
         internal virtual Appointment Build()
         {
-            var appointment = new Appointment(label, occurs, durationMinutes, details);
+            var appointment = new Appointment(objectId, label, occurs, durationMinutes, details);
             return appointment;
         }
     }

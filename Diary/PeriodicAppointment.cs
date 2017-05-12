@@ -10,14 +10,15 @@ namespace Diary
         /// <summary>
         /// Creates a Periodic Appointment.
         /// </summary>
+        /// /// <param name="objectId"></param>
         /// <param name="label"></param>
         /// <param name="firstOccurs"></param>
         /// <param name="durationMinutes"></param>
         /// <param name="notToExceedDateTime"></param>
         /// <param name="periodHours"></param>
         /// <param name="details"></param>
-        public PeriodicAppointment(String label, DateTime firstOccurs, int durationMinutes, DateTime notToExceedDateTime, int periodHours, String details)
-            : base(label, firstOccurs, durationMinutes, details)
+        public PeriodicAppointment(ObjectId objectId, String label, DateTime firstOccurs, int durationMinutes, DateTime notToExceedDateTime, int periodHours, String details)
+            : base(new ClassId("PeriodicAppointment"), objectId, label, firstOccurs, durationMinutes, details)
         {
             // If the first occurrence exceeds the max occurrence window; throw an error.
             if (base.GetEndTime().CompareTo(notToExceedDateTime) > 0)
@@ -28,7 +29,7 @@ namespace Diary
             mNotToExceedDateTime = new DateTime(notToExceedDateTime);
             mPeriodHours = periodHours;
         }
-        
+
         /// <summary>
         /// Returns true. Periodic appointments are repeating; even if the occurrences evaluate to be just one.
         /// </summary>
