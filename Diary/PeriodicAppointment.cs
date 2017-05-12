@@ -45,35 +45,32 @@ namespace Diary
         /// <returns></returns>
         public override Boolean IsOccuringOn(Date date)
         {
-            Boolean isOccuringOn = false;
-
             // Put a safeguard in case this code has bugs.
             int endlessLoopCounter = 0;
             const int endlessLoopTerminator = 10000;
-            
+
             // Loop through each occurrence; starting with the first occurrence start.
-            var occurenceStart = new DateTime(base.GetStartTime());
-            while (occurenceStart.CompareTo(mNotToExceedDateTime) <= 0)
+            var occurenceStartTime = new DateTime(base.GetStartTime());
+
+            while (occurenceStartTime.CompareTo(mNotToExceedDateTime) <= 0)
             {
                 // Calculate the occurrence end based on the duration.
-                var occurenceEnd = new DateTime(occurenceStart);
-                occurenceEnd.AddTime(0, base.GetDurationMinutes());
+                var occurenceEndTime = new DateTime(occurenceStartTime);
+                occurenceEndTime.AddTime(0, base.GetDurationMinutes());
 
                 // Evaluate if the input date is within the occurrence window.
-                isOccuringOn = date.IsBetween(occurenceStart.GetDate(), occurenceEnd.GetDate());
-                // Short-circuit out. The first time we are within the occurrence window; return true.
-                if (isOccuringOn) { break; }
+                if (date.IsBetween(occurenceStartTime.GetDate(), occurenceEndTime.GetDate()))
+                {
+                    return true;
+                }
 
                 endlessLoopCounter++;
                 if (endlessLoopCounter > endlessLoopTerminator) throw new ApplicationException("Infinite loop detected.");
 
-                occurenceStart = new DateTime(occurenceEnd);
-                occurenceStart.AddTime(mPeriodHours, 0);
-
-                // Short-circuit out. The first time we are greater than or equal to the date; stop comparing.
-                if (occurenceStart.GetDate().CompareTo(date) > 0) { break; }
+                occurenceStartTime.AddTime(mPeriodHours, 0);
             }
-            return isOccuringOn;
+
+            return false;
         }
 
         private DateTime mNotToExceedDateTime;
