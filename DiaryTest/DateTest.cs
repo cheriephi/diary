@@ -23,7 +23,7 @@ namespace DiaryTest
 
         #region Helper Methods
         /// <summary>
-        /// Formats the input elements as a string
+        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
         /// </summary>
         /// <returns>yyyy-mm-dd</returns>
         public static string ToString(int day, int month, int year)
@@ -32,9 +32,10 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Returns the class' identifying properties to support meaningful equality checks and debugging
+        /// Formats the input elements as a string.
         /// </summary>
         /// <returns>yyyy-MM-dd</returns>
+        /// <seealso cref="ToString(int, int, int)"/>
         public static string ToString(Date date)
         {
             return ToString(date.GetDay(), (int)date.GetMonth(), date.GetYear());

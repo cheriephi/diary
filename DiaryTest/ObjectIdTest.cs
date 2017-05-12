@@ -60,6 +60,13 @@ namespace DiaryTest
         #endregion
 
         #region Helper Methods
+        /// <summary>
+        /// Formats the input elements as a string.
+        /// </summary>
+        /// <param name="objectIdInt"></param>
+        /// <param name="objectIdString"></param>
+        /// <returns>"AsInt:n. ToString:n."</returns>
+        /// <seealso cref="DateTest.ToString(int, int, int)"/>
         public static string ToString(int objectIdInt, String objectIdString)
         {
             return String.Format("AsInt:<{0}>. ToString<{1}>.", objectIdInt, objectIdString);

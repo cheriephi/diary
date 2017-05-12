@@ -72,11 +72,11 @@ namespace Diary
 
         #region Comparisons
         /// <summary>
-        /// Returns how the current DateTime sorts in comparison to the input compareDate.
+        /// Returns how the current DateTime sorts in comparison to the input compare DateTime.
         /// </summary>
-        /// <param name="dateTime"></param>
+        /// <param name="compare"></param>
         /// <returns></returns>
-        /// <see cref="Date.CompareTo(object)">For further explanation about the CompareTo method behavior.</see>
+        /// <see cref="Date.CompareTo(Date)">For CompareTo method behavior.</see>
         public int CompareTo(DateTime compare)
         {
             var result = mDate.CompareTo(compare.GetDate());

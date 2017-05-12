@@ -18,9 +18,10 @@ namespace DiaryTest
 
         #region Helper Methods
         /// <summary>
-        /// Returns the class' identifying properties to support meaningful equality checks and debugging.
+        /// Formats the input elements as a string.
         /// </summary>
         /// <returns>yyyy-MM-dd hh:mm</returns>
+        /// <seealso cref="DateTest.ToString(int, int, int)"/>
         public static string ToString(Diary.DateTime dateTime)
         {
             return ToString(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes());

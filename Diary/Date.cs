@@ -168,10 +168,10 @@ namespace Diary
 
         #region Comparisons
         /// <summary>
-        /// Returns how the current Date sorts in comparison to the input compareDate.
+        /// Returns how the current Date sorts in comparison to the input compare Date.
         /// </summary>
         /// <remarks>Implements IComparable.</remarks>
-        /// <param name="date"></param>
+        /// <param name="compare"></param>
         /// <returns>
         /// -1 if the current date sorts before
         /// 0 for equal sort
