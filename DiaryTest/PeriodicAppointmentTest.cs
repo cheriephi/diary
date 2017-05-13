@@ -18,7 +18,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorAliasingTest()
         {
@@ -69,7 +69,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the StartTime field cannot be modified outside of its accessor.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         [TestMethod]
         public void GetStartTimeAliasingTest()
         {
@@ -196,7 +196,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the notToExceedDateTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorNotToExceedDateTimeAliasingTest()
         {

@@ -92,48 +92,32 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Single scenario constructor(DateTime) test.
+        /// Single scenario constructor(DateTime) test. 
+        /// Also checks that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
+        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
         [TestMethod]
         public void InputDateTimeConstructorTest()
         {
-            var expected = new Diary.DateTime(new Date(1, Date.Month.DECEMBER, 2000), 8, 15);
+            var date = new Date(1, Date.Month.DECEMBER, 2000);
+            var expected = new Diary.DateTime(date, 8, 15);
             var actual = new Diary.DateTime(expected);
 
-            Assert.AreEqual(ToString(expected), ToString(actual));
+            Assert.AreEqual(ToString(expected), ToString(actual), "Original");
+
+            // Now modify the reference value outside the System Under Test accessors.
+            date.AddDays(1);
+
+            // The data should not have changed.
+            Assert.AreEqual(ToString(expected), ToString(actual), "After");
         }
         #endregion
 
         #region Aliasing Tests
         /// <summary>
-        /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
-        /// </summary>
-        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
-        [TestMethod]
-        public void InputDateConstructorAliasingTest()
-        {
-            // Validate the system is working as expected under normal conditions.
-            var date = new Date();
-            var dateTime = new Diary.DateTime(date, 0, 0);
-
-            var expected = 1;
-            var actual = dateTime.GetDate().GetDay();
-            Assert.AreEqual(expected, actual, "Original");
-
-            // Now modify the reference value outside the System Under Test accessors.
-            date.AddDays(1);
-
-            // Look up what the System Under Test says its data is again.
-            actual = dateTime.GetDate().GetDay();
-
-            // The data should not have changed.
-            Assert.AreEqual(expected, actual, "After");
-        }
-
-        /// <summary>
         /// Tests that the Date field cannot be modified outside its accessor.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         [TestMethod]
         public void GetDateAliasingTest()
         {

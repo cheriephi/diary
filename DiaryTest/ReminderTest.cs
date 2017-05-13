@@ -14,7 +14,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorAliasingTest()
         {
