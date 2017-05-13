@@ -19,7 +19,7 @@ namespace DiaryTest
         {
             var firstName = "First";
             var lastName = "Last";
-            var contact = new Contact(new ObjectId(), firstName, lastName, "");
+            var contact = new ContactBuilder().SetFirstName(firstName).SetLastName(lastName).Build();
 
             // Concatenate the results so all the values can be compared at once
             var expected = String.Concat(firstName, ",", lastName);
@@ -36,7 +36,7 @@ namespace DiaryTest
         public void GetContactInfo()
         {
             var expected = "Contact Info";
-            var contact = new Contact(new ObjectId(), "", "", expected);
+            var contact = new ContactBuilder().SetContactInfo(expected).Build();
 
             var actual = contact.GetContactInfo();
 
@@ -50,7 +50,7 @@ namespace DiaryTest
         [TestMethod]
         public void GetClassIdTest()
         {
-            var contact = new Contact(new ObjectId(), "", "", "");
+            var contact = new ContactBuilder().Build();
             new DiaryProductTest().GetClassIdTest(contact, "Contact");
         }
 
@@ -61,7 +61,7 @@ namespace DiaryTest
         public void GetObjectIdTest()
         {
             var objectId = new ObjectId();
-            var contact = new Contact(objectId, "", "", "");
+            var contact = new ContactBuilder().SetObjectId(objectId).Build();
             new DiaryProductTest().GetObjectIdTest(contact, objectId);
         }
         #endregion

@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Builders\AppointmentBuilder.cs" />
     <Compile Include="AppointmentTest.cs" />
+    <Compile Include="Builders\ContactBuilder.cs" />
     <Compile Include="Persistence\ClassIdTest.cs" />
     <Compile Include="DateTest.cs" />
     <Compile Include="DateTimeTest.cs" />
