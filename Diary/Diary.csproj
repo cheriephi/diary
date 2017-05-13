@@ -54,6 +54,7 @@
     <Compile Include="Persistence\ObjectId.cs" />
     <Compile Include="PeriodicAppointment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Relation1M.cs" />
     <Compile Include="Reminder.cs" />
   </ItemGroup>
   <ItemGroup>

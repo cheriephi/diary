@@ -7,6 +7,11 @@ namespace Diary
     /// </summary>
     public class Appointment : CalendarEvent
     {
+        private DateTime mStarts;   // Data and time the event starts.
+        private int mDurationMinutes;
+        // NOTE: Not used private String mDetails;  // String to be associated with notification.
+        // NOTE: Not used private Relation1M<Contact> mContacts;
+
         /// <summary>
         /// Creates an appointment.
         /// </summary>
@@ -16,9 +21,7 @@ namespace Diary
         /// <param name="durationMinutes"></param>
         /// <param name="details"></param>
         public Appointment(ObjectId objectId, String label, DateTime occurs, int durationMinutes, String details) 
-            : this(new ClassId("Appointment"), objectId, label, occurs, durationMinutes, details)
-        {
-        }
+            : this(new ClassId("Appointment"), objectId, label, occurs, durationMinutes, details) {}
 
         /// <summary>
         /// Creates an appointment.
@@ -63,6 +66,7 @@ namespace Diary
             return isOccuringOn;
         }
 
+        #region Accessors
         /// <summary>
         /// Returns the appointment start time.
         /// </summary>
@@ -91,9 +95,12 @@ namespace Diary
         {
             return mDurationMinutes;
         }
+        #endregion
 
-        private DateTime mStarts;   // Data and time the event starts.
-        private int mDurationMinutes;
-        // NOTE: Not used private String mDetails;  // String to be associated with notification.
+        /// <summary>
+        /// NOTE: Placeholder code. Data is not accessible externally.
+        /// </summary>
+        /// <param name="contact"></param>
+        public void AddRelation(Contact contact) {}
     }
 }
