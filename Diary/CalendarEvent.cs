@@ -5,14 +5,18 @@ namespace Diary
     /// <summary>
     /// Base class for all types of diary events.
     /// </summary>
-    public abstract class CalendarEvent
+    public abstract class CalendarEvent : DiaryProduct
     {
+        private String mLabel;
+
         /// <summary>
         /// Creates a calendar event.
         /// </summary>
+        /// <param name="classId"></param>
+        /// <param name="objectId"></param>
         /// <param name="label"></param>
         /// <remarks>Events occuring in the past are not handled different than those in the future.</remarks>
-        public CalendarEvent(String label)
+        public CalendarEvent(ClassId classId, ObjectId objectId, String label) : base(classId, objectId)
         {
             mLabel = label;
         }
@@ -39,7 +43,5 @@ namespace Diary
         /// <param name="date"></param>
         /// <returns></returns>
         public abstract Boolean IsOccuringOn(Date date);
-
-        private String mLabel;
     }
 }

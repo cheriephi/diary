@@ -23,7 +23,7 @@ namespace DiaryTest
 
         #region Helper Methods
         /// <summary>
-        /// Formats the input elements as a string
+        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
         /// </summary>
         /// <returns>yyyy-mm-dd</returns>
         public static string ToString(int day, int month, int year)
@@ -32,9 +32,10 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Returns the class' identifying properties to support meaningful equality checks and debugging
+        /// Formats the input elements as a string.
         /// </summary>
         /// <returns>yyyy-MM-dd</returns>
+        /// <seealso cref="ToString(int, int, int)"/>
         public static string ToString(Date date)
         {
             return ToString(date.GetDay(), (int)date.GetMonth(), date.GetYear());
@@ -108,49 +109,6 @@ namespace DiaryTest
         }
         #endregion
 
-        #region Julian Number Tests
-        /// <summary>
-        /// Data testing to a julian number.
-        /// </summary>
-        [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
-        public void ToJulianNumberTest()
-        {
-            var year = int.Parse(TestContext.DataRow["year"].ToString());
-            var month = int.Parse(TestContext.DataRow["month"].ToString());
-            var day = int.Parse(TestContext.DataRow["day"].ToString());
-
-            var expectedResult = int.Parse(TestContext.DataRow["julian"].ToString());
-            var actualResult = Date.ToJulianNumber(day, month, year);
-
-            Assert.AreEqual(expectedResult, actualResult, "Input Year:<{0}>. Month:<{1}>. Day:<{2}>.", year, month, day);
-        }
-
-        /// <summary>
-        /// Data testing from a julian number.
-        /// </summary>
-        /// <seealso href="https://msdn.microsoft.com/en-us/library/dd260048.aspx"/>
-        [TestMethod]
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
-        public void FromJulianNumberTest()
-        {
-            var julian = int.Parse(TestContext.DataRow["julian"].ToString());
-            var expectedYear = int.Parse(TestContext.DataRow["year"].ToString());
-            var expectedMonth = int.Parse(TestContext.DataRow["month"].ToString());
-            var expectedDay = int.Parse(TestContext.DataRow["day"].ToString());
-
-            int actualYear = 0;
-            int actualMonth = 0;
-            int actualDay = 0;
-            Date.FromJulianNumber(julian, ref actualDay, ref actualMonth, ref actualYear);
-
-            var actual = ToString(actualDay, actualMonth, actualYear);
-            var expected = ToString(expectedDay, expectedMonth, expectedYear);
-
-            Assert.AreEqual(expected, actual, "Input Julian Number:<{0}>.", julian);
-        }
-        #endregion
-
         #region Comparison Tests
         /// <summary>
         /// Data testing of CompareTo function.
@@ -175,20 +133,6 @@ namespace DiaryTest
             var actual = date.CompareTo(compareDate);
 
             Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", ToString(date), ToString(compareDate));
-        }
-
-
-        /// <summary>
-        /// Validates the CompareTo method properly handles invalid object input types.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(System.ArgumentException))]
-        public void CompareToInvalidObjectTest()
-        {
-            var date = new Diary.Date();
-            var compare = 0;
-
-            var actual = date.CompareTo(compare);
         }
 
         /// <summary>

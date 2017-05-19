@@ -10,10 +10,11 @@ namespace Diary
         /// <summary>
         /// Creates a reminder
         /// </summary>
+        /// <param name="objectId"></param>
         /// <param name="label"></param>
         /// <param name="date"></param>
         /// <param name="details"></param>
-        public Reminder(String label, Date date, String details) : base(label)
+        public Reminder(ObjectId objectId, String label, Date date, String details) : base(new ClassId("Reminder"), objectId, label)
         {
             mDetails = details;
             // Deep copy the input date to prevent aliasing bugs

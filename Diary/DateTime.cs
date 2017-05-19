@@ -6,19 +6,20 @@ namespace Diary
     /// Handles generic date time functionality.
     /// </summary>
     /// <see cref="Date">For more detailed design explanations.</see>
-    public class DateTime : IComparable
+    public class DateTime : IComparable<DateTime>
     {
-        private long mTotalMinutes;
+        private Date mDate;
+        private int mElapsedMinutes;
 
-        private const long MINUTESINHOUR = 60;
-        private const long MINUTESINDAY = MINUTESINHOUR * 24;
+        private const int MINUTESINHOUR = 60;
+        private const int MINUTESINDAY = MINUTESINHOUR * 24;
 
         #region Constructors
         /// <summary>
         /// Creates arbitrary default datetime value.
         /// </summary>
-        public DateTime() : this(new Date(), 0, 0) {}
-        
+        public DateTime() : this(new Date(), 0, 0) { }
+
         /// <summary>
         /// Initializes DateTime based on inputs. Handles overflow / underflows.
         /// For example, if more than 24 hours in a day are passed in; this increases the date.
@@ -29,14 +30,15 @@ namespace Diary
         /// <param name="minutes"></param>
         public DateTime(Date date, int hours, int minutes)
         {
-            mTotalMinutes = GetTotalMinutes(date, hours, minutes);
+            mDate = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
+            this.AddTime(hours, minutes);
         }
 
         /// <summary>
         /// Initializes DateTime based on inputs.
         /// </summary>
         /// <param name="dateTime"></param>
-        public DateTime(DateTime dateTime) : this(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes()) {}
+        public DateTime(DateTime dateTime) : this(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes()) { }
         #endregion
 
         #region Accessors
@@ -46,14 +48,7 @@ namespace Diary
         /// <returns></returns>
         public Date GetDate()
         {
-            var julianNumber = (int)(mTotalMinutes / MINUTESINDAY);
-
-            int day = 0;
-            int month = 0;
-            int year = 0;
-            Date.FromJulianNumber(julianNumber, ref day, ref month, ref year);
-
-            return new Date(day, (Date.Month)month, year);
+            return new Date(mDate.GetDay(), mDate.GetMonth(), mDate.GetYear());
         }
 
         /// <summary>
@@ -62,35 +57,7 @@ namespace Diary
         /// <returns></returns>
         public int GetHours()
         {
-            var minutes = mTotalMinutes % MINUTESINDAY;
-            return (int)(minutes / MINUTESINHOUR);
-        }
-
-        /// <summary>
-        /// Returns the associated number of Julian minutes based on the inputs.
-        /// </summary>
-        /// <param name="date"></param>
-        /// <param name="hours"></param>
-        /// <param name="minutes"></param>
-        /// <returns></returns>
-        private long GetTotalMinutes(Date date, int hours, int minutes)
-        {
-            var julianNumber = (long)(Date.ToJulianNumber(date.GetDay(), (int)date.GetMonth(), date.GetYear()));
-
-            var julianMinutes = (julianNumber * MINUTESINDAY);
-
-            return julianMinutes + GetTotalMinutes(hours, minutes);
-        }
-
-        /// <summary>
-        /// Returns the associated number of Julian minutes based on the inputs.
-        /// </summary>
-        /// <param name="hours"></param>
-        /// <param name="minutes"></param>
-        /// <returns></returns>
-        private long GetTotalMinutes(int hours, int minutes)
-        {
-            return ((long)hours * MINUTESINHOUR) + (long)minutes;
+            return (mElapsedMinutes / MINUTESINHOUR);
         }
 
         /// <summary>
@@ -99,35 +66,31 @@ namespace Diary
         /// <returns></returns>
         public int GetMinutes()
         {
-            return (int)(mTotalMinutes % MINUTESINHOUR);
+            return (mElapsedMinutes % MINUTESINHOUR);
         }
         #endregion
 
         #region Comparisons
         /// <summary>
-        /// Returns how the current DateTime sorts in comparison to the input compareDate.
+        /// Returns how the current DateTime sorts in comparison to the input compare DateTime.
         /// </summary>
-        /// <param name="dateTime"></param>
+        /// <param name="compare"></param>
         /// <returns></returns>
-        /// <see cref="Date.CompareTo(object)">For further explanation about the CompareTo method behavior.</see>
-        public int CompareTo(object dateTime)
+        /// <see cref="Date.CompareTo(Date)">For CompareTo method behavior.</see>
+        public int CompareTo(DateTime compare)
         {
-            if (!(dateTime is DateTime))
-            {
-                throw new ArgumentException("Object is not a DateTime");
-            }
-            var compare = dateTime as DateTime;
+            var result = mDate.CompareTo(compare.GetDate());
 
-            var compareMinutes = GetTotalMinutes(compare.GetDate(), compare.GetHours(), compare.GetMinutes());
-
-            int result = 0;
-            if (mTotalMinutes > compareMinutes)
+            if (result == 0)
             {
-                result = 1;
-            }
-            else if (mTotalMinutes < compareMinutes)
-            {
-                result = -1;
+                if (mElapsedMinutes > compare.mElapsedMinutes)
+                {
+                    result = 1;
+                }
+                else if (mElapsedMinutes < compare.mElapsedMinutes)
+                {
+                    result = -1;
+                }
             }
 
             return result;
@@ -141,10 +104,7 @@ namespace Diary
         /// <returns></returns>
         public Boolean IsBetween(DateTime start, DateTime end)
         {
-            var startMinutes = GetTotalMinutes(start.GetDate(), start.GetHours(), start.GetMinutes());
-            var endMinutes = GetTotalMinutes(end.GetDate(), end.GetHours(), end.GetMinutes());
-
-            Boolean isBetween = (mTotalMinutes >= startMinutes && mTotalMinutes <= endMinutes);
+            var isBetween = (this.CompareTo(start) >= 0) && (this.CompareTo(end) <= 0);
 
             return isBetween;
         }
@@ -158,7 +118,17 @@ namespace Diary
         /// <param name="minutes"></param>
         public void AddTime(int hours, int minutes)
         {
-            mTotalMinutes += GetTotalMinutes(hours, minutes);
+            var minutesToAdd = (hours * MINUTESINHOUR) + minutes + mElapsedMinutes;
+            var daysToAdd = minutesToAdd / MINUTESINDAY;
+            var elapsedMinutes = minutesToAdd % MINUTESINDAY;
+            if (elapsedMinutes < 0)
+            {
+                daysToAdd--;
+                elapsedMinutes = MINUTESINDAY + elapsedMinutes;
+            }
+
+            mDate.AddDays(daysToAdd);
+            mElapsedMinutes = elapsedMinutes;
         }
         #endregion
     }

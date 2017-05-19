@@ -24,7 +24,7 @@ namespace DiaryTest
         /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
         /// <param name="builder"></param>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         internal void ConstructorAliasingTest(AppointmentBuilder builder)
         {
             var dateTime = new Diary.DateTime();
@@ -54,27 +54,11 @@ namespace DiaryTest
             CalendarEventTest.GetLabelTest(appointment, expected);
         }
 
-        /// <summary>
-        /// Tests the GetStartTime method using polymorphism.
-        /// </summary>
-        /// <param name="builder"></param>
-        internal void GetStartTimeTest(AppointmentBuilder builder)
-        {
-            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
-            var expected = DateTimeTest.ToString(appointmentStartTime);
-
-            var appointment = builder.SetOccurs(appointmentStartTime).Build();
-            var actualStartTime = appointment.GetStartTime();
-
-            var actual = DateTimeTest.ToString(actualStartTime);
-
-            Assert.AreEqual(expected, actual);
-        }
 
         /// <summary>
         /// Tests that the StartTime field cannot be modified outside of its accessor.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         internal void GetStartTimeAliasingTest(AppointmentBuilder builder)
         {
             var appointment = builder.Build();
@@ -107,7 +91,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of DurationMinutes method using polymorphism..
+        /// Simple data test of DurationMinutes method using polymorphism.
         /// </summary>
         internal void GetDurationMinutesTest(AppointmentBuilder builder)
         {
@@ -183,12 +167,18 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Appointment start time test.
+        /// Tests the Appointment.GetStartTime method.
         /// </summary>
         [TestMethod]
         public void GetStartTimeTest()
         {
-            GetStartTimeTest(new AppointmentBuilder());
+            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
+            var expected = DateTimeTest.ToString(appointmentStartTime);
+
+            var appointment = new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
+            var actual = DateTimeTest.ToString(appointment.GetStartTime());
+
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -237,5 +227,28 @@ namespace DiaryTest
         {
             GetDurationMinutesTest(new AppointmentBuilder());
         }
+
+        #region Persistence Tests
+        /// <summary>
+        /// Tests the ClassId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetClassIdTest()
+        {
+            var appointment = new AppointmentBuilder().Build();
+            new DiaryProductTest().GetClassIdTest(appointment, "Appointment");
+        }
+
+        /// <summary>
+        /// Tests the ObjectId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetObjectIdTest()
+        {
+            var objectId = new ObjectId();
+            var appointment = new AppointmentBuilder().SetObjectId(objectId).Build();
+            new DiaryProductTest().GetObjectIdTest(appointment, objectId);
+        }
+        #endregion
     }
 }

@@ -7,15 +7,33 @@ namespace Diary
     /// </summary>
     public class Appointment : CalendarEvent
     {
+        private DateTime mStarts;   // Data and time the event starts.
+        private int mDurationMinutes;
+        // NOTE: Not used private String mDetails;  // String to be associated with notification.
+        // NOTE: Not used private Relation1M<Contact> mContacts;
+
         /// <summary>
         /// Creates an appointment.
         /// </summary>
+        /// <param name="objectId"></param>
         /// <param name="label"></param>
         /// <param name="occurs"></param>
-        /// <param name="durationMinutes">Negative minutes are transformed to be zero.</param>
+        /// <param name="durationMinutes"></param>
+        /// <param name="details"></param>
+        public Appointment(ObjectId objectId, String label, DateTime occurs, int durationMinutes, String details) 
+            : this(new ClassId("Appointment"), objectId, label, occurs, durationMinutes, details) {}
+
+        /// <summary>
+        /// Creates an appointment.
+        /// </summary>
+        /// <param name="classId"></param>
+        /// <param name="objectId"></param>
+        /// <param name="label"></param>
+        /// <param name="occurs"></param>
+        /// <param name="durationMinutes">Negative minutes are transformed to zero.</param>
         /// <param name="details"></param>
         /// <remarks>details is not part of the accessors; so there is no way to test it.</remarks>
-        public Appointment(String label, DateTime occurs, int durationMinutes, String details) : base(label)
+        protected Appointment(ClassId classId, ObjectId objectId, String label, DateTime occurs, int durationMinutes, String details) : base(classId, objectId, label)
         {
             mStarts = new DateTime(occurs);
             mDurationMinutes = durationMinutes;
@@ -48,6 +66,7 @@ namespace Diary
             return isOccuringOn;
         }
 
+        #region Accessors
         /// <summary>
         /// Returns the appointment start time.
         /// </summary>
@@ -76,9 +95,12 @@ namespace Diary
         {
             return mDurationMinutes;
         }
+        #endregion
 
-        private DateTime mStarts;   // Data and time the event starts.
-        private int mDurationMinutes;
-        private String mDetails;  // String to be associated with notification.
+        /// <summary>
+        /// NOTE: Placeholder code. Data is not accessible externally.
+        /// </summary>
+        /// <param name="contact"></param>
+        public void AddRelation(Contact contact) {}
     }
 }

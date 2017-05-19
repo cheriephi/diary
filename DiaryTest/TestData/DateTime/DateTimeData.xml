@@ -16,6 +16,7 @@
             <expected>2017-04-16 12:01</expected>
     </add>
     <add>
+            <!--Evaluates to earlier in the day.-->
             <year>2017</year>
             <month>4</month>
             <day>15</day>
@@ -24,6 +25,7 @@
             <expected>2017-04-15 10:59</expected>
     </add>
     <add>
+            <!--Evaluates to the previous day.-->
             <year>2017</year>
             <month>4</month>
             <day>15</day>

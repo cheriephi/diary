@@ -14,7 +14,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateConstructorAliasingTest">For more context on the problem.</seealso>
+        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorAliasingTest()
         {
@@ -87,5 +87,28 @@ namespace DiaryTest
 
             CalendarEventTest.IsOccuringOnTest(reminder, expectedStartDate, expectedEndDate);
         }
+
+        #region Persistence Tests
+        /// <summary>
+        /// Tests the ClassId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetClassIdTest()
+        {
+            var reminder = new ReminderBuilder().Build();
+            new DiaryProductTest().GetClassIdTest(reminder, "Reminder");
+        }
+
+        /// <summary>
+        /// Tests the ObjectId accessor.
+        /// </summary>
+        [TestMethod]
+        public void GetObjectIdTest()
+        {
+            var objectId = new ObjectId();
+            var reminder = new ReminderBuilder().SetObjectId(objectId).Build();
+            new DiaryProductTest().GetObjectIdTest(reminder, objectId);
+        }
+        #endregion
     }
 }
