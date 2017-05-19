@@ -42,7 +42,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Tests the GetChild method aliasing using a relation that is mutable.
+        /// Tests the GetChild method shallow copy using a relation that is mutable.
         /// </summary>
         [TestMethod]
         public void GetChildDateTest()

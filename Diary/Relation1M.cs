@@ -6,7 +6,7 @@ namespace Diary
     /// Generically manages one to many relationships.
     /// </summary>
     /// <typeparam name="Type"></typeparam>
-    /// <remarks>This class has no special handling for aliasing bugs. Mutable types passed in may be changed from code outside.</remarks>
+    /// <remarks>Mutable types passed in may be changed from code outside.</remarks>
     public class Relation1M<Type>
     {
         private List<Type> mChildren;
