@@ -70,7 +70,7 @@
     <Compile Include="ReminderTest.cs" />
     <Compile Include="CalendarEventTest.cs" />
     <Compile Include="Persistence\ObjectIdTest.cs" />
-    <Compile Include="VariableLengthRecordTest.cs" />
+    <Compile Include="Persistence\VariableLengthRecordTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Diary\App.config">

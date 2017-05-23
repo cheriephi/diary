@@ -54,10 +54,10 @@
     <Compile Include="Persistence\ObjectId.cs" />
     <Compile Include="PeriodicAppointment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomAccessFile.cs" />
+    <Compile Include="Persistence\RandomAccessFile.cs" />
     <Compile Include="Relation1M.cs" />
     <Compile Include="Reminder.cs" />
-    <Compile Include="VariableLengthRecord.cs" />
+    <Compile Include="Persistence\VariableLengthRecord.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
