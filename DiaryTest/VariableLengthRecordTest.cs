@@ -1,8 +1,8 @@
 ﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace DiaryTest
 {
     /// <summary>
@@ -53,6 +53,9 @@ namespace DiaryTest
             Assert.IsTrue(value == 'b');
         }
 
+        /// <summary>
+        /// Tests int values work as expected.
+        /// </summary>
         [TestMethod]
         public void TestIntElement()
         {
@@ -71,6 +74,9 @@ namespace DiaryTest
             Assert.IsTrue(value == 12394);
         }
 
+        /// <summary>
+        /// Tests float values work as expected.
+        /// </summary>
         [TestMethod]
         public void TestFloatElement()
         {
@@ -89,6 +95,9 @@ namespace DiaryTest
             Assert.AreEqual(value, 1.234F, 0.001F);
         }
 
+        /// <summary>
+        /// Tests double values work as expected.
+        /// </summary>
         [TestMethod]
         public void TestDoubleElement()
         {
@@ -107,6 +116,9 @@ namespace DiaryTest
             Assert.AreEqual(value, 134343.234, 0.001);
         }
 
+        /// <summary>
+        /// Tests String values work as expected.
+        /// </summary>
         [TestMethod]
         public void TestStringElement()
         {
@@ -125,6 +137,9 @@ namespace DiaryTest
             Assert.IsTrue(value.CompareTo("Test B") == 0);
         }
 
+        /// <summary>
+        /// Tests ObjectId values work as expected.
+        /// </summary>
         [TestMethod]
         public void TestObjectIdElement()
         {
@@ -156,6 +171,9 @@ namespace DiaryTest
 
         }
 
+        /// <summary>
+        /// Tests object serialization \ deserialization.
+        /// </summary>
         [TestMethod]
         public void TestReadWrite()
         {
@@ -169,16 +187,15 @@ namespace DiaryTest
 
             try
             {
-                RandomAccessFile outputStream = new
-                RandomAccessFile("C:/Persistence/TestFile.txt");
+                const String persistenceFilePath = "C:/Persistence/TestFile.txt";
+                var outputStream = new RandomAccessFile(persistenceFilePath);
 
                 outputRecord.Serialize(outputStream);
                 outputStream.close();
 
                 VariableLengthRecord inputRecord = new VariableLengthRecord();
 
-                RandomAccessFile inputStream = new
-                RandomAccessFile("C:/Persistence/TestFile.txt");
+                var inputStream = new RandomAccessFile(persistenceFilePath);
 
                 Assert.IsTrue(inputRecord.Deserialize(inputStream));
                 Assert.AreEqual(inputRecord.GetCount(), 6);
@@ -201,9 +218,6 @@ namespace DiaryTest
 
                 String value4 = "";
                 Assert.IsTrue(inputRecord.GetValue(4, ref value4));
-
-
-
                 Assert.IsTrue(value4.CompareTo("Testing") == 0);
 
                 bool value5 = false;
@@ -212,9 +226,13 @@ namespace DiaryTest
 
                 inputStream.close();
 
+                // Clean up.
+                if (File.Exists(persistenceFilePath))
+                {
+                    File.Delete(persistenceFilePath);
+                }
             }
             catch (Exception) { }
         }
     }
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

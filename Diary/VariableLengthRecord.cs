@@ -218,7 +218,7 @@ namespace Diary
         #endregion
 
         /// <summary>
-        /// 
+        /// Outputs the elements in memory into the specified output file.
         /// </summary>
         /// <param name="outputStream"></param>
         /// <returns></returns>
@@ -246,7 +246,6 @@ namespace Diary
                 int bytesWritten = (int)outputStream.getFilePointer() - startingLocation;
 
                 return bytesWritten;
-
             }
             catch (Exception)
             {
@@ -254,6 +253,11 @@ namespace Diary
             }
         }
 
+        /// <summary>
+        /// Loads the input file stream into memory.
+        /// </summary>
+        /// <param name="inputStream"></param>
+        /// <returns></returns>
         public bool Deserialize(RandomAccessFile inputStream)
         {
             try

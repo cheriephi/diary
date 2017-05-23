@@ -83,7 +83,6 @@ namespace DiaryTest
         /// <summary>
         /// Tests the ObjectId method using polymorphism.
         /// </summary>
-        [TestMethod]
         public void GetObjectIdTest(DiaryProduct product, ObjectId objectId)
         {
             var actual = product.GetObjectId();
