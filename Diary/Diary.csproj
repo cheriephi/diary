@@ -51,6 +51,7 @@
     <Compile Include="Date.cs" />
     <Compile Include="DateTime.cs" />
     <Compile Include="Persistence\DiaryProduct.cs" />
+    <Compile Include="Persistence\KeyFile.cs" />
     <Compile Include="Persistence\ObjectId.cs" />
     <Compile Include="PeriodicAppointment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
