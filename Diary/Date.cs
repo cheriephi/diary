@@ -224,6 +224,16 @@ namespace Diary
         {
             mJulianNumber -= days;
         }
+
+        /// <summary>
+        /// Returns the number of days until the specified date.
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public int DaysUntil(Date date)
+        {
+            return mJulianNumber - date.mJulianNumber;
+        }
         #endregion
 
         #region Date Lookups

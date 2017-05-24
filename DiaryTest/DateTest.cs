@@ -195,6 +195,23 @@ namespace DiaryTest
 
             Assert.AreEqual(ToString(expected), ToString(actual));
         }
+
+        /// <summary>
+        /// Tests the DaysUntil method.
+        /// </summary>
+        [TestMethod]
+        public void DaysUntilTest()
+        {
+            var expected = 7;
+
+            var untilDate = new Date();
+            var date = new Date();
+            date.AddDays(expected);
+
+            var actual = date.DaysUntil(untilDate);
+
+            Assert.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Date Lookup Tests
