@@ -64,6 +64,7 @@
     <Compile Include="Persistence\DiaryProductTest.cs" />
     <Compile Include="Persistence\KeyFileTest.cs" />
     <Compile Include="Persistence\TransientPersistenceFreshFixture.cs" />
+    <Compile Include="Persistence\VariableLengthRecordFileTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContactTest.cs" />
     <Compile Include="Builders\ReminderBuilder.cs" />

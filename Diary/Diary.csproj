@@ -54,6 +54,7 @@
     <Compile Include="Persistence\KeyFile.cs" />
     <Compile Include="Persistence\ObjectId.cs" />
     <Compile Include="PeriodicAppointment.cs" />
+    <Compile Include="Persistence\VariableLengthRecordFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Persistence\RandomAccessFile.cs" />
     <Compile Include="Relation1M.cs" />

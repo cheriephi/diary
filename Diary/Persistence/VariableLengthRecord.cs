@@ -226,14 +226,14 @@ namespace Diary
         {
             try
             {
-                int elementCount = GetCount();
-                int startingLocation = (int)outputStream.getFilePointer();
+                var elementCount = GetCount();
+                var startingLocation = (int)outputStream.getFilePointer();
                 outputStream.writeInt(elementCount);
-                int location = (int)outputStream.getFilePointer();
+                var location = (int)outputStream.getFilePointer();
 
                 for (int elementIndex = 0; elementIndex < elementCount; ++elementIndex)
                 {
-                    int ordinal = (int)mElements[elementIndex].mType;
+                    var ordinal = (int)mElements[elementIndex].mType;
                     outputStream.writeInt((int)mElements[elementIndex].mType);  // Convert to ordinal
 
                     location = (int)outputStream.getFilePointer();
@@ -243,7 +243,7 @@ namespace Diary
                     location = (int)outputStream.getFilePointer();
                 }
 
-                int bytesWritten = (int)outputStream.getFilePointer() - startingLocation;
+                var bytesWritten = (int)outputStream.getFilePointer() - startingLocation;
 
                 return bytesWritten;
             }
