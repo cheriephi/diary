@@ -9,7 +9,7 @@ namespace Diary
     {
         private DateTime mStarts;   // Data and time the event starts.
         private int mDurationMinutes;
-        // NOTE: Not used private String mDetails;  // String to be associated with notification.
+        private String mDetails;  // String to be associated with notification.
         // NOTE: Not used private Relation1M<Contact> mContacts;
 
         /// <summary>
@@ -37,6 +37,7 @@ namespace Diary
         {
             mStarts = new DateTime(occurs);
             mDurationMinutes = durationMinutes;
+            mDetails = details;
         }
 
         /// <summary>
@@ -94,6 +95,15 @@ namespace Diary
         public int GetDurationMinutes()
         {
             return mDurationMinutes;
+        }
+
+        /// <summary>
+        /// Returns the appointment detail text.
+        /// </summary>
+        /// <returns></returns>
+        public String GetDetails()
+        {
+            return mDetails;
         }
         #endregion
 

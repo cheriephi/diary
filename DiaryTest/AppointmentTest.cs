@@ -102,6 +102,19 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        /// Simple data test of GetDetails method using polymorphism.
+        /// </summary>
+        internal void GetDetailsTest(AppointmentBuilder builder)
+        {
+            var expected = "Detail text";
+
+            var appointment = builder.SetDetails(expected).Build();
+            var actual = appointment.GetDetails();
+
+            Assert.AreEqual(expected, actual);
+        }
         #endregion
 
         /// <summary>
@@ -226,6 +239,15 @@ namespace DiaryTest
         public void GetDurationMinutesTest()
         {
             GetDurationMinutesTest(new AppointmentBuilder());
+        }
+
+        /// <summary>
+        /// Appointment get details test.
+        /// </summary>
+        [TestMethod]
+        public void GetDetailsTest()
+        {
+            GetDetailsTest(new AppointmentBuilder());
         }
 
         #region Persistence Tests

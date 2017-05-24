@@ -222,6 +222,15 @@ namespace DiaryTest
             Assert.AreEqual(expected, actual, "After");
         }
 
+        /// <summary>
+        /// Periodic appointment get details test.
+        /// </summary>
+        [TestMethod]
+        public void GetDetailsTest()
+        {
+            new AppointmentTest().GetDetailsTest(new PeriodicAppointmentBuilder());
+        }
+
         #region Persistence Tests
         /// <summary>
         /// Tests the ClassId accessor.
