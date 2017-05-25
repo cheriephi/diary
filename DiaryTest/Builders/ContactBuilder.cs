@@ -13,6 +13,7 @@ namespace DiaryTest
         private String firstName = "";
         private String lastName = "";
         private String contactInfo = "";
+        private ContactCreator creator;
 
         internal ContactBuilder SetObjectId(ObjectId objectId)
         {
@@ -38,10 +39,25 @@ namespace DiaryTest
             return this;
         }
 
+        internal ContactBuilder SetContactCreator(ContactCreator creator)
+        {
+            this.creator = creator;
+            return this;
+        }
+
         internal Contact Build()
         {
-            var reminder = new Contact(objectId, firstName, lastName, contactInfo);
-            return reminder;
+            Contact contact;
+            if (creator != null)
+            {
+                contact = (Contact)creator.CreateNew(firstName, lastName, contactInfo);
+            }
+            else
+            {
+                contact = new Contact(objectId, firstName, lastName, contactInfo);
+            }
+
+            return contact;
         }
     }
 }

@@ -35,15 +35,15 @@ namespace DiaryTest
         }
         #endregion
 
-
+        #region Contact generic test functions
         /// <summary>
-        /// Simple data testing of GetName method
+        /// Simple data testing of GetContactName method.
         /// </summary>
-        [TestMethod]
-        public void GetNameTest()
+        internal void GetContactNameTest(ContactBuilder builder)
         {
             var firstName = "First";
             var lastName = "Last";
+
             var contact = new ContactBuilder().SetFirstName(firstName).SetLastName(lastName).Build();
 
             var expected = ToString(firstName, lastName);
@@ -51,19 +51,37 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual);
         }
-
+        
         /// <summary>
-        /// Simple data testing of GetContactInfo method
+        /// Simple data testing of GetContactInfo method.
         /// </summary>
-        [TestMethod]
-        public void GetContactInfo()
+        internal void GetContactInfoTest(ContactBuilder builder)
         {
             var expected = "Contact Info";
-            var contact = new ContactBuilder().SetContactInfo(expected).Build();
+            var contact = builder.SetContactInfo(expected).Build();
 
             var actual = contact.GetContactInfo();
 
             Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
+        /// <summary>
+        /// Contact get name test.
+        /// </summary>
+        [TestMethod]
+        public void GetNameTest()
+        {
+            GetContactNameTest(new ContactBuilder());
+        }
+
+        /// <summary>
+        /// Contact get contact info test.
+        /// </summary>
+        [TestMethod]
+        public void GetContactInfo()
+        {
+            GetContactInfoTest(new ContactBuilder());
         }
 
         #region Persistence Tests
