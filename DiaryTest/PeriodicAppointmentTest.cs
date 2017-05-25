@@ -231,6 +231,16 @@ namespace DiaryTest
             new AppointmentTest().GetDetailsTest(new PeriodicAppointmentBuilder());
         }
 
+        /// <summary>
+        /// Periodic appointment get contacts test.
+        /// </summary>
+        [TestMethod]
+        public void GetContactsTest()
+        {
+            new AppointmentTest().GetContactsTest(new PeriodicAppointmentBuilder());
+        }
+
+
         #region Persistence Tests
         /// <summary>
         /// Tests the ClassId accessor.

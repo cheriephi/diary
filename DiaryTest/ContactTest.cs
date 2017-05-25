@@ -11,6 +11,31 @@ namespace DiaryTest
     [TestClass]
     public class ContactTest
     {
+        #region Helper Methods
+        /// <summary>
+        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <returns>FirstName,LastName</returns>
+        public static string ToString(String firstName, String lastName)
+        {
+            return String.Concat(firstName, ",", lastName);
+        }
+        
+        /// <summary>
+         /// Formats the input elements as a string.
+         /// </summary>
+         /// <returns>FirstName,LastName</returns>
+         /// <seealso cref="ToString(string, string)"/>
+        public static string ToString(Contact contact)
+        {
+            var name = contact.GetName();
+            return ToString(name[0], name[1]);
+        }
+        #endregion
+
+
         /// <summary>
         /// Simple data testing of GetName method
         /// </summary>
@@ -21,10 +46,8 @@ namespace DiaryTest
             var lastName = "Last";
             var contact = new ContactBuilder().SetFirstName(firstName).SetLastName(lastName).Build();
 
-            // Concatenate the results so all the values can be compared at once
-            var expected = String.Concat(firstName, ",", lastName);
-            var name = contact.GetName();
-            var actual = String.Join(",", name);
+            var expected = ToString(firstName, lastName);
+            var actual = ToString(contact);
 
             Assert.AreEqual(expected, actual);
         }

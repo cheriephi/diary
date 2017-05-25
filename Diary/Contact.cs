@@ -7,6 +7,11 @@ namespace Diary
     /// </summary>
     public class Contact : DiaryProduct
     {
+
+        private String mFirstName;
+        private String mLastName;
+        private String mContactInfo;
+        
         /// <summary>
         /// Creates a Contact
         /// </summary>
@@ -38,9 +43,5 @@ namespace Diary
         {
             return mContactInfo;
         }
-
-        private String mFirstName;
-        private String mLastName;
-        private String mContactInfo;
     }
 }

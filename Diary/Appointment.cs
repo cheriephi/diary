@@ -10,7 +10,7 @@ namespace Diary
         private DateTime mStarts;   // Data and time the event starts.
         private int mDurationMinutes;
         private String mDetails;  // String to be associated with notification.
-        // NOTE: Not used private Relation1M<Contact> mContacts;
+        private Relation1M<Contact> mContacts;
 
         /// <summary>
         /// Creates an appointment.
@@ -38,6 +38,7 @@ namespace Diary
             mStarts = new DateTime(occurs);
             mDurationMinutes = durationMinutes;
             mDetails = details;
+            mContacts = new Relation1M<Contact>();
         }
 
         /// <summary>
@@ -105,12 +106,24 @@ namespace Diary
         {
             return mDetails;
         }
+
+        /// <summary>
+        /// Returns contacts associated with the appointment.
+        /// </summary>
+        /// <returns></returns>
+        public Relation1M<Contact> GetContacts()
+        {
+            return mContacts;
+        }
         #endregion
 
         /// <summary>
-        /// NOTE: Placeholder code. Data is not accessible externally.
+        /// Adds the input contact into the relations for the appointment.
         /// </summary>
         /// <param name="contact"></param>
-        public void AddRelation(Contact contact) {}
+        public void AddRelation(Contact contact)
+        {
+            mContacts.Add(contact);
+        }
     }
 }

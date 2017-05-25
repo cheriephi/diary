@@ -115,6 +115,28 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        /// Tests GetContacts method using polymorphism.
+        /// </summary>
+        internal void GetContactsTest(AppointmentBuilder builder)
+        {
+            var appointment = builder.Build();
+
+            var contact = new ContactBuilder().SetFirstName("Yogi").SetLastName("Bear").Build();
+
+            appointment.AddRelation(new ContactBuilder().Build());
+            appointment.AddRelation(contact);
+            appointment.AddRelation(new ContactBuilder().Build());
+
+            var relation = appointment.GetContacts();
+            Assert.AreEqual(3, relation.GetChildCount(), "Count");
+
+            var expected = ContactTest.ToString(contact);
+            var actual = ContactTest.ToString(relation.GetChild(1));
+
+            Assert.AreEqual(expected, actual, "Data");
+        }
         #endregion
 
         /// <summary>
@@ -250,6 +272,14 @@ namespace DiaryTest
             GetDetailsTest(new AppointmentBuilder());
         }
 
+        /// <summary>
+        /// Appointment get contacts test.
+        /// </summary>
+        [TestMethod]
+        public void GetContactsTest()
+        {
+            GetContactsTest(new AppointmentBuilder());
+        }
         #region Persistence Tests
         /// <summary>
         /// Tests the ClassId accessor.

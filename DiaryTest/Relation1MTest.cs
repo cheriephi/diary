@@ -30,15 +30,14 @@ namespace DiaryTest
         [TestMethod]
         public void GetChildContactTest()
         {
-            var expected = "Fred";
-
             var relation = new Relation1M<Contact>();
+            var contact = new ContactBuilder().SetFirstName("Fred").SetLastName("Flintstone").Build();
             relation.Add(new ContactBuilder().Build());
-            relation.Add(new ContactBuilder().SetFirstName(expected).Build());
+            relation.Add(contact);
             relation.Add(new ContactBuilder().Build());
 
             var actual = relation.GetChild(1);
-            Assert.AreEqual(expected, actual.GetName()[0]);
+            Assert.AreEqual(ContactTest.ToString(contact), ContactTest.ToString(actual));
         }
 
         /// <summary>
