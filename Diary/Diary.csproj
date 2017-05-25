@@ -60,6 +60,8 @@
     <Compile Include="Relation1M.cs" />
     <Compile Include="Reminder.cs" />
     <Compile Include="Persistence\VariableLengthRecord.cs" />
+    <Compile Include="Creators\ContactCreator.cs" />
+    <Compile Include="Creators\DiaryCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

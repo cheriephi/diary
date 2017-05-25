@@ -73,6 +73,7 @@
     <Compile Include="CalendarEventTest.cs" />
     <Compile Include="Persistence\ObjectIdTest.cs" />
     <Compile Include="Persistence\VariableLengthRecordTest.cs" />
+    <Compile Include="Creators\ContactCreatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Diary\App.config">
