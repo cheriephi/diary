@@ -87,7 +87,9 @@ namespace DiaryTest
         {
             var actual = product.GetObjectId();
 
-            Assert.AreEqual(objectId.AsInt(), actual.AsInt());
+            Assert.AreEqual(objectId.AsInt(), actual.AsInt(), "Data");
+
+            Assert.AreEqual(objectId.GetHashCode(), actual.GetHashCode(), "Identity");
         }
     }
 }

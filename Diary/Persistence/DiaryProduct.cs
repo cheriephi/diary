@@ -18,8 +18,8 @@ namespace Diary
         /// <param name="objectId"></param>
         public DiaryProduct(ClassId classId, ObjectId objectId)
         {
-            mObjectId = new ObjectId(objectId.AsInt());
-            mClassId = new ClassId(Convert.ToInt32(classId.ToString()));
+            mClassId = classId;
+            mObjectId = objectId;
         }
 
         /// <summary>
@@ -28,16 +28,17 @@ namespace Diary
         /// <returns></returns>
         public ClassId GetClassId()
         {
-            return new ClassId(Convert.ToInt32(mClassId.ToString()));
+            return mClassId;
         }
 
         /// <summary>
         /// Gets the ObjectId.
         /// </summary>
         /// <returns></returns>
+        /// <remarks>The same identity of object must be retained in order for key lookups to behave as expected.</remarks>
         public ObjectId GetObjectId()
         {
-            return new ObjectId(mObjectId.AsInt());
+            return mObjectId;
         }
     }
 }

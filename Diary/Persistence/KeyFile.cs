@@ -50,7 +50,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Looks up the input objectId in memory.
+        /// Looks up the input objectId in memory based on its identity.
         /// </summary>
         /// <param name="objectId"></param>
         /// <param name="dataFileOffset"></param>
