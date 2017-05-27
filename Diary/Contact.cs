@@ -3,7 +3,7 @@
 namespace Diary
 {
     /// <summary>
-    /// Stores Contact information
+    /// Stores Contact information.
     /// </summary>
     public class Contact : DiaryProduct
     {
@@ -13,7 +13,7 @@ namespace Diary
         private String mContactInfo;
         
         /// <summary>
-        /// Creates a Contact
+        /// Initializes a Contact.
         /// </summary>
         /// <param name="objectId"></param>
         /// <param name="firstName"></param>
@@ -27,7 +27,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns a collection of the first and last name
+        /// Returns a collection of the first and last name.
         /// </summary>
         /// <returns></returns>
         public String[] GetName()
@@ -36,7 +36,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Returns the ContactInfo
+        /// Returns the ContactInfo.
         /// </summary>
         /// <returns></returns>
         public String GetContactInfo()
