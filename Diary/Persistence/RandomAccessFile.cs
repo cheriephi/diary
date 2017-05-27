@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Diary
 {
     /// <summary>
@@ -15,7 +14,7 @@ namespace Diary
         private BinaryWriter mBinaryWriter;
 
         /// <summary>
-        /// Creates a random access file stream to read from, and optionally to write to, a file with the specified name.
+        /// Initializes a RandomAccessFile stream to read from, and optionally to write to, a file with the specified name.
         /// </summary>
         /// <param name="pathname"></param>
         public RandomAccessFile(String pathname)
@@ -26,9 +25,9 @@ namespace Diary
             mBinaryReader = new BinaryReader(mFileStream);
             mBinaryWriter = new BinaryWriter(mFileStream);
         }
-    
+
         /// <summary>
-        /// Closes this random access file stream and releases any system resources associated with the stream.
+        /// Closes this RandomAccessFile stream and releases any system resources associated with the stream.
         /// </summary>
         public void close()
         {
@@ -98,4 +97,3 @@ namespace Diary
         }        
     }
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

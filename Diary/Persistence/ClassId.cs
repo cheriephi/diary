@@ -18,6 +18,7 @@ namespace Diary
         private static String mPersistenceFilePath = ConfigurationManager.AppSettings["PersistenceClassIdFilePath"];
 
         /// <summary>
+        /// Initializes a ClassId.
         /// Each time a ClassId instance is created; the last used value will be read and returned.
         /// If it is a new class name, it will be assigned the next available value.
         /// </summary>

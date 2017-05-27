@@ -1,15 +1,30 @@
 ﻿using System;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Diary
 {
+    /// <summary>
+    /// Contact factory.
+    /// </summary>
+    /// <see cref="DiaryCreator"/>
     public class ContactCreator : DiaryCreator
     {
+        private Relation1M<Contact> mContacts;
+
+        /// <summary>
+        /// Initializes a ContactCreator.
+        /// </summary>
         public ContactCreator() : base(new ClassId("Contact"))
         {
             mContacts = new Relation1M<Contact>();
         }
 
+        /// <summary>
+        /// Creates a Contact DiaryProduct.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="contactInfo"></param>
+        /// <returns></returns>
         public DiaryProduct CreateNew(String firstName, String lastName, String contactInfo)
         {
             var objectId = new ObjectId();
@@ -20,7 +35,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Create an eisting contact.
+        /// Recreates an existing Contact from persistent storage.
         /// </summary>
         /// <param name="objectId"></param>
         /// <returns></returns>
@@ -61,6 +76,9 @@ namespace Diary
             return null;  // No such contact 
         }
 
+        /// <summary>
+        /// Saves Contacts in memory to persistent storage.
+        /// </summary>
         public override void Save()
         {
             // Step through any previously loaded records and save to file. 
@@ -68,7 +86,7 @@ namespace Diary
             {
                 Contact contact = mContacts.GetChild(childIndex);
 
-                VariableLengthRecord record = new VariableLengthRecord();
+                var record = new VariableLengthRecord();
                 String[] names = contact.GetName();
                 record.AppendValue(names[0]);
                 record.AppendValue(names[1]);
@@ -77,8 +95,5 @@ namespace Diary
                 Write(contact.GetObjectId(), record);
             }
         }
-
-        private Relation1M<Contact> mContacts;
     }
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

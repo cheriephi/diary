@@ -12,7 +12,7 @@ namespace Diary
         private ObjectId mObjectId;
 
         /// <summary>
-        /// Creates a Diary Product.
+        /// Initializes a DiaryProduct.
         /// </summary>
         /// <param name="classId"></param>
         /// <param name="objectId"></param>

@@ -22,7 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Diary.xml</DocumentationFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="Appointment.cs" />
     <Compile Include="CalendarEvent.cs" />
+    <Compile Include="Creators\AppointmentCreator.cs" />
+    <Compile Include="Creators\PeriodicAppointmentCreator.cs" />
+    <Compile Include="Creators\ReminderCreator.cs" />
     <Compile Include="Persistence\ClassId.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="Date.cs" />

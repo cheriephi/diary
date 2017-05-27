@@ -1,8 +1,7 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace Diary
+﻿namespace Diary
 {
     /// <summary>
-    /// Base logic for creator classes.
+    /// Base logic for creator classes. Implements the factory design pattern.
     /// </summary>
     public abstract class DiaryCreator
     {
@@ -11,7 +10,7 @@ namespace Diary
         static VariableLengthRecordFile sDataFile = new VariableLengthRecordFile("C:/Persistence", "Data");
         
         /// <summary>
-        /// Creates a diary.
+        /// Initializes a DiaryCreator.
         /// </summary>
         /// <param name="classId"></param>
         public DiaryCreator(ClassId classId)
@@ -19,11 +18,20 @@ namespace Diary
             mClassId = classId;
         }
 
+        /// <summary>
+        /// Recreates an existing DiaryProduct from persistent storage.
+        /// </summary>
+        /// <param name="objectId"></param>
+        /// <returns></returns>
         public abstract DiaryProduct Create(ObjectId objectId);
+
+        /// <summary>
+        /// Saves DiaryProducts in memory to persistent storage.
+        /// </summary>
         public abstract void Save();
 
         /// <summary>
-        /// Helps evaluate if this factory can be used for creating a particular object.
+        /// Evaluates if this factory can be used for creating a particular object.
         /// </summary>
         /// <param name="classId"></param>
         /// <returns></returns>
@@ -32,6 +40,7 @@ namespace Diary
             return (classId.CompareTo(mClassId) == 0);
         }
 
+        #region Persistence methods
         /// <summary>
         /// Reads a variable length record by object id.  
         /// </summary>
@@ -57,7 +66,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Writes a variable length record by object id.
+        /// Writes the input DiaryProduct to persistent storage.
         /// </summary>
         /// <param name="objectId"></param>
         /// <param name="record"></param>
@@ -72,6 +81,6 @@ namespace Diary
                 sKeyFile.Save();
             }
         }
+        #endregion
     }
 }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

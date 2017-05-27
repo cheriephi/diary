@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Diary
 {
     public class KeyFile
@@ -14,7 +13,7 @@ namespace Diary
         private Dictionary<ObjectId, OffsetAndLength> mKeys;
 
         /// <summary>
-        /// Creates a key file.
+        /// Initializes a KeyFile from persistent storage as appropriate.
         /// </summary>
         /// <param name="folder"></param>
         /// <param name="filename"></param>
@@ -116,6 +115,5 @@ namespace Diary
             public int fileOffset; // Offset into data file 
             public int sizeBytes; // Number of bytes in record 
         }
+    }
 }
-}
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
