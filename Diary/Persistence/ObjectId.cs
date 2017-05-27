@@ -13,7 +13,11 @@ namespace Diary
     public class ObjectId : IComparable<ObjectId>
     {
         private int mObjectId;
-        private static String mPersistenceFilePath = ConfigurationManager.AppSettings["PersistenceObjectIdFilePath"];
+        private static String mPersistenceFilePath = String.Concat(
+            ConfigurationManager.AppSettings["PersistenceFolderPath"], 
+            @"\", 
+            ConfigurationManager.AppSettings["PersistenceObjectIdFileName"]
+            );
 
         #region Constructors
         /// <summary>

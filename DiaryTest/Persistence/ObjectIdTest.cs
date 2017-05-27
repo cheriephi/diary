@@ -23,7 +23,7 @@ namespace DiaryTest
         [TestInitialize]
         public void Init()
         {
-            fixture = new TransientPersistenceFreshFixture("ObjectId");
+            fixture = new TransientPersistenceFreshFixture();
             fixture.Init();
         }
 

@@ -13,8 +13,7 @@ namespace DiaryTest
     [TestClass]
     public class DiaryProductTest
     {
-        private TransientPersistenceFreshFixture classFixture;
-        private TransientPersistenceFreshFixture objectFixture;
+        private TransientPersistenceFreshFixture fixture;
 
         #region Test Initialize and Cleanup Methods
         /// <summary>
@@ -24,11 +23,8 @@ namespace DiaryTest
         [TestInitialize]
         public void Init()
         {
-            objectFixture = new TransientPersistenceFreshFixture("ObjectId");
-            objectFixture.Init();
-
-            classFixture = new TransientPersistenceFreshFixture("ClassId");
-            classFixture.Init();
+            fixture = new TransientPersistenceFreshFixture();
+            fixture.Init();
         }
 
         /// <summary>
@@ -38,8 +34,7 @@ namespace DiaryTest
         [TestCleanup]
         public void Cleanup()
         {
-            objectFixture.Cleanup();
-            classFixture.Cleanup();
+            fixture.Cleanup();
         }
         #endregion
 

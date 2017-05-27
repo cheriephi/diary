@@ -7,32 +7,30 @@ namespace DiaryTest
     /// <summary>
     /// Resets any persisted settings so the tests can proceed in a repeatable and deterministic manner.
     /// </summary>
-    /// <remarks>The persistence file path is copied as a link from the System Under Test's app.config file.</remarks>
+    /// <remarks>The persistence folder path is copied as a link from the System Under Test's app.config file.</remarks>
     internal class TransientPersistenceFreshFixture
     {
-        private String mPersistenceFilePath;
-        private String mPersistenceBackupFilePath;
+        private String mPersistenceFolderPath;
+        private String mPersistenceBackupFolderPath;
 
-        internal TransientPersistenceFreshFixture(String className)
+        internal TransientPersistenceFreshFixture()
         {
-            var configurationSetting = "Persistence" + className + "FilePath";
-            mPersistenceFilePath = ConfigurationManager.AppSettings[configurationSetting];
-            mPersistenceBackupFilePath = Path.GetDirectoryName(mPersistenceFilePath) + @"/" + className + System.DateTime.Now.Ticks + ".txt";
+            mPersistenceFolderPath = ConfigurationManager.AppSettings["PersistenceFolderPath"];
+            mPersistenceBackupFolderPath = mPersistenceFolderPath + System.DateTime.Now.Ticks;
         }
 
         /// <summary>
-        /// Resets any persisted settings so the tests can proceed in a repeatable and deterministic manner.
+        /// Migrates persisted settings elsewhere and sets the environment to an original sate.
         /// </summary>
-        /// <remarks>The persistence file path is copied as a link from the System Under Test's app.config file.</remarks>
         public void Init()
         {
-            if (File.Exists(mPersistenceFilePath))
+            if (Directory.Exists(mPersistenceFolderPath))
             {
-                if (File.Exists(mPersistenceBackupFilePath))
+                if (Directory.Exists(mPersistenceBackupFolderPath))
                 {
-                    File.Delete(mPersistenceBackupFilePath);
+                    Directory.Delete(mPersistenceBackupFolderPath);
                 }
-                File.Move(mPersistenceFilePath, mPersistenceBackupFilePath);
+                Directory.Move(mPersistenceFolderPath, mPersistenceBackupFolderPath);
             }
         }
 
@@ -42,15 +40,15 @@ namespace DiaryTest
         public void Cleanup()
         {
             // Clean up.
-            if (File.Exists(mPersistenceFilePath))
+            if (Directory.Exists(mPersistenceFolderPath))
             {
-                File.Delete(mPersistenceFilePath);
+                Directory.Delete(mPersistenceFolderPath, true);
             }
 
             // Restore the system to its original state.
-            if (File.Exists(mPersistenceBackupFilePath))
+            if (Directory.Exists(mPersistenceBackupFolderPath))
             {
-                File.Move(mPersistenceBackupFilePath, mPersistenceFilePath);
+                Directory.Move(mPersistenceBackupFolderPath, mPersistenceFolderPath);
             }
         }
     }

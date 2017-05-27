@@ -14,8 +14,8 @@ namespace Diary
     /// </summary>
     public class ClassId : IComparable<ClassId>
     {
+        private static String mPersistenceFilePath;
         private int mClassId;
-        private static String mPersistenceFilePath = ConfigurationManager.AppSettings["PersistenceClassIdFilePath"];
 
         /// <summary>
         /// Initializes a ClassId.
@@ -29,6 +29,10 @@ namespace Diary
             {
                 throw new ArgumentException("ClassName cannot contain a space.", className);
             }
+
+            var persistenceFolderPath = ConfigurationManager.AppSettings["PersistenceFolderPath"];
+            var persistenceFileName = ConfigurationManager.AppSettings["PersistenceClassIdFileName"];
+            mPersistenceFilePath = String.Concat(persistenceFolderPath, @"\", persistenceFileName);
 
             mClassId = GetClassId(className);
         }

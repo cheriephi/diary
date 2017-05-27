@@ -21,7 +21,7 @@ namespace DiaryTest
         [TestInitialize]
         public void Init()
         {
-            fixture = new TransientPersistenceFreshFixture("ClassId");
+            fixture = new TransientPersistenceFreshFixture();
             fixture.Init();
         }
 
