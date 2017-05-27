@@ -4,6 +4,9 @@ using System.IO;
 
 namespace Diary
 {
+    /// <summary>
+    /// Manages application identities in persistent storage.
+    /// </summary>
     public class KeyFile
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace Diary
             mPathname += ("/");
             mPathname += (filename);
             mPathname += (".ids");
-            mKeys = new Dictionary<ObjectId, OffsetAndLength>();
+            mKeys = new Dictionary<ObjectId, OffsetAndLength>(new DictionaryComparer());
             Load();
         }
 
@@ -108,6 +111,23 @@ namespace Diary
 
                 fileReader.Close();
             }
+        }
+
+        /// <summary>
+        /// Ensures KeyFile key value lookups are based on the key's values, not their identity.
+        /// </summary>
+        class DictionaryComparer : IEqualityComparer<ObjectId>
+        {
+            public bool Equals(ObjectId x, ObjectId y)
+            {
+                return x.CompareTo(y) == 0;
+            }
+
+            public int GetHashCode(ObjectId objectId)
+            {
+                return objectId.AsInt().GetHashCode();
+            }
+
         }
 
         class OffsetAndLength

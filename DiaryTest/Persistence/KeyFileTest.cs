@@ -42,5 +42,26 @@ namespace DiaryTest
 
             keyFile.Save();
         }
+
+        /// <summary>
+        /// Test KeyFile lookups work with shallow equality checks. If the ObjectId is deep copied, the key file should still treat the copied objectId as identical.
+        /// </summary>
+        [TestMethod]
+        public void TestKeyLookup()
+        {
+            var keyFile = new KeyFile("C:/Persistence", "Test");
+
+            var objectId = new ObjectId();
+            var deepCopiedObjectId = new ObjectId(objectId.AsInt());
+
+            keyFile.Update(objectId, 100, 1000);
+
+            int offset = 0;
+            int dataSizeBytes = 0;
+
+            Assert.IsTrue(keyFile.Get(objectId, ref offset, ref dataSizeBytes), "Original");
+            Assert.IsTrue(keyFile.Get(deepCopiedObjectId, ref offset, ref dataSizeBytes), "Deep copy");
+
+        }
     }
 }
