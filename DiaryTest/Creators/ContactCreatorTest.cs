@@ -7,17 +7,47 @@ namespace DiaryTest
     /// <summary>
     /// Tests the ContactCreator class.
     /// </summary>
+    /// <see cref="ObjectIdTest">About thread safety.</see>
     [TestClass]
-    public class ContactCreatorTest
+    public unsafe class ContactCreatorTest
     {
+        private TransientPersistenceFreshFixture fixture;
+
+        #region Test Initialize and Cleanup Methods
+        /// <summary>
+        /// Resets the environment.
+        /// </summary>
+        /// <see cref="TransientPersistenceFreshFixture"/>
+        [TestInitialize]
+        public void Init()
+        {
+            fixture = new TransientPersistenceFreshFixture();
+            fixture.Init();
+        }
+
+        /// <summary>
+        /// Reverts the environment back to its original state.
+        /// </summary>
+        /// <see cref="TransientPersistenceFreshFixture"/>
+        [TestCleanup]
+        public void Cleanup()
+        {
+            fixture.Cleanup();
+        }
+        #endregion
+        
         /// <summary>
         /// Tests ContactCreator Constructor via Contact.GetName.
         /// </summary>
         [TestMethod]
         public void GetContactNameTest()
         {
-            var builder = new ContactBuilder().SetContactCreator(new ContactCreator());
-            new ContactTest().GetContactNameTest(builder);
+            // Wrap the creator in a using block so its resources will get released when the program no longer needs it.
+            using (var creator = new ContactCreator())
+            {
+                var builder = new ContactBuilder().SetContactCreator(creator);
+                new ContactTest().GetContactNameTest(builder);
+            }
         }
 
         /// <summary>
@@ -26,8 +56,11 @@ namespace DiaryTest
         [TestMethod]
         public void GetContactInfoTest()
         {
-            var builder = new ContactBuilder().SetContactCreator(new ContactCreator());
-            new ContactTest().GetContactInfoTest(builder);
+            using (var creator = new ContactCreator())
+            {
+                var builder = new ContactBuilder().SetContactCreator(creator);
+                new ContactTest().GetContactInfoTest(builder);
+            }
         }
 
         /// <summary>
@@ -36,26 +69,27 @@ namespace DiaryTest
         [TestMethod]
         public void SaveAndLoadTest()
         {
-            var contactCreator = new ContactCreator();
+            var contacts = new Contact[3];
 
-            var contacts = new Contact[] 
+            using (var creator = new ContactCreator())
             {
-                (Contact)contactCreator.CreateNew("Brian", "Rothwell", "brothwell@q.com"),
-                (Contact)contactCreator.CreateNew("Billy", "Bob", "slingblade@msn.com"),
-                (Contact)contactCreator.CreateNew("Jenny", "Twotone", "(210) 867-5308")
-            };
+                contacts[0] = (Contact)creator.CreateNew("Brian", "Rothwell", "brothwell@q.com");
+                contacts[1] = (Contact)creator.CreateNew("Billy", "Bob", "slingblade@msn.com");
+                contacts[2] = (Contact)creator.CreateNew("Jenny", "Twotone", "(210) 867-5308");
 
-            contactCreator.Save();
+                creator.Save();
+            }
 
-            contactCreator = new ContactCreator();   // Re-open the files.
-
-            foreach (var contact in contacts)
+            using (var creator = new ContactCreator())  // Re-open the files.
             {
-                var objectId = contact.GetObjectId();
-                var savedContact = (Contact)contactCreator.Create(objectId);
+                foreach (var contact in contacts)
+                {
+                    var objectId = contact.GetObjectId();
+                    var savedContact = (Contact)creator.Create(objectId);
 
-                Assert.AreEqual(ContactTest.ToString(contact), ContactTest.ToString(savedContact), "Names");
-                Assert.IsTrue(savedContact.GetContactInfo().CompareTo(contact.GetContactInfo()) == 0, "ContactInfo");
+                    Assert.AreEqual(ContactTest.ToString(contact), ContactTest.ToString(savedContact), "Names");
+                    Assert.IsTrue(savedContact.GetContactInfo().CompareTo(contact.GetContactInfo()) == 0, "ContactInfo");
+                }
             }
         }
     }

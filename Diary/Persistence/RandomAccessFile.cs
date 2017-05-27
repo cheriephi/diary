@@ -19,9 +19,7 @@ namespace Diary
         /// <param name="pathname"></param>
         public RandomAccessFile(String pathname)
         {
-            mFileStream = new FileStream(pathname, FileMode.OpenOrCreate,
-            FileAccess.ReadWrite);
-
+            mFileStream = new FileStream(pathname, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             mBinaryReader = new BinaryReader(mFileStream);
             mBinaryWriter = new BinaryWriter(mFileStream);
         }
@@ -75,7 +73,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Reads up to b.length bytes of data from this file into an array of bytes.
+        /// Reads up to dataSizeBytes of data from this file into an array of bytes.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="dataSizeBytes"></param>

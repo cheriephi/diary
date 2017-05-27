@@ -16,23 +16,16 @@ namespace Diary
             mPathname += (filename);
             mPathname += (".dat");
 
-            try
+            mFileStream = new RandomAccessFile(mPathname);
+            if (mFileStream.length() > 0)
             {
-                mFileStream = new RandomAccessFile(mPathname);
-                if (mFileStream.length() > 0)
-                {
-                    mFileStream.seek(0);
-                    mBytesUsed = mFileStream.readInt();
-                }
-                else
-                {
-                    mBytesUsed = 0;
-                    mFileStream.writeInt(mBytesUsed);
-                }
+                mFileStream.seek(0);
+                mBytesUsed = mFileStream.readInt();
             }
-            catch (Exception ex)
+            else
             {
-                String s = ex.ToString();
+                mBytesUsed = 0;
+                mFileStream.writeInt(mBytesUsed);
             }
         }
 

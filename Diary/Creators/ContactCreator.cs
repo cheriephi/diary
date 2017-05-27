@@ -41,7 +41,7 @@ namespace Diary
         /// <returns></returns>
         public override DiaryProduct Create(ObjectId objectId)
         {
-            // Check if it already exists 
+            // Check if it already exists in memory.
             for (int childIndex = 0; childIndex < mContacts.GetChildCount(); ++childIndex)
             {
                 Contact contact = mContacts.GetChild(childIndex);
