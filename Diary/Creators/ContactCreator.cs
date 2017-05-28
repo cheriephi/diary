@@ -55,16 +55,16 @@ namespace Diary
             VariableLengthRecord record = Read(objectId);
             if (record != null)
             {
-                String firstName = String.Empty;
+                var firstName = String.Empty;
                 if (record.GetValue(0, ref firstName))
                 {
-                    String lastName = String.Empty;
+                    var lastName = String.Empty;
                     if (record.GetValue(1, ref lastName))
                     {
-                        String contactInfo = String.Empty;
+                        var contactInfo = String.Empty;
                         if (record.GetValue(2, ref contactInfo))
                         {
-                            Contact contact = new Contact(objectId, firstName, lastName, contactInfo);
+                            var contact = new Contact(objectId, firstName, lastName, contactInfo);
 
                             mContacts.Add(contact);
                             return contact;

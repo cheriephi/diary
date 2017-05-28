@@ -14,6 +14,7 @@ namespace DiaryTest
         private String label = "";
         private Date date = new Date();
         private String details = "";
+        private ReminderCreator creator;
 
         internal ReminderBuilder SetObjectId(ObjectId objectId)
         {
@@ -39,9 +40,24 @@ namespace DiaryTest
             return this;
         }
 
+        internal ReminderBuilder SetCreator(ReminderCreator creator)
+        {
+            this.creator = creator;
+            return this;
+        }
+
         internal Reminder Build()
         {
-            var reminder = new Reminder(objectId, label, date, details);
+            Reminder reminder;
+            if (creator != null)
+            {
+                reminder = (Reminder)creator.CreateNew(label, date, details);
+            }
+            else
+            {
+                reminder = new Reminder(objectId, label, date, details);
+            }
+
             return reminder;
         }
     }

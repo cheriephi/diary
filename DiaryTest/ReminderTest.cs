@@ -11,6 +11,21 @@ namespace DiaryTest
     [TestClass]
     public class ReminderTest
     {
+        #region Generic test functions
+        /// <summary>
+        /// Simple data testing of GetDetails method.
+        /// </summary>
+        internal void GetDetailsTest(ReminderBuilder builder)
+        {
+            var expected = "Test Details";
+
+            var reminder = builder.SetDetails(expected).Build();
+            var actual = reminder.GetDetails();
+
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
         /// <summary>
         /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
@@ -47,17 +62,12 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of GetDetails method.
+        /// Reminder.GetDetails test.
         /// </summary>
         [TestMethod]
         public void GetDetailsTest()
         {
-            var expected = "Test Details";
-
-            var reminder = new ReminderBuilder().SetDetails(expected).Build();
-            var actual = reminder.GetDetails();
-
-            Assert.AreEqual(expected, actual);
+            GetDetailsTest(new ReminderBuilder());
         }
 
         /// <summary>

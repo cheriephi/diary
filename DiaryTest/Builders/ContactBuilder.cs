@@ -39,7 +39,7 @@ namespace DiaryTest
             return this;
         }
 
-        internal ContactBuilder SetContactCreator(ContactCreator creator)
+        internal ContactBuilder SetCreator(ContactCreator creator)
         {
             this.creator = creator;
             return this;

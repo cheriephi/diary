@@ -1,6 +1,5 @@
 ﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace DiaryTest
 {
@@ -45,7 +44,7 @@ namespace DiaryTest
             // Wrap the creator in a using block so its resources will get released when the program no longer needs it.
             using (var creator = new ContactCreator())
             {
-                var builder = new ContactBuilder().SetContactCreator(creator);
+                var builder = new ContactBuilder().SetCreator(creator);
                 new ContactTest().GetContactNameTest(builder);
             }
         }
@@ -58,7 +57,7 @@ namespace DiaryTest
         {
             using (var creator = new ContactCreator())
             {
-                var builder = new ContactBuilder().SetContactCreator(creator);
+                var builder = new ContactBuilder().SetCreator(creator);
                 new ContactTest().GetContactInfoTest(builder);
             }
         }

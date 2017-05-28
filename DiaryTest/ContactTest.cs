@@ -35,7 +35,7 @@ namespace DiaryTest
         }
         #endregion
 
-        #region Contact generic test functions
+        #region Generic test functions
         /// <summary>
         /// Simple data testing of GetContactName method.
         /// </summary>
@@ -67,7 +67,7 @@ namespace DiaryTest
         #endregion
 
         /// <summary>
-        /// Contact get name test.
+        /// Contact.GetName test.
         /// </summary>
         [TestMethod]
         public void GetNameTest()
@@ -76,7 +76,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Contact get contact info test.
+        /// Contact.GetContactInfo test.
         /// </summary>
         [TestMethod]
         public void GetContactInfo()

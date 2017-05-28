@@ -3,18 +3,22 @@
 namespace Diary
 {
     /// <summary>
-    /// Daily reminders
+    /// Daily reminders.
     /// </summary>
     public class Reminder: CalendarEvent
     {
+        private Date mOccurs;
+        private String mDetails;
+        
         /// <summary>
-        /// Creates a reminder
+        /// Initializes a reminder.
         /// </summary>
         /// <param name="objectId"></param>
         /// <param name="label"></param>
         /// <param name="date"></param>
         /// <param name="details"></param>
-        public Reminder(ObjectId objectId, String label, Date date, String details) : base(new ClassId("Reminder"), objectId, label)
+        public Reminder(ObjectId objectId, String label, Date date, String details) 
+            : base(new ClassId("Reminder"), objectId, label)
         {
             mDetails = details;
             // Deep copy the input date to prevent aliasing bugs
@@ -49,8 +53,5 @@ namespace Diary
             int compare = date.CompareTo(mOccurs);
             return (compare == 0);
         }
-
-        private Date mOccurs;
-        private String mDetails;
     }
 }
