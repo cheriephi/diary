@@ -31,13 +31,14 @@ namespace DiaryTest
         public void GetChildContactTest()
         {
             var relation = new Relation1M<Contact>();
-            var contact = (Contact)new ContactBuilder().SetFirstName("Fred").SetLastName("Flintstone").Build();
+
+            var builder = new ContactBuilder().SetFirstName("Fred").SetLastName("Flintstone");
+
             relation.Add((Contact)new ContactBuilder().Build());
-            relation.Add((Contact)contact);
+            relation.Add((Contact)builder.Build());
             relation.Add((Contact)new ContactBuilder().Build());
 
-            var actual = relation.GetChild(1);
-            Assert.AreEqual(ContactTest.ToString(contact), ContactTest.ToString(actual));
+            new DiaryProductHelper().assertEquals(builder, relation.GetChild(1), "");
         }
 
         /// <summary>

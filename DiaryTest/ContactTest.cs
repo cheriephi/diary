@@ -11,18 +11,6 @@ namespace DiaryTest
     [TestClass]
     public class ContactTest
     {
-        #region Helper Methods
-        /// <summary>
-        /// Formats the input elements as a string.
-        /// </summary>
-        /// <returns>FirstName,LastName</returns>
-        public static string ToString(Contact contact)
-        {
-            var name = contact.GetName();
-            return String.Concat(name[0], ",", name[1]);
-        }
-        #endregion
-
         /// <summary>
         /// Tests the Contact accessors through its constructor.
         /// </summary>

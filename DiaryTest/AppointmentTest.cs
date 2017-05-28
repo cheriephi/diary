@@ -83,7 +83,9 @@ namespace DiaryTest
         {
             var appointment = (Appointment)builder.Build();
 
-            var contact = (Contact)new ContactBuilder().SetFirstName("Yogi").SetLastName("Bear").Build();
+            var contactBuilder = new ContactBuilder();
+            contactBuilder.SetFirstName("Yogi").SetLastName("Bear");
+            var contact = (Contact)contactBuilder.Build();
 
             appointment.AddRelation((Contact)new ContactBuilder().Build());
             appointment.AddRelation(contact);
@@ -92,10 +94,7 @@ namespace DiaryTest
             var relation = appointment.GetContacts();
             Assert.AreEqual(3, relation.GetChildCount(), "Count");
 
-            var expected = ContactTest.ToString(contact);
-            var actual = ContactTest.ToString(relation.GetChild(1));
-
-            Assert.AreEqual(expected, actual, "Data");
+            new DiaryProductHelper().assertEquals(contactBuilder, relation.GetChild(1), "Data");
         }
         #endregion
 
