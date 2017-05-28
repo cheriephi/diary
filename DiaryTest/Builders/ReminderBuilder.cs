@@ -13,6 +13,11 @@ namespace DiaryTest
         private Date date = new Date();
         private String details = "";
 
+        internal String GetLabel()
+        {
+            return label;
+        }
+
         internal ReminderBuilder SetLabel(String label)
         {
             this.label = label;
@@ -23,6 +28,11 @@ namespace DiaryTest
         {
             this.date = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
             return this;
+        }
+
+        internal String GetDetails()
+        {
+            return details;
         }
 
         internal ReminderBuilder SetDetails(String details)

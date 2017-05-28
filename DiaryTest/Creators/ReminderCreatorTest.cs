@@ -34,34 +34,24 @@ namespace DiaryTest
             fixture.Cleanup();
         }
         #endregion
+
         /// <summary>
-        /// Simple data test of GetLabel method.
+        /// Tests the Reminder accessors through the ReminderCreator constructor.
         /// </summary>
         [TestMethod]
-        public void GetLabelTest()
+        public void ReminderCreatorConstructorTest()
         {
             using (var creator = new ReminderCreator())
             {
-                var expected = "Test Label";
+                var builder = new ReminderBuilder();
+                builder.SetCreator(creator);
+                builder.SetLabel("Test Label");
+                builder.SetDetails("Test Details");
 
-                var reminder = (Reminder)new ReminderBuilder().SetLabel(expected).SetCreator(creator).Build();
-
-                CalendarEventTest.GetLabelTest(reminder, expected);
+                new DiaryProductHelper().assertEquals(builder, (Reminder)builder.Build(), "");
             }
         }
 
-        /// <summary>
-        /// Tests ReminderCreator Constructor via Reminder.GetDetails.
-        /// </summary>
-        [TestMethod]
-        public void GetDetailsTest()
-        {
-            using (var creator = new ReminderCreator())
-            {
-                var builder = new ReminderBuilder().SetCreator(creator);
-                new ReminderTest().GetDetailsTest((ReminderBuilder)builder);
-            }
-        }
 
         /// <summary>
         /// Tests the boundaries around the IsOccuring method for a simple scenario.

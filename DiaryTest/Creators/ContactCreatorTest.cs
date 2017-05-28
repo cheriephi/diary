@@ -36,7 +36,7 @@ namespace DiaryTest
         #endregion
         
         /// <summary>
-        /// Tests the Contact accessors through the ContactCreator Constructor.
+        /// Tests the Contact accessors through the ContactCreator constructor.
         /// </summary>
         [TestMethod]
         public void ContactCreatorConstructorTest()
@@ -77,10 +77,8 @@ namespace DiaryTest
                     var objectId = contact.GetObjectId();
                     var savedContact = (Contact)creator.Create(objectId);
 
-                    Assert.AreEqual(ContactTest.ToString(contact), ContactTest.ToString(savedContact), "Names");
-
-                    Assert.AreEqual(savedContact.GetName()[0], contact.GetName()[0], "firstName");
-                    Assert.AreEqual(savedContact.GetName()[1], contact.GetName()[1], "lastName");
+                    Assert.AreEqual(contact.GetName()[0], savedContact.GetName()[0], "firstName");
+                    Assert.AreEqual(contact.GetName()[1], savedContact.GetName()[1], "lastName");
 
                     Assert.IsTrue(savedContact.GetContactInfo().CompareTo(contact.GetContactInfo()) == 0, "contactInfo");
                 }

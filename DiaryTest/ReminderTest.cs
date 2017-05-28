@@ -11,21 +11,6 @@ namespace DiaryTest
     [TestClass]
     public class ReminderTest
     {
-        #region Generic test functions
-        /// <summary>
-        /// Simple data testing of GetDetails method.
-        /// </summary>
-        internal void GetDetailsTest(ReminderBuilder builder)
-        {
-            var expected = "Test Details";
-
-            var reminder = (Reminder)builder.SetDetails(expected).Build();
-            var actual = reminder.GetDetails();
-
-            Assert.AreEqual(expected, actual);
-        }
-        #endregion
-
         /// <summary>
         /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
@@ -47,27 +32,18 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual, "After");
         }
-        
-        /// <summary>
-        /// Simple data test of GetLabel method.
-        /// </summary>
-        [TestMethod]
-        public void GetLabelTest()
-        {
-            var expected = "Test Label";
-
-            var reminder = new ReminderBuilder().SetLabel(expected).Build();
-
-            CalendarEventTest.GetLabelTest((Reminder)reminder, expected);
-        }
 
         /// <summary>
-        /// Reminder.GetDetails test.
+        /// Tests the Reminder accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetDetailsTest()
+        public void ReminderConstructorTest()
         {
-            GetDetailsTest(new ReminderBuilder());
+            var builder = new ReminderBuilder();
+            builder.SetLabel("Test Label");
+            builder.SetDetails("Test Details");
+
+            new DiaryProductHelper().assertEquals(builder, (Reminder)builder.Build(), "");
         }
 
         /// <summary>
@@ -99,16 +75,6 @@ namespace DiaryTest
         }
 
         #region Persistence Tests
-        /// <summary>
-        /// Tests the ClassId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetClassIdTest()
-        {
-            var reminder = new ReminderBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(reminder, "Reminder");
-        }
-
         /// <summary>
         /// Tests the ObjectId accessor.
         /// </summary>
