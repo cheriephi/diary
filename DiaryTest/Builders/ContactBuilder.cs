@@ -13,16 +13,31 @@ namespace DiaryTest
         private String lastName = "";
         private String contactInfo = "";
 
+        internal String GetFirstName()
+        {
+            return firstName;
+        }
+
         internal ContactBuilder SetFirstName(String firstName)
         {
             this.firstName = firstName;
             return this;
         }
 
+        internal String GetLastName()
+        {
+            return lastName;
+        }
+
         internal ContactBuilder SetLastName(String lastName)
         {
             this.lastName = lastName;
             return this;
+        }
+
+        internal String GetContactInfo()
+        {
+            return contactInfo;
         }
 
         internal ContactBuilder SetContactInfo(String contactInfo)

@@ -13,98 +13,27 @@ namespace DiaryTest
     {
         #region Helper Methods
         /// <summary>
-        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
+        /// Formats the input elements as a string.
         /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
         /// <returns>FirstName,LastName</returns>
-        public static string ToString(String firstName, String lastName)
-        {
-            return String.Concat(firstName, ",", lastName);
-        }
-        
-        /// <summary>
-         /// Formats the input elements as a string.
-         /// </summary>
-         /// <returns>FirstName,LastName</returns>
-         /// <seealso cref="ToString(string, string)"/>
         public static string ToString(Contact contact)
         {
             var name = contact.GetName();
-            return ToString(name[0], name[1]);
-        }
-        #endregion
-
-        #region Generic test functions
-        /// <summary>
-        /// Simple data testing of GetContactName method.
-        /// </summary>
-        internal void GetContactNameTest(ContactBuilder builder)
-        {
-            var firstName = "First";
-            var lastName = "Last";
-
-            var contact = (Contact)new ContactBuilder().SetFirstName(firstName).SetLastName(lastName).Build();
-
-            var expected = ToString(firstName, lastName);
-            var actual = ToString(contact);
-
-            Assert.AreEqual(expected, actual);
-        }
-        
-        /// <summary>
-        /// Simple data testing of GetContactInfo method.
-        /// </summary>
-        internal void GetContactInfoTest(ContactBuilder builder)
-        {
-            var expected = "Contact Info";
-            var contact = (Contact)builder.SetContactInfo(expected).Build();
-
-            var actual = contact.GetContactInfo();
-
-            Assert.AreEqual(expected, actual);
+            return String.Concat(name[0], ",", name[1]);
         }
         #endregion
 
         /// <summary>
-        /// Contact.GetName test.
+        /// Tests the Contact accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetNameTest()
+        public void ContactConstructorTest()
         {
-            GetContactNameTest(new ContactBuilder());
-        }
+            var builder = new ContactBuilder();
+            builder.SetFirstName("First").SetLastName("Last");
+            builder.SetContactInfo("ContactInfo");
 
-        /// <summary>
-        /// Contact.GetContactInfo test.
-        /// </summary>
-        [TestMethod]
-        public void GetContactInfo()
-        {
-            GetContactInfoTest(new ContactBuilder());
+            new DiaryProductHelper().assertEquals(builder, (Contact)builder.Build(), "");
         }
-
-        #region Persistence Tests
-        /// <summary>
-        /// Tests the ClassId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetClassIdTest()
-        {
-            var contact = new ContactBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(contact, "Contact");
-        }
-
-        /// <summary>
-        /// Tests the ObjectId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetObjectIdTest()
-        {
-            var objectId = new ObjectId();
-            var contact = new ContactBuilder().SetObjectId(objectId).Build();
-            new DiaryProductTest().GetObjectIdTest(contact, objectId);
-        }
-        #endregion
     }
 }

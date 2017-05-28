@@ -1,0 +1,23 @@
+﻿using Diary;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+
+namespace DiaryTest
+{
+    class DiaryProductHelper
+    {
+        /// <summary>
+        /// Tests all Contact fields match the expected values.
+        /// </summary>
+        /// <remarks>ObjectId should be tested separately via its ability to retrieve from persistent storage.</remarks>
+        internal void assertEquals(ContactBuilder expected, Contact actual, string message)
+        {
+            Assert.AreEqual(expected.GetFirstName(), actual.GetName()[0], String.Format("{0} firstName", message));
+            Assert.AreEqual(expected.GetLastName(), actual.GetName()[1], String.Format("{0} lastName", message));
+            Assert.AreEqual(expected.GetContactInfo(), actual.GetContactInfo(), String.Format("{0} contactInfo", message));
+
+            var expectedClassId = new ClassId("Contact");
+            Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Format("{0} classId", message));
+        }
+    }
+}

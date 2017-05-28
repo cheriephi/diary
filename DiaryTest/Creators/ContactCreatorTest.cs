@@ -36,29 +36,20 @@ namespace DiaryTest
         #endregion
         
         /// <summary>
-        /// Tests ContactCreator Constructor via Contact.GetName.
+        /// Tests the Contact accessors through the ContactCreator Constructor.
         /// </summary>
         [TestMethod]
-        public void GetContactNameTest()
+        public void ContactCreatorConstructorTest()
         {
             // Wrap the creator in a using block so its resources will get released when the program no longer needs it.
             using (var creator = new ContactCreator())
             {
-                var builder = new ContactBuilder().SetCreator(creator);
-                new ContactTest().GetContactNameTest((ContactBuilder)builder);
-            }
-        }
+                var builder = new ContactBuilder();
+                builder.SetCreator(creator);
+                builder.SetFirstName("First").SetLastName("Last");
+                builder.SetContactInfo("ContactInfo");
 
-        /// <summary>
-        /// Tests ContactCreator Constructor Contact.GetContactInfo.
-        /// </summary>
-        [TestMethod]
-        public void GetContactInfoTest()
-        {
-            using (var creator = new ContactCreator())
-            {
-                var builder = new ContactBuilder().SetCreator(creator);
-                new ContactTest().GetContactInfoTest((ContactBuilder)builder);
+                new DiaryProductHelper().assertEquals(builder, (Contact)builder.Build(), "");
             }
         }
 
@@ -87,7 +78,11 @@ namespace DiaryTest
                     var savedContact = (Contact)creator.Create(objectId);
 
                     Assert.AreEqual(ContactTest.ToString(contact), ContactTest.ToString(savedContact), "Names");
-                    Assert.IsTrue(savedContact.GetContactInfo().CompareTo(contact.GetContactInfo()) == 0, "ContactInfo");
+
+                    Assert.AreEqual(savedContact.GetName()[0], contact.GetName()[0], "firstName");
+                    Assert.AreEqual(savedContact.GetName()[1], contact.GetName()[1], "lastName");
+
+                    Assert.IsTrue(savedContact.GetContactInfo().CompareTo(contact.GetContactInfo()) == 0, "contactInfo");
                 }
             }
         }
