@@ -26,12 +26,20 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of GetLabel method.
+        /// Tests the PeriodicAppointment accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetLabelTest()
+        public void PeriodicAppointmentConstructorTest()
         {
-            new AppointmentTest().GetLabelTest(new PeriodicAppointmentBuilder());
+            var builder = new PeriodicAppointmentBuilder();
+            builder.SetLabel("Test Label");
+            builder.SetDetails("Detail text");
+
+            builder.SetOccurs(new DateTime(new Date(1, Date.Month.JANUARY, 2003), 0, 0));
+            builder.SetNotToExceedDateTime(new DateTime(new Date(2, Date.Month.JANUARY, 2003), 0, 0));
+            builder.SetDurationMinutes(42);
+
+            new DiaryProductHelper().assertEquals(builder, (PeriodicAppointment)builder.Build(), "");
         }
 
         /// <summary>
@@ -106,19 +114,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Data testing of start time method.
-        /// </summary>
-        [TestMethod]
-        public void GetDurationMinutesTest()
-        {
-            var builder = new PeriodicAppointmentBuilder();
-            builder.SetOccurs(new DateTime(new Date(1, Date.Month.JANUARY, 2003), 0, 0));
-            builder.SetNotToExceedDateTime(new DateTime(new Date(2, Date.Month.JANUARY, 2003), 0, 0));
-
-            new AppointmentTest().GetDurationMinutesTest(builder);
-        }
-
-        /// <summary>
         /// Data testing of IsOcurringOn method.
         /// </summary>
         /// <see href="http://stackoverflow.com/questions/25541795/nested-xml-for-data-driven-unit-test"/>
@@ -186,7 +181,7 @@ namespace DiaryTest
         {
             var severalDaysWorthOfMinutes = 1440 * 3;
 
-            PeriodicAppointmentBuilder builder = new PeriodicAppointmentBuilder();
+            var builder = new PeriodicAppointmentBuilder();
             builder.SetOccurs(new Diary.DateTime());
             builder.SetDurationMinutes(severalDaysWorthOfMinutes);
             builder.SetNotToExceedDateTime(new Diary.DateTime());
@@ -223,15 +218,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Periodic appointment get details test.
-        /// </summary>
-        [TestMethod]
-        public void GetDetailsTest()
-        {
-            new AppointmentTest().GetDetailsTest(new PeriodicAppointmentBuilder());
-        }
-
-        /// <summary>
         /// Periodic appointment get contacts test.
         /// </summary>
         [TestMethod]
@@ -242,16 +228,6 @@ namespace DiaryTest
 
 
         #region Persistence Tests
-        /// <summary>
-        /// Tests the ClassId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetClassIdTest()
-        {
-            var periodicAppointment = new PeriodicAppointmentBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(periodicAppointment, "PeriodicAppointment");
-        }
-
         /// <summary>
         /// Tests the ObjectId accessor.
         /// </summary>

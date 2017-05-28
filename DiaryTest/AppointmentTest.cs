@@ -42,20 +42,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of GetLabel method.
-        /// </summary>
-        /// <param name="builder"></param>
-        internal void GetLabelTest(AppointmentBuilder builder)
-        {
-            var expected = "Test Label";
-
-            var appointment = (Appointment)builder.SetLabel(expected).Build();
-
-            CalendarEventTest.GetLabelTest(appointment, expected);
-        }
-
-
-        /// <summary>
         /// Tests that the StartTime field cannot be modified outside of its accessor.
         /// </summary>
         /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
@@ -91,32 +77,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of DurationMinutes method using polymorphism.
-        /// </summary>
-        internal void GetDurationMinutesTest(AppointmentBuilder builder)
-        {
-            var expected = 42;
-
-            var appointment = (Appointment)builder.SetDurationMinutes(expected).Build();
-            var actual = appointment.GetDurationMinutes();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Simple data test of GetDetails method using polymorphism.
-        /// </summary>
-        internal void GetDetailsTest(AppointmentBuilder builder)
-        {
-            var expected = "Detail text";
-
-            var appointment = (Appointment)builder.SetDetails(expected).Build();
-            var actual = appointment.GetDetails();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
         /// Tests GetContacts method using polymorphism.
         /// </summary>
         internal void GetContactsTest(AppointmentBuilder builder)
@@ -146,15 +106,6 @@ namespace DiaryTest
         public void ConstructorAliasingTest()
         {
             ConstructorAliasingTest(new AppointmentBuilder());
-        }
-        
-        /// <summary>
-        /// Appointment GetLabel test.
-        /// </summary>
-        [TestMethod]
-        public void GetLabelTest()
-        {
-            GetLabelTest(new AppointmentBuilder());
         }
 
         /// <summary>
@@ -255,21 +206,18 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Appointment get duration minutes test.
+        /// Tests the Appointment accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetDurationMinutesTest()
+        public void AppointmentConstructorTest()
         {
-            GetDurationMinutesTest(new AppointmentBuilder());
-        }
+            var builder = new AppointmentBuilder();
+            builder.SetLabel("Test Label");
+            builder.SetDetails("Detail text");
 
-        /// <summary>
-        /// Appointment get details test.
-        /// </summary>
-        [TestMethod]
-        public void GetDetailsTest()
-        {
-            GetDetailsTest(new AppointmentBuilder());
+            builder.SetDurationMinutes(42);
+
+            new DiaryProductHelper().assertEquals(builder, (Appointment)builder.Build(), "");
         }
 
         /// <summary>
@@ -280,17 +228,8 @@ namespace DiaryTest
         {
             GetContactsTest(new AppointmentBuilder());
         }
-        #region Persistence Tests
-        /// <summary>
-        /// Tests the ClassId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetClassIdTest()
-        {
-            var appointment = new AppointmentBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(appointment, "Appointment");
-        }
 
+        #region Persistence Tests
         /// <summary>
         /// Tests the ObjectId accessor.
         /// </summary>
