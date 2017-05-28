@@ -4,23 +4,14 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Builder factory pattern (a creational design pattern), to enable anoymous creation of the System Under Test, but parameterize necessary values.
-    /// The object can be incrementally built from parameters.
-    /// This keeps tests clutter free from in-line setup and minimizes obscure tests.
+    /// Builder factory pattern for Reminder class.
     /// </summary>
-    internal class ReminderBuilder
+    /// <see cref="DiaryBuilder"/>
+    internal class ReminderBuilder : DiaryBuilder
     {
-        private ObjectId objectId = new ObjectId();
         private String label = "";
         private Date date = new Date();
         private String details = "";
-        private ReminderCreator creator;
-
-        internal ReminderBuilder SetObjectId(ObjectId objectId)
-        {
-            this.objectId = objectId;
-            return this;
-        }
 
         internal ReminderBuilder SetLabel(String label)
         {
@@ -40,14 +31,10 @@ namespace DiaryTest
             return this;
         }
 
-        internal ReminderBuilder SetCreator(ReminderCreator creator)
+        internal override DiaryProduct Build()
         {
-            this.creator = creator;
-            return this;
-        }
+            var creator = (ReminderCreator)this.GetCreator();
 
-        internal Reminder Build()
-        {
             Reminder reminder;
             if (creator != null)
             {
@@ -55,7 +42,7 @@ namespace DiaryTest
             }
             else
             {
-                reminder = new Reminder(objectId, label, date, details);
+                reminder = new Reminder(base.GetObjectId(), label, date, details);
             }
 
             return reminder;

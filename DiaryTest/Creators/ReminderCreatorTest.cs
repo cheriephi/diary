@@ -44,7 +44,7 @@ namespace DiaryTest
             {
                 var expected = "Test Label";
 
-                var reminder = new ReminderBuilder().SetLabel(expected).SetCreator(creator).Build();
+                var reminder = (Reminder)new ReminderBuilder().SetLabel(expected).SetCreator(creator).Build();
 
                 CalendarEventTest.GetLabelTest(reminder, expected);
             }
@@ -59,7 +59,7 @@ namespace DiaryTest
             using (var creator = new ReminderCreator())
             {
                 var builder = new ReminderBuilder().SetCreator(creator);
-                new ReminderTest().GetDetailsTest(builder);
+                new ReminderTest().GetDetailsTest((ReminderBuilder)builder);
             }
         }
 
@@ -72,7 +72,7 @@ namespace DiaryTest
             using (var creator = new ReminderCreator())
             {
                 var reminderDate = new Date(30, Date.Month.SEPTEMBER, 2000);
-                var reminder = new ReminderBuilder().SetDate(reminderDate).SetCreator(creator).Build();
+                var reminder = (Reminder)new ReminderBuilder().SetDate(reminderDate).SetCreator(creator).Build();
 
                 var expectedStartDate = reminderDate;
                 var expectedEndDate = new Date(reminderDate.GetDay(), reminderDate.GetMonth(), reminderDate.GetYear());

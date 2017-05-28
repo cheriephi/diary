@@ -4,22 +4,14 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Contact creator.
+    /// Builder factory pattern for Contact class.
     /// </summary>
-    /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
-    internal class ContactBuilder
+    /// <see cref="DiaryBuilder"/>
+    internal class ContactBuilder : DiaryBuilder
     {
-        private ObjectId objectId = new ObjectId();
         private String firstName = "";
         private String lastName = "";
         private String contactInfo = "";
-        private ContactCreator creator;
-
-        internal ContactBuilder SetObjectId(ObjectId objectId)
-        {
-            this.objectId = objectId;
-            return this;
-        }
 
         internal ContactBuilder SetFirstName(String firstName)
         {
@@ -39,14 +31,10 @@ namespace DiaryTest
             return this;
         }
 
-        internal ContactBuilder SetCreator(ContactCreator creator)
+        internal override DiaryProduct Build()
         {
-            this.creator = creator;
-            return this;
-        }
+            var creator = (ContactCreator)this.GetCreator();
 
-        internal Contact Build()
-        {
             Contact contact;
             if (creator != null)
             {
@@ -54,7 +42,7 @@ namespace DiaryTest
             }
             else
             {
-                contact = new Contact(objectId, firstName, lastName, contactInfo);
+                contact = new Contact(base.GetObjectId(), firstName, lastName, contactInfo);
             }
 
             return contact;

@@ -44,7 +44,7 @@ namespace DiaryTest
             var firstName = "First";
             var lastName = "Last";
 
-            var contact = new ContactBuilder().SetFirstName(firstName).SetLastName(lastName).Build();
+            var contact = (Contact)new ContactBuilder().SetFirstName(firstName).SetLastName(lastName).Build();
 
             var expected = ToString(firstName, lastName);
             var actual = ToString(contact);
@@ -58,7 +58,7 @@ namespace DiaryTest
         internal void GetContactInfoTest(ContactBuilder builder)
         {
             var expected = "Contact Info";
-            var contact = builder.SetContactInfo(expected).Build();
+            var contact = (Contact)builder.SetContactInfo(expected).Build();
 
             var actual = contact.GetContactInfo();
 

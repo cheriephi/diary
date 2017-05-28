@@ -28,7 +28,7 @@ namespace DiaryTest
         internal void ConstructorAliasingTest(AppointmentBuilder builder)
         {
             var dateTime = new Diary.DateTime();
-            var appointment = builder.SetOccurs(dateTime).Build();
+            var appointment = (Appointment)builder.SetOccurs(dateTime).Build();
 
             var expected = 0;
             var actual = appointment.GetStartTime().GetMinutes();
@@ -49,7 +49,7 @@ namespace DiaryTest
         {
             var expected = "Test Label";
 
-            var appointment = builder.SetLabel(expected).Build();
+            var appointment = (Appointment)builder.SetLabel(expected).Build();
 
             CalendarEventTest.GetLabelTest(appointment, expected);
         }
@@ -61,7 +61,7 @@ namespace DiaryTest
         /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
         internal void GetStartTimeAliasingTest(AppointmentBuilder builder)
         {
-            var appointment = builder.Build();
+            var appointment = (Appointment)builder.Build();
 
             var expected = 0;
             var startTime = appointment.GetStartTime();
@@ -80,7 +80,7 @@ namespace DiaryTest
         /// </summary>
         internal void GetEndTimeTest(AppointmentBuilder builder, Diary.DateTime occurs, Diary.DateTime endTime, int durationMinutes)
         {
-            var appointment = builder.SetOccurs(occurs).SetDurationMinutes(durationMinutes).Build();
+            var appointment = (Appointment)builder.SetOccurs(occurs).SetDurationMinutes(durationMinutes).Build();
             var actualEndTime = appointment.GetEndTime();
 
             // Validate results.
@@ -97,7 +97,7 @@ namespace DiaryTest
         {
             var expected = 42;
 
-            var appointment = builder.SetDurationMinutes(expected).Build();
+            var appointment = (Appointment)builder.SetDurationMinutes(expected).Build();
             var actual = appointment.GetDurationMinutes();
 
             Assert.AreEqual(expected, actual);
@@ -110,7 +110,7 @@ namespace DiaryTest
         {
             var expected = "Detail text";
 
-            var appointment = builder.SetDetails(expected).Build();
+            var appointment = (Appointment)builder.SetDetails(expected).Build();
             var actual = appointment.GetDetails();
 
             Assert.AreEqual(expected, actual);
@@ -121,13 +121,13 @@ namespace DiaryTest
         /// </summary>
         internal void GetContactsTest(AppointmentBuilder builder)
         {
-            var appointment = builder.Build();
+            var appointment = (Appointment)builder.Build();
 
-            var contact = new ContactBuilder().SetFirstName("Yogi").SetLastName("Bear").Build();
+            var contact = (Contact)new ContactBuilder().SetFirstName("Yogi").SetLastName("Bear").Build();
 
-            appointment.AddRelation(new ContactBuilder().Build());
+            appointment.AddRelation((Contact)new ContactBuilder().Build());
             appointment.AddRelation(contact);
-            appointment.AddRelation(new ContactBuilder().Build());
+            appointment.AddRelation((Contact)new ContactBuilder().Build());
 
             var relation = appointment.GetContacts();
             Assert.AreEqual(3, relation.GetChildCount(), "Count");
@@ -165,7 +165,7 @@ namespace DiaryTest
         {
             var expected = false;
 
-            var appointment = new AppointmentBuilder().Build();
+            var appointment = (Appointment)new AppointmentBuilder().Build();
 
             CalendarEventTest.IsRepeatingTest(appointment, expected);
         }
@@ -195,7 +195,7 @@ namespace DiaryTest
             // Create appointment and exercise the method under test.
             var expectedStartDate = new Date(startDay, (Date.Month)startMonth, startYear);
             var appointmentTime = new Diary.DateTime(expectedStartDate, startHours, startMinutes);
-            var appointment = new AppointmentBuilder().SetOccurs(appointmentTime).SetDurationMinutes(durationMinutes).Build();
+            var appointment = (Appointment)new AppointmentBuilder().SetOccurs(appointmentTime).SetDurationMinutes(durationMinutes).Build();
             var expectedEndDate = new Date(endDay, (Date.Month)endMonth, endYear);
 
             CalendarEventTest.IsOccuringOnTest(appointment, expectedStartDate, expectedEndDate);
@@ -210,7 +210,7 @@ namespace DiaryTest
             var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
             var expected = DateTimeTest.ToString(appointmentStartTime);
 
-            var appointment = new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
+            var appointment = (Appointment)new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
             var actual = DateTimeTest.ToString(appointment.GetStartTime());
 
             Assert.AreEqual(expected, actual);

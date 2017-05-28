@@ -42,7 +42,7 @@ namespace DiaryTest
         {
             var expected = true;
             
-            var periodicAppointment = new PeriodicAppointmentBuilder().Build();
+            var periodicAppointment = (PeriodicAppointment)new PeriodicAppointmentBuilder().Build();
 
             CalendarEventTest.IsRepeatingTest(periodicAppointment, expected);
         }
@@ -58,7 +58,7 @@ namespace DiaryTest
             builder.SetOccurs(appointmentStartTime);
             builder.SetNotToExceedDateTime(appointmentStartTime);
 
-            var appointment = builder.Build();
+            var appointment = (PeriodicAppointment)builder.Build();
 
             var expected = DateTimeTest.ToString(appointmentStartTime);
             var actual = DateTimeTest.ToString(appointment.GetStartTime());
@@ -151,7 +151,7 @@ namespace DiaryTest
             builder.SetDurationMinutes(durationMinutes);
             builder.SetNotToExceedDateTime(notToExceedDateTime);
             builder.SetPeriodHours(periodHours);
-            var appointment = builder.Build();
+            var appointment = (PeriodicAppointment)builder.Build();
 
             // Look up and evaluate each occurence
             DataRow[] occurencesRows = TestContext.DataRow.GetChildRows("add_occurences");
@@ -190,7 +190,7 @@ namespace DiaryTest
             builder.SetOccurs(new Diary.DateTime());
             builder.SetDurationMinutes(severalDaysWorthOfMinutes);
             builder.SetNotToExceedDateTime(new Diary.DateTime());
-            var appointment = builder.Build();
+            var appointment = (PeriodicAppointment)builder.Build();
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace DiaryTest
             builder.SetOccurs(occurs);
             builder.SetPeriodHours(24);
             builder.SetNotToExceedDateTime(notToExceedDateTime);
-            var appointment = builder.Build();
+            var appointment = (PeriodicAppointment)builder.Build();
 
             var expected = false;
             var actual = appointment.IsOccuringOn(occurenceDate);

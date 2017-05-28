@@ -16,9 +16,9 @@ namespace DiaryTest
         public void GetChildCountTest()
         {
             var relation = new Relation1M<Contact>();
-            relation.Add(new ContactBuilder().Build());
-            relation.Add(new ContactBuilder().Build());
-            relation.Add(new ContactBuilder().Build());
+            relation.Add((Contact)new ContactBuilder().Build());
+            relation.Add((Contact)new ContactBuilder().Build());
+            relation.Add((Contact)new ContactBuilder().Build());
 
             var actual = relation.GetChildCount();
             Assert.AreEqual(3, actual);
@@ -31,10 +31,10 @@ namespace DiaryTest
         public void GetChildContactTest()
         {
             var relation = new Relation1M<Contact>();
-            var contact = new ContactBuilder().SetFirstName("Fred").SetLastName("Flintstone").Build();
-            relation.Add(new ContactBuilder().Build());
-            relation.Add(contact);
-            relation.Add(new ContactBuilder().Build());
+            var contact = (Contact)new ContactBuilder().SetFirstName("Fred").SetLastName("Flintstone").Build();
+            relation.Add((Contact)new ContactBuilder().Build());
+            relation.Add((Contact)contact);
+            relation.Add((Contact)new ContactBuilder().Build());
 
             var actual = relation.GetChild(1);
             Assert.AreEqual(ContactTest.ToString(contact), ContactTest.ToString(actual));
@@ -68,7 +68,7 @@ namespace DiaryTest
         public void InvalidIndexGetChildTest()
         {
             var relation = new Relation1M<Contact>();
-            relation.Add(new ContactBuilder().Build());
+            relation.Add((Contact)new ContactBuilder().Build());
 
             var actual = relation.GetChild(1);
         }

@@ -19,7 +19,7 @@ namespace DiaryTest
         {
             var expected = "Test Details";
 
-            var reminder = builder.SetDetails(expected).Build();
+            var reminder = (Reminder)builder.SetDetails(expected).Build();
             var actual = reminder.GetDetails();
 
             Assert.AreEqual(expected, actual);
@@ -34,7 +34,7 @@ namespace DiaryTest
         public void ConstructorAliasingTest()
         {
             var date = new Date();
-            var reminder = new ReminderBuilder().SetDate(date).Build();
+            var reminder = (Reminder)new ReminderBuilder().SetDate(date).Build();
 
             var expected = true;
             var actual = reminder.IsOccuringOn(date);
@@ -58,7 +58,7 @@ namespace DiaryTest
 
             var reminder = new ReminderBuilder().SetLabel(expected).Build();
 
-            CalendarEventTest.GetLabelTest(reminder, expected);
+            CalendarEventTest.GetLabelTest((Reminder)reminder, expected);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace DiaryTest
         {
             var expected = false;
 
-            var reminder = new ReminderBuilder().Build();
+            var reminder = (Reminder)new ReminderBuilder().Build();
 
             CalendarEventTest.IsRepeatingTest(reminder, expected);
         }
@@ -90,7 +90,7 @@ namespace DiaryTest
         public void IsOccuringOnTest()
         {
             var reminderDate = new Date(30, Date.Month.SEPTEMBER, 2000);
-            var reminder = new ReminderBuilder().SetDate(reminderDate).Build();
+            var reminder = (Reminder)new ReminderBuilder().SetDate(reminderDate).Build();
 
             var expectedStartDate = reminderDate;
             var expectedEndDate = new Date(reminderDate.GetDay(), reminderDate.GetMonth(), reminderDate.GetYear());
@@ -116,7 +116,7 @@ namespace DiaryTest
         public void GetObjectIdTest()
         {
             var objectId = new ObjectId();
-            var reminder = new ReminderBuilder().SetObjectId(objectId).Build();
+            var reminder = (Reminder)new ReminderBuilder().SetObjectId(objectId).Build();
             new DiaryProductTest().GetObjectIdTest(reminder, objectId);
         }
         #endregion

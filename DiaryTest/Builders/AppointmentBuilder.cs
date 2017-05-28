@@ -4,27 +4,15 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Appointment creator.
+    /// Builder factory pattern for Appointment class.
     /// </summary>
-    /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
-    internal class AppointmentBuilder
+    /// <see cref="DiaryBuilder"/>
+    internal class AppointmentBuilder : DiaryBuilder
     {
-        private ObjectId objectId = new ObjectId();
         private String label = "";
         private Diary.DateTime occurs = new Diary.DateTime();
         private int durationMinutes = 0;
         private String details = "";
-
-        internal ObjectId GetObjectId()
-        {
-            return objectId;
-        }
-
-        internal AppointmentBuilder SetObjectId(ObjectId objectId)
-        {
-            this.objectId = objectId;
-            return this;
-        }
 
         internal String GetLabel()
         {
@@ -77,9 +65,20 @@ namespace DiaryTest
             return this;
         }
 
-        internal virtual Appointment Build()
+        internal override DiaryProduct Build()
         {
-            var appointment = new Appointment(objectId, label, occurs, durationMinutes, details);
+            var creator = (AppointmentCreator)this.GetCreator();
+
+            Appointment appointment;
+            if (creator != null)
+            {
+                appointment = (Appointment)creator.CreateNew(label, occurs, durationMinutes, details);
+            }
+            else
+            {
+                appointment = new Appointment(base.GetObjectId(), label, occurs, durationMinutes, details);
+            }
+
             return appointment;
         }
     }

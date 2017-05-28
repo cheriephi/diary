@@ -45,7 +45,7 @@ namespace DiaryTest
             using (var creator = new ContactCreator())
             {
                 var builder = new ContactBuilder().SetCreator(creator);
-                new ContactTest().GetContactNameTest(builder);
+                new ContactTest().GetContactNameTest((ContactBuilder)builder);
             }
         }
 
@@ -58,7 +58,7 @@ namespace DiaryTest
             using (var creator = new ContactCreator())
             {
                 var builder = new ContactBuilder().SetCreator(creator);
-                new ContactTest().GetContactInfoTest(builder);
+                new ContactTest().GetContactInfoTest((ContactBuilder)builder);
             }
         }
 
