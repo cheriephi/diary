@@ -25,20 +25,14 @@ namespace DiaryTest
         /// <summary>
         /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
         /// </summary>
-        /// <returns>yyyy-mm-dd</returns>
-        public static string ToString(int day, int month, int year)
-        {
-            return String.Format("{0}-{1}-{2}", year.ToString("0000"), month.ToString("00"), day.ToString("00"));
-        }
-
-        /// <summary>
-        /// Formats the input elements as a string.
-        /// </summary>
         /// <returns>yyyy-MM-dd</returns>
-        /// <seealso cref="ToString(int, int, int)"/>
         public static string ToString(Date date)
         {
-            return ToString(date.GetDay(), (int)date.GetMonth(), date.GetYear());
+            int day = date.GetDay();
+            int month = (int)date.GetMonth();
+            int year = date.GetYear();
+
+            return String.Format("{0}-{1}-{2}", year.ToString("0000"), month.ToString("00"), date.GetDay().ToString("00"));
         }
         #endregion
 
@@ -141,28 +135,31 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\BetweenDateData.xml", "add", DataAccessMethod.Sequential)]
         public void IsBetweenTest()
         {
-            var startYear = int.Parse(TestContext.DataRow["startYear"].ToString());
-            var startMonth = (Date.Month)int.Parse(TestContext.DataRow["startMonth"].ToString());
-            var startDay = int.Parse(TestContext.DataRow["startDay"].ToString());
+            var startBuilder = new DateBuilder();
+            startBuilder.SetDay(int.Parse(TestContext.DataRow["startDay"].ToString()));
+            startBuilder.SetMonth(int.Parse(TestContext.DataRow["startMonth"].ToString()));
+            startBuilder.SetYear(int.Parse(TestContext.DataRow["startYear"].ToString()));
 
-            var endYear = int.Parse(TestContext.DataRow["endYear"].ToString());
-            var endMonth = (Date.Month)int.Parse(TestContext.DataRow["endMonth"].ToString());
-            var endDay = int.Parse(TestContext.DataRow["endDay"].ToString());
+            var endBuilder = new DateBuilder();
+            endBuilder.SetDay(int.Parse(TestContext.DataRow["endDay"].ToString()));
+            endBuilder.SetMonth(int.Parse(TestContext.DataRow["endMonth"].ToString()));
+            endBuilder.SetYear(int.Parse(TestContext.DataRow["endYear"].ToString()));
 
-            var year = int.Parse(TestContext.DataRow["year"].ToString());
-            var month = (Date.Month)int.Parse(TestContext.DataRow["month"].ToString());
-            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var builder = new DateBuilder();
+            builder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
+            builder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
+            builder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
 
             var expectedIsBetweenString = TestContext.DataRow["isBetween"].ToString();
             bool expected = (expectedIsBetweenString == "1");
 
-            var startDate = new Date(startDay, startMonth, startYear);
-            var endDate = new Date(endDay, endMonth, endYear);
-            var date = new Date(day, month, year);
+            var startDate = startBuilder.Build();
+            var endDate = endBuilder.Build();
+            var date = builder.Build();
 
             var actual = date.IsBetween(startDate, endDate);
 
-            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Start Date:<{1}>. Input End Date:<{2}>.", ToString(date), ToString(startDate), ToString(endDate));
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Start Date:<{1}>. Input End Date:<{2}>.", builder.ToString(), startBuilder.ToString(), endBuilder.ToString());
         }
         #endregion
 
