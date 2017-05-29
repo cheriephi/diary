@@ -113,11 +113,11 @@ namespace DiaryTest
         [TestMethod]
         public void IsRepeatingTest()
         {
-            var expected = false;
-
             var appointment = (Appointment)new AppointmentBuilder().Build();
 
-            CalendarEventTest.IsRepeatingTest(appointment, expected);
+            var actual = appointment.IsRepeating();
+
+            Assert.AreEqual(false, actual, "Event Label:<{0}>.", appointment.GetLabel());
         }
 
         /// <summary>

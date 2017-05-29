@@ -52,11 +52,11 @@ namespace DiaryTest
         [TestMethod]
         public void IsRepeatingTest()
         {
-            var expected = false;
-
             var reminder = (Reminder)new ReminderBuilder().Build();
 
-            CalendarEventTest.IsRepeatingTest(reminder, expected);
+            var actual = reminder.IsRepeating();
+
+            Assert.AreEqual(false, actual, "Event Label:<{0}>.", reminder.GetLabel());
         }
 
         /// <summary>

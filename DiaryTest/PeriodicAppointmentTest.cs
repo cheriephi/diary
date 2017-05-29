@@ -48,11 +48,11 @@ namespace DiaryTest
         [TestMethod]
         public void IsRepeatingTest()
         {
-            var expected = true;
-            
             var periodicAppointment = (PeriodicAppointment)new PeriodicAppointmentBuilder().Build();
 
-            CalendarEventTest.IsRepeatingTest(periodicAppointment, expected);
+            var actual = periodicAppointment.IsRepeating();
+
+            Assert.AreEqual(true, actual, "Event Label:<{0}>.", periodicAppointment.GetLabel());
         }
 
         /// <summary>

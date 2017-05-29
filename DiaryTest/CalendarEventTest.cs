@@ -11,30 +11,6 @@ namespace DiaryTest
     public class CalendarEventTest
     {
         /// <summary>
-        /// Tests the GetLabel method.
-        /// </summary>
-        /// <param name="calendarEvent"></param>
-        /// <param name="expected"></param>
-        internal static void GetLabelTest(CalendarEvent calendarEvent, String expected)
-        {
-            var actual = calendarEvent.GetLabel();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Tests the IsRepeating method.
-        /// </summary>
-        /// <param name="calendarEvent"></param>
-        /// <param name="expected"></param>
-        internal static void IsRepeatingTest(CalendarEvent calendarEvent, Boolean expected)
-        {
-            var actual = calendarEvent.IsRepeating();
-
-            Assert.AreEqual(expected, actual, "Event Label:<{0}>.", calendarEvent.GetLabel());
-        }
-
-        /// <summary>
         /// Tests the IsOccuringOn method by testing around its expected boundaries.
         /// </summary>
         /// <param name="calendarEvent"></param>
