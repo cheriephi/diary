@@ -78,9 +78,7 @@ namespace DiaryTest
         /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html">About deep copy and aliasing bugs.</see>
         internal static void AssertAreEqual(DateTimeBuilder expected, Diary.DateTime actual, string message)
         {
-            Assert.AreEqual(expected.GetDay(), actual.GetDate().GetDay(), String.Format("{0} day", message));
-            Assert.AreEqual(expected.GetMonth(), (int)actual.GetDate().GetMonth(), String.Format("{0} month", message));
-            Assert.AreEqual(expected.GetYear(), actual.GetDate().GetYear(), String.Format("{0} year", message));
+            Assert.AreEqual(ToString(expected.GetDate()), ToString(actual.GetDate()), String.Format("{0} day", message));
 
             Assert.AreEqual(expected.GetHours(), actual.GetHours(), String.Format("{0} hours", message));
             Assert.AreEqual(expected.GetMinutes(), actual.GetMinutes(), String.Format("{0} minutes", message));

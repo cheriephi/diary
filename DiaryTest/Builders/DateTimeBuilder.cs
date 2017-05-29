@@ -7,10 +7,22 @@ namespace DiaryTest
     /// Builder factory pattern for DateTime class.
     /// </summary>
     /// <see cref="DiaryBuilder"/>
-    internal class DateTimeBuilder : DateBuilder
+    internal class DateTimeBuilder
     {
+        private Date date = new Date();
         private int hours = 0;
         private int minutes = 0;
+
+        internal Date GetDate()
+        {
+            return date;
+        }
+
+        internal DateTimeBuilder SetDate(Date date)
+        {
+            this.date = date;
+            return this;
+        }
 
         internal int GetHours()
         {
@@ -36,7 +48,6 @@ namespace DiaryTest
 
         internal Diary.DateTime Build()
         {
-            var date = new Date(base.GetDay(), (Date.Month)base.GetMonth(), base.GetYear());
             var dateTime = new Diary.DateTime(date, hours, minutes);
             return dateTime;
         }

@@ -36,9 +36,7 @@ namespace DiaryTest
         public void InputDateConstructorTest()
         {
             var builder = new DateTimeBuilder();
-            builder.SetDay(30);
-            builder.SetMonth(4);
-            builder.SetYear(2017);
+            builder.SetDate(new Date(30, Date.Month.APRIL, 2017));
             builder.SetHours(3);
             builder.SetMinutes(42);
 
@@ -77,16 +75,22 @@ namespace DiaryTest
         public void CompareToTest()
         {
             var builder = new DateTimeBuilder();
-            builder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
-            builder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
-            builder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
+
+            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var month = int.Parse(TestContext.DataRow["month"].ToString());
+            var year = int.Parse(TestContext.DataRow["year"].ToString());
+            builder.SetDate(new Date(day, (Date.Month)month, year));
+
             builder.SetHours(int.Parse(TestContext.DataRow["hours"].ToString()));
             builder.SetMinutes(int.Parse(TestContext.DataRow["minutes"].ToString()));
 
             var compareBuilder = new DateTimeBuilder();
-            compareBuilder.SetDay(int.Parse(TestContext.DataRow["compareDay"].ToString()));
-            compareBuilder.SetMonth(int.Parse(TestContext.DataRow["compareMonth"].ToString()));
-            compareBuilder.SetYear(int.Parse(TestContext.DataRow["compareYear"].ToString()));
+
+            var compareDay = int.Parse(TestContext.DataRow["compareDay"].ToString());
+            var compareMonth = int.Parse(TestContext.DataRow["compareMonth"].ToString());
+            var compareYear = int.Parse(TestContext.DataRow["compareYear"].ToString());
+            compareBuilder.SetDate(new Date(compareDay, (Date.Month)compareMonth, compareYear));
+
             compareBuilder.SetHours(int.Parse(TestContext.DataRow["compareHours"].ToString()));
             compareBuilder.SetMinutes(int.Parse(TestContext.DataRow["compareMinutes"].ToString()));
 
@@ -108,23 +112,32 @@ namespace DiaryTest
         public void IsBetweenTest()
         {
             var startBuilder = new DateTimeBuilder();
-            startBuilder.SetDay(int.Parse(TestContext.DataRow["startDay"].ToString()));
-            startBuilder.SetMonth(int.Parse(TestContext.DataRow["startMonth"].ToString()));
-            startBuilder.SetYear(int.Parse(TestContext.DataRow["startYear"].ToString()));
+
+            var startDay = int.Parse(TestContext.DataRow["startDay"].ToString());
+            var startMonth = int.Parse(TestContext.DataRow["startMonth"].ToString());
+            var startYear = int.Parse(TestContext.DataRow["startYear"].ToString());
+            startBuilder.SetDate(new Date(startDay, (Date.Month)startMonth, startYear));
+
             startBuilder.SetHours(int.Parse(TestContext.DataRow["startHours"].ToString()));
             startBuilder.SetMinutes(int.Parse(TestContext.DataRow["startMinutes"].ToString()));
 
             var endBuilder = new DateTimeBuilder();
-            endBuilder.SetDay(int.Parse(TestContext.DataRow["endDay"].ToString()));
-            endBuilder.SetMonth(int.Parse(TestContext.DataRow["endMonth"].ToString()));
-            endBuilder.SetYear(int.Parse(TestContext.DataRow["endYear"].ToString()));
+
+            var endDay = int.Parse(TestContext.DataRow["endDay"].ToString());
+            var endMonth = int.Parse(TestContext.DataRow["endMonth"].ToString());
+            var endYear = int.Parse(TestContext.DataRow["endYear"].ToString());
+            endBuilder.SetDate(new Date(endDay, (Date.Month)endMonth, endYear));
+
             endBuilder.SetHours(int.Parse(TestContext.DataRow["endHours"].ToString()));
             endBuilder.SetMinutes(int.Parse(TestContext.DataRow["endMinutes"].ToString()));
 
             var builder = new DateTimeBuilder();
-            builder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
-            builder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
-            builder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
+
+            var day = int.Parse(TestContext.DataRow["Day"].ToString());
+            var month = int.Parse(TestContext.DataRow["Month"].ToString());
+            var year = int.Parse(TestContext.DataRow["Year"].ToString());
+            builder.SetDate(new Date(day, (Date.Month)month, year));
+
             builder.SetHours(int.Parse(TestContext.DataRow["hours"].ToString()));
             builder.SetMinutes(int.Parse(TestContext.DataRow["minutes"].ToString()));
 
@@ -149,7 +162,7 @@ namespace DiaryTest
         public void AddTimeTest()
         {
             var expected = new DateTimeBuilder();
-            expected.SetDay(1).SetMonth(1).SetYear(1900);
+            expected.SetDate(new Date(1, Date.Month.JANUARY, 1900));
             expected.SetHours(1).SetMinutes(1);
 
             var actual = new Diary.DateTime(new Date(1, Date.Month.JANUARY, 1900), 0, 0);
