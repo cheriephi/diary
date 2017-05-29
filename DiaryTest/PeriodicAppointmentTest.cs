@@ -39,7 +39,7 @@ namespace DiaryTest
             builder.SetNotToExceedDateTime(new DateTime(new Date(2, Date.Month.JANUARY, 2003), 0, 0));
             builder.SetDurationMinutes(42);
 
-            new DiaryProductHelper().assertEquals(builder, (PeriodicAppointment)builder.Build(), "");
+            Helper.AssertEquals(builder, (PeriodicAppointment)builder.Build(), "");
         }
 
         /// <summary>

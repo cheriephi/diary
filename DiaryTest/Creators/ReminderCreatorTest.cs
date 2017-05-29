@@ -48,7 +48,7 @@ namespace DiaryTest
                 builder.SetLabel("Test Label");
                 builder.SetDetails("Test Details");
 
-                new DiaryProductHelper().assertEquals(builder, (Reminder)builder.Build(), "");
+                Helper.AssertEquals(builder, (Reminder)builder.Build(), "");
             }
         }
 

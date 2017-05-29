@@ -21,7 +21,7 @@ namespace DiaryTest
             builder.SetFirstName("First").SetLastName("Last");
             builder.SetContactInfo("ContactInfo");
 
-            new DiaryProductHelper().assertEquals(builder, (Contact)builder.Build(), "");
+            Helper.AssertEquals(builder, (Contact)builder.Build(), "");
         }
     }
 }
