@@ -13,7 +13,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests all Appointment fields match the expected values.
         /// </summary>
-        internal static void AssertEquals(AppointmentBuilder expected, Appointment actual, string message)
+        internal static void AssertAreEqual(AppointmentBuilder expected, Appointment actual, string message)
         {
             Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
             Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Format("{0} details", message));
@@ -26,7 +26,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests all Contact fields match the expected values.
         /// </summary>
-        internal static void AssertEquals(ContactBuilder expected, Contact actual, string message)
+        internal static void AssertAreEqual(ContactBuilder expected, Contact actual, string message)
         {
             Assert.AreEqual(expected.GetFirstName(), actual.GetName()[0], String.Format("{0} firstName", message));
             Assert.AreEqual(expected.GetLastName(), actual.GetName()[1], String.Format("{0} lastName", message));
@@ -37,9 +37,19 @@ namespace DiaryTest
         }
 
         /// <summary>
+        /// Tests all Date fields match the expected values.
+        /// </summary>
+        internal static void AssertAreEqual(DateBuilder expected, Date actual, string message)
+        {
+            Assert.AreEqual(expected.GetDay(), actual.GetDay(), String.Format("{0} day", message));
+            Assert.AreEqual(expected.GetMonth(), (int)actual.GetMonth(), String.Format("{0} month", message));
+            Assert.AreEqual(expected.GetYear(), actual.GetYear(), String.Format("{0} year", message));
+        }
+
+        /// <summary>
         /// Tests all PeriodicAppointment fields match the expected values.
         /// </summary>
-        internal static void AssertEquals(PeriodicAppointmentBuilder expected, PeriodicAppointment actual, string message)
+        internal static void AssertAreEqual(PeriodicAppointmentBuilder expected, PeriodicAppointment actual, string message)
         {
             Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
             Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Format("{0} details", message));
@@ -52,7 +62,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests all Reminder fields match the expected values.
         /// </summary>
-        internal static void AssertEquals(ReminderBuilder expected, Reminder actual, string message)
+        internal static void AssertAreEqual(ReminderBuilder expected, Reminder actual, string message)
         {
             Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
             Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Format("{0} details", message));

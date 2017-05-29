@@ -49,12 +49,12 @@ namespace DiaryTest
         [TestMethod]
         public void DefaultConstructorTest()
         {
-            var expected = ToString(1, 1, 1900);
-            var actual = ToString(new Date());
+            var builder = new DateBuilder();
+            var actual = new Date();
 
-            Assert.AreEqual(expected, actual);
+            Helper.AssertAreEqual(builder, actual, "");
         }
-        
+
         /// <summary>
         /// Data testing that the constructor properly initializes fields based on inputs.
         /// </summary>
@@ -62,15 +62,12 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
         public void InputDateConstructorTest()
         {
-            var expectedYear = int.Parse(TestContext.DataRow["year"].ToString());
-            var expectedMonthNumber = int.Parse(TestContext.DataRow["month"].ToString());
-            var expectedMonth = (Date.Month)expectedMonthNumber;
-            var expectedDay = int.Parse(TestContext.DataRow["day"].ToString());
+            var builder = new DateBuilder();
+            builder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
+            builder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
+            builder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
 
-            var expected = ToString(expectedDay, expectedMonthNumber, expectedYear);
-            var actual = ToString(new Date(expectedDay, expectedMonth, expectedYear));
-
-            Assert.AreEqual(expected, actual);
+            Helper.AssertAreEqual(builder, builder.Build(), "");
         }
 
         /// <summary>
@@ -117,22 +114,24 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\CompareDateData.xml", "add", DataAccessMethod.Sequential)]
         public void CompareToTest()
         {
-            var year = int.Parse(TestContext.DataRow["year"].ToString());
-            var month = (Date.Month)int.Parse(TestContext.DataRow["month"].ToString());
-            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var dateBuilder = new DateBuilder();
+            dateBuilder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
+            dateBuilder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
+            dateBuilder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
 
-            var compareYear = int.Parse(TestContext.DataRow["compareYear"].ToString());
-            var compareMonth = (Date.Month)int.Parse(TestContext.DataRow["compareMonth"].ToString());
-            var compareDay = int.Parse(TestContext.DataRow["compareDay"].ToString());
+            var compareDateBuilder = new DateBuilder();
+            compareDateBuilder.SetDay(int.Parse(TestContext.DataRow["compareDay"].ToString()));
+            compareDateBuilder.SetMonth(int.Parse(TestContext.DataRow["compareMonth"].ToString()));
+            compareDateBuilder.SetYear(int.Parse(TestContext.DataRow["compareYear"].ToString()));
 
             var expected = int.Parse(TestContext.DataRow["expectedResult"].ToString());
 
-            var date = new Date(day, month, year);
-            var compareDate = new Date(compareDay, compareMonth, compareYear);
+            var date = dateBuilder.Build();
+            var compareDate = compareDateBuilder.Build();
 
             var actual = date.CompareTo(compareDate);
 
-            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", ToString(date), ToString(compareDate));
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", dateBuilder.ToString(), compareDateBuilder.ToString());
         }
 
         /// <summary>
@@ -174,12 +173,15 @@ namespace DiaryTest
         [TestMethod]
         public void AddDaysTest()
         {
-            var expected = new Date(3, Date.Month.JANUARY, 1900);
-            var actual = new Date();
+            var builder = new DateBuilder();
+            builder.SetDay(3);
+            builder.SetMonth(1);
+            builder.SetYear(1900);
 
+            var actual = new Date();
             actual.AddDays(2);
 
-            Assert.AreEqual(ToString(expected), ToString(actual));
+            Helper.AssertAreEqual(builder, actual, "");
         }
 
         /// <summary>
@@ -188,12 +190,15 @@ namespace DiaryTest
         [TestMethod]
         public void SubtractDaysTest()
         {
-            var expected = new Date(30, Date.Month.DECEMBER, 1899);
-            var actual = new Date();
+            var builder = new DateBuilder();
+            builder.SetDay(30);
+            builder.SetMonth(12);
+            builder.SetYear(1899);
 
+            var actual = new Date();
             actual.SubtractDays(2);
 
-            Assert.AreEqual(ToString(expected), ToString(actual));
+            Helper.AssertAreEqual(builder, actual, "");
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace DiaryTest
             relation.Add((Contact)builder.Build());
             relation.Add((Contact)new ContactBuilder().Build());
 
-            Helper.AssertEquals(builder, relation.GetChild(1), "");
+            Helper.AssertAreEqual(builder, relation.GetChild(1), "");
         }
 
         /// <summary>

@@ -94,7 +94,7 @@ namespace DiaryTest
             var relation = appointment.GetContacts();
             Assert.AreEqual(3, relation.GetChildCount(), "Count");
 
-            Helper.AssertEquals(contactBuilder, relation.GetChild(1), "Data");
+            Helper.AssertAreEqual(contactBuilder, relation.GetChild(1), "Data");
         }
         #endregion
 
@@ -216,7 +216,7 @@ namespace DiaryTest
 
             builder.SetDurationMinutes(42);
 
-            Helper.AssertEquals(builder, (Appointment)builder.Build(), "");
+            Helper.AssertAreEqual(builder, (Appointment)builder.Build(), "");
         }
 
         /// <summary>

@@ -49,7 +49,7 @@ namespace DiaryTest
                 builder.SetFirstName("First").SetLastName("Last");
                 builder.SetContactInfo("ContactInfo");
 
-                Helper.AssertEquals(builder, (Contact)builder.Build(), "");
+                Helper.AssertAreEqual(builder, (Contact)builder.Build(), "");
             }
         }
 
