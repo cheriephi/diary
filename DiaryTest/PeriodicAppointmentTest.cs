@@ -16,16 +16,6 @@ namespace DiaryTest
         public TestContext TestContext { get; set; }
 
         /// <summary>
-        /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
-        /// </summary>
-        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, DateTime, string)">For more context on the problem.</seealso>
-        [TestMethod]
-        public void ConstructorAliasingTest()
-        {
-            new AppointmentTest().ConstructorAliasingTest(new PeriodicAppointmentBuilder());
-        }
-
-        /// <summary>
         /// Tests the PeriodicAppointment accessors through its constructor.
         /// </summary>
         [TestMethod]
@@ -53,35 +43,6 @@ namespace DiaryTest
             var actual = periodicAppointment.IsRepeating();
 
             Assert.AreEqual(true, actual, "Event Label:<{0}>.", periodicAppointment.GetLabel());
-        }
-
-        /// <summary>
-        /// Data testing of start time method.
-        /// </summary>
-        [TestMethod]
-        public void GetStartTimeTest()
-        {
-            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
-            var builder = new PeriodicAppointmentBuilder();
-            builder.SetOccurs(appointmentStartTime);
-            builder.SetNotToExceedDateTime(appointmentStartTime);
-
-            var appointment = (PeriodicAppointment)builder.Build();
-
-            var expected = Helper.ToString(appointmentStartTime);
-            var actual = Helper.ToString(appointment.GetStartTime());
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Tests that the StartTime field cannot be modified outside of its accessor.
-        /// </summary>
-        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, DateTime, string)">For more context on the problem.</seealso>
-        [TestMethod]
-        public void GetStartTimeAliasingTest()
-        {
-            new AppointmentTest().GetStartTimeAliasingTest(new PeriodicAppointmentBuilder());
         }
 
         /// <summary>

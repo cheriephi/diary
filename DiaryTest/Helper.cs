@@ -45,6 +45,9 @@ namespace DiaryTest
             Assert.AreEqual(expected.GetDurationMinutes(), actual.GetDurationMinutes(), String.Format("{0} durationMinutes", message));
             Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
 
+            Assert.AreEqual(ToString(expected.GetOccurs()), ToString(actual.GetStartTime()), String.Format("{0} startTime", message));
+            Assert.AreNotSame(actual.GetStartTime(), actual.GetStartTime(), String.Format("{0} startTime deep copy", message));
+
             var expectedClassId = new ClassId("Appointment");
             Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Format("{0} classId", message));
         }
@@ -83,7 +86,7 @@ namespace DiaryTest
             Assert.AreEqual(expected.GetHours(), actual.GetHours(), String.Format("{0} hours", message));
             Assert.AreEqual(expected.GetMinutes(), actual.GetMinutes(), String.Format("{0} minutes", message));
 
-            Assert.AreNotSame(expected.Build().GetDate(), actual.GetDate(), String.Format("{0} date deep copy", message));
+            Assert.AreNotSame(actual.GetDate(), actual.GetDate(), String.Format("{0} date deep copy", message));
         }
 
         /// <summary>
@@ -91,9 +94,12 @@ namespace DiaryTest
         /// </summary>
         internal static void AssertAreEqual(PeriodicAppointmentBuilder expected, PeriodicAppointment actual, string message)
         {
-            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
             Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Format("{0} details", message));
             Assert.AreEqual(expected.GetDurationMinutes(), actual.GetDurationMinutes(), String.Format("{0} durationMinutes", message));
+            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
+
+            Assert.AreEqual(ToString(expected.GetOccurs()), ToString(actual.GetStartTime()), String.Format("{0} startTime", message));
+            Assert.AreNotSame(actual.GetStartTime(), actual.GetStartTime(), String.Format("{0} startTime deep copy", message));
 
             var expectedClassId = new ClassId("PeriodicAppointment");
             Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Format("{0} classId", message));

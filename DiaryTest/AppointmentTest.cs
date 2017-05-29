@@ -21,47 +21,6 @@ namespace DiaryTest
 
         #region Polymorphic test functions
         /// <summary>
-        /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, Diary.DateTime, string)">For more context on the problem.</seealso>
-        internal void ConstructorAliasingTest(AppointmentBuilder builder)
-        {
-            var dateTime = new Diary.DateTime();
-            var appointment = (Appointment)builder.SetOccurs(dateTime).Build();
-
-            var expected = 0;
-            var actual = appointment.GetStartTime().GetMinutes();
-            Assert.AreEqual(expected, actual, "Original");
-
-            dateTime.AddTime(0, 1);
-
-            actual = appointment.GetStartTime().GetMinutes();
-
-            Assert.AreEqual(expected, actual, "After");
-        }
-
-        /// <summary>
-        /// Tests that the StartTime field cannot be modified outside of its accessor.
-        /// </summary>
-        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, Diary.DateTime, string)">For more context on the problem.</seealso>
-        internal void GetStartTimeAliasingTest(AppointmentBuilder builder)
-        {
-            var appointment = (Appointment)builder.Build();
-
-            var expected = 0;
-            var startTime = appointment.GetStartTime();
-            var actual = startTime.GetMinutes();
-            Assert.AreEqual(expected, actual, "Original");
-
-            startTime.AddTime(0, 1);
-
-            actual = appointment.GetStartTime().GetMinutes();
-
-            Assert.AreEqual(expected, actual, "After");
-        }
-
-        /// <summary>
         /// Testing of end time method.
         /// </summary>
         internal void GetEndTimeTest(AppointmentBuilder builder, Diary.DateTime occurs, Diary.DateTime endTime, int durationMinutes)
@@ -99,12 +58,29 @@ namespace DiaryTest
         #endregion
 
         /// <summary>
-        /// Appointment constructor aliasing test.
+        /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
+        /// <remarks>This tests that the startTime passed into the constructor is deep copied prior to its usage, regardless of whether it is
+        /// deep copied when exposed via getters. The only way to test this is to actually modify the data.
+        /// This test should cover any path through the constructor; be it through the constructor, a derived class constructor, or a creator.
+        /// Theoretically every constructor in this class would require the same test; however because of knowledge of constructor chaining in the design,
+        /// the extra tests are skipped.</remarks>
         [TestMethod]
         public void ConstructorAliasingTest()
         {
-            ConstructorAliasingTest(new AppointmentBuilder());
+            var builder = new AppointmentBuilder();
+            var dateTime = new Diary.DateTime();
+            var appointment = (Appointment)builder.SetOccurs(dateTime).Build();
+
+            var expected = 0;
+            var actual = appointment.GetStartTime().GetMinutes();
+            Assert.AreEqual(expected, actual, "Original");
+
+            dateTime.AddTime(0, 1);
+
+            actual = appointment.GetStartTime().GetMinutes();
+
+            Assert.AreEqual(expected, actual, "After");
         }
 
         /// <summary>
@@ -152,31 +128,7 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Tests the Appointment.GetStartTime method.
-        /// </summary>
-        [TestMethod]
-        public void GetStartTimeTest()
-        {
-            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
-            var expected = Helper.ToString(appointmentStartTime);
-
-            var appointment = (Appointment)new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
-            var actual = Helper.ToString(appointment.GetStartTime());
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Tests that the Appointment.StartTime field cannot be modified outside of its accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetStartTimeAliasingTest()
-        {
-            GetStartTimeAliasingTest(new AppointmentBuilder());
-        }
-
-        /// <summary>
-        /// Data driven testing of Appointment get end time method.
+        /// Data driven testing of Appointment.GetEndTime method.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Appointment\AppointmentData.xml", "add", DataAccessMethod.Sequential)]
@@ -213,7 +165,7 @@ namespace DiaryTest
             var builder = new AppointmentBuilder();
             builder.SetLabel("Test Label");
             builder.SetDetails("Detail text");
-
+            builder.SetOccurs(new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3));
             builder.SetDurationMinutes(42);
 
             Helper.AssertAreEqual(builder, (Appointment)builder.Build(), "");
