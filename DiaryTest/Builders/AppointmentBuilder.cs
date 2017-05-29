@@ -37,7 +37,7 @@ namespace DiaryTest
             // Add descriptive info to the label if we don't have an explicit one provided. This provide identifying information for debugging.
             if (label == String.Empty)
             {
-                label = String.Format("Event Label <{0}>.", DateTimeTest.ToString(occurs));
+                label = String.Format("Event Label <{0}>.", Helper.ToString(occurs));
             }
 
             return this;

@@ -70,10 +70,10 @@ namespace DiaryTest
             var actualEndTime = appointment.GetEndTime();
 
             // Validate results.
-            var expected = DateTimeTest.ToString(endTime);
-            var actual = DateTimeTest.ToString(actualEndTime);
+            var expected = Helper.ToString(endTime);
+            var actual = Helper.ToString(actualEndTime);
 
-            Assert.AreEqual(expected, actual, "Input occurs:<{0}>. Input durationMinutes:<{1}>.", DateTimeTest.ToString(occurs), durationMinutes);
+            Assert.AreEqual(expected, actual, "Input occurs:<{0}>. Input durationMinutes:<{1}>.", Helper.ToString(occurs), durationMinutes);
         }
 
         /// <summary>
@@ -158,10 +158,10 @@ namespace DiaryTest
         public void GetStartTimeTest()
         {
             var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
-            var expected = DateTimeTest.ToString(appointmentStartTime);
+            var expected = Helper.ToString(appointmentStartTime);
 
             var appointment = (Appointment)new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
-            var actual = DateTimeTest.ToString(appointment.GetStartTime());
+            var actual = Helper.ToString(appointment.GetStartTime());
 
             Assert.AreEqual(expected, actual);
         }

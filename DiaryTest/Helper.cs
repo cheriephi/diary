@@ -12,7 +12,7 @@ namespace DiaryTest
     {
         #region Debugging
         /// <summary>
-        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
+        /// Returns Date identifying properties to support meaningful equality checks and debugging.
         /// </summary>
         /// <returns>yyyy-MM-dd</returns>
         internal static string ToString(Date date)
@@ -22,6 +22,16 @@ namespace DiaryTest
             int year = date.GetYear();
 
             return String.Format("{0}-{1}-{2}", year.ToString("0000"), month.ToString("00"), date.GetDay().ToString("00"));
+        }
+
+        /// <summary>
+        /// Returns DateTime identifying properties.
+        /// </summary>
+        /// <returns>yyyy-MM-dd hh:mm</returns>
+        /// <seealso cref="Helper.ToString(Date)"/>
+        internal static String ToString(Diary.DateTime dateTime)
+        {
+            return String.Format("{0} {1}:{2}", Helper.ToString(dateTime.GetDate()), dateTime.GetHours().ToString("00"), dateTime.GetMinutes().ToString("00"));
         }
         #endregion
 

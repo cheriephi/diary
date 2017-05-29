@@ -40,14 +40,5 @@ namespace DiaryTest
             var dateTime = new Diary.DateTime(date, hours, minutes);
             return dateTime;
         }
-
-        /// <summary>
-        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
-        /// </summary>
-        /// <returns>yyyy-mm-dd</returns>
-        public override String ToString()
-        {
-            return String.Format("{0} {1}:{2}", base.ToString(), minutes.ToString("00"), hours.ToString("00"));
-        }
     }
 }

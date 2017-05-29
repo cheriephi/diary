@@ -68,8 +68,8 @@ namespace DiaryTest
 
             var appointment = (PeriodicAppointment)builder.Build();
 
-            var expected = DateTimeTest.ToString(appointmentStartTime);
-            var actual = DateTimeTest.ToString(appointment.GetStartTime());
+            var expected = Helper.ToString(appointmentStartTime);
+            var actual = Helper.ToString(appointment.GetStartTime());
 
             Assert.AreEqual(expected, actual);
         }

@@ -16,30 +16,6 @@ namespace DiaryTest
         /// </summary>
         public TestContext TestContext { get; set; }
 
-        #region Helper Methods
-        /// <summary>
-        /// Formats the input elements as a string.
-        /// </summary>
-        /// <returns>yyyy-MM-dd hh:mm</returns>
-        /// <seealso cref="Helper.ToString(Date)"/>
-        public static string ToString(Diary.DateTime dateTime)
-        {
-            return ToString(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes());
-        }
-
-        /// <summary>
-        /// Returns the class' identifying properties to support meaningful equality checks and debugging.
-        /// </summary>
-        /// <param name="date"></param>
-        /// <param name="hours"></param>
-        /// <param name="minutes"></param>
-        /// <returns>yyyy-MM-dd hh:mm</returns>
-        public static string ToString(Date date, int hours, int minutes)
-        {
-            return String.Format("{0} {1}:{2}", Helper.ToString(date), hours.ToString("00"), minutes.ToString("00"));
-        }
-        #endregion
-
         #region Constructor Tests
         /// <summary>
         /// Simple single scenario test of default constructor.
@@ -86,7 +62,7 @@ namespace DiaryTest
             var date = new Date(expectedDay, expectedMonth, expectedYear);
 
             var expected = TestContext.DataRow["expected"].ToString();
-            var actual = ToString(new Diary.DateTime(date, expectedHours, expectedMinutes));
+            var actual = Helper.ToString(new Diary.DateTime(date, expectedHours, expectedMinutes));
 
             Assert.AreEqual(expected, actual, "Input Date:<{0}>. Hours:<{1}>. Minutes:<{2}>.", Helper.ToString(date), expectedHours, expectedMinutes);
         }
