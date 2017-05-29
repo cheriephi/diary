@@ -51,14 +51,5 @@ namespace DiaryTest
             var date = new Date(day, (Date.Month)month, year);
             return date;
         }
-
-        /// <summary>
-        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
-        /// </summary>
-        /// <returns>yyyy-mm-dd</returns>
-        public override String ToString()
-        {
-            return String.Format("{0}-{1}-{2}", year.ToString("0000"), month.ToString("00"), day.ToString("00"));
-        }
     }
 }

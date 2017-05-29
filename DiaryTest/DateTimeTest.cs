@@ -21,7 +21,7 @@ namespace DiaryTest
         /// Formats the input elements as a string.
         /// </summary>
         /// <returns>yyyy-MM-dd hh:mm</returns>
-        /// <seealso cref="DateBuilder.ToString()"/>
+        /// <seealso cref="Helper.ToString(Date)"/>
         public static string ToString(Diary.DateTime dateTime)
         {
             return ToString(dateTime.GetDate(), dateTime.GetHours(), dateTime.GetMinutes());
@@ -36,7 +36,7 @@ namespace DiaryTest
         /// <returns>yyyy-MM-dd hh:mm</returns>
         public static string ToString(Date date, int hours, int minutes)
         {
-            return String.Format("{0} {1}:{2}", DateTest.ToString(date), hours.ToString("00"), minutes.ToString("00"));
+            return String.Format("{0} {1}:{2}", Helper.ToString(date), hours.ToString("00"), minutes.ToString("00"));
         }
         #endregion
 
@@ -88,7 +88,7 @@ namespace DiaryTest
             var expected = TestContext.DataRow["expected"].ToString();
             var actual = ToString(new Diary.DateTime(date, expectedHours, expectedMinutes));
 
-            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Hours:<{1}>. Minutes:<{2}>.", DateTest.ToString(date), expectedHours, expectedMinutes);
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Hours:<{1}>. Minutes:<{2}>.", Helper.ToString(date), expectedHours, expectedMinutes);
         }
         #endregion
 

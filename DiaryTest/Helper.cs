@@ -10,6 +10,22 @@ namespace DiaryTest
     /// <remarks>DiaryProduct.ObjectId should be tested separately via its ability to retrieve from persistent storage.</remarks>
     class Helper
     {
+        #region Debugging
+        /// <summary>
+        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
+        /// </summary>
+        /// <returns>yyyy-MM-dd</returns>
+        internal static string ToString(Date date)
+        {
+            int day = date.GetDay();
+            int month = (int)date.GetMonth();
+            int year = date.GetYear();
+
+            return String.Format("{0}-{1}-{2}", year.ToString("0000"), month.ToString("00"), date.GetDay().ToString("00"));
+        }
+        #endregion
+
+        #region Custom Asserts
         /// <summary>
         /// Tests all Appointment fields match the expected values.
         /// </summary>
@@ -86,5 +102,6 @@ namespace DiaryTest
             var expectedClassId = new ClassId("Reminder");
             Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Format("{0} classId", message));
         }
+        #endregion
     }
 }

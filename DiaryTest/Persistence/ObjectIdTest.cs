@@ -45,7 +45,7 @@ namespace DiaryTest
         /// <param name="objectIdInt"></param>
         /// <param name="objectIdString"></param>
         /// <returns>"AsInt:n. ToString:n."</returns>
-        /// <seealso cref="DateBuilder.ToString()"/>
+        /// <seealso cref="Helper.ToString(Date)"/>
         public static string ToString(int objectIdInt, String objectIdString)
         {
             return String.Format("AsInt:<{0}>. ToString<{1}>.", objectIdInt, objectIdString);

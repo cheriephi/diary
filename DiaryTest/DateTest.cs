@@ -21,21 +21,6 @@ namespace DiaryTest
         /// </summary>
         public TestContext TestContext { get; set; }
 
-        #region Helper Methods
-        /// <summary>
-        /// Formats the input elements as a string. Supports meaningful equality checks and debugging.
-        /// </summary>
-        /// <returns>yyyy-MM-dd</returns>
-        public static string ToString(Date date)
-        {
-            int day = date.GetDay();
-            int month = (int)date.GetMonth();
-            int year = date.GetYear();
-
-            return String.Format("{0}-{1}-{2}", year.ToString("0000"), month.ToString("00"), date.GetDay().ToString("00"));
-        }
-        #endregion
-
         #region Constructor Tests
         /// <summary>
         /// Simple single scenario test of default constructor.

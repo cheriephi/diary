@@ -56,7 +56,7 @@ namespace DiaryTest
             var expected = "False;True;True;False";
             var actual = String.Join(";", new Boolean[] { actualBeforeStartDate, actualStartDate, actualEndDate, actualAfterEndDate });
 
-            Assert.AreEqual(expected, actual, "Event Label:<{0}>. expectedStartDate:<{1}>. expectedEndDate:<{2}>.", calendarEvent.GetLabel(), DateTest.ToString(expectedStartDate), DateTest.ToString(expectedEndDate));
+            Assert.AreEqual(expected, actual, "Event Label:<{0}>. expectedStartDate:<{1}>. expectedEndDate:<{2}>.", calendarEvent.GetLabel(), Helper.ToString(expectedStartDate), Helper.ToString(expectedEndDate));
         }
     }
 }
