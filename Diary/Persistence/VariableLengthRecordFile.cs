@@ -29,11 +29,19 @@ namespace Diary
             }
         }
 
+        /// <summary>
+        /// Returns the file's number of bytes in use.
+        /// </summary>
+        /// <returns></returns>
         public int GetBytesUsed()
         {
             return mBytesUsed;
         }
 
+        /// <summary>
+        /// Returns the file's total number of bytes.
+        /// </summary>
+        /// <returns></returns>
         public int GetBytesTotal()
         {
             try

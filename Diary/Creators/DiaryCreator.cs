@@ -10,7 +10,12 @@ namespace Diary
     {
         private ClassId mClassId;
         private KeyFile sKeyFile;
-        private VariableLengthRecordFile sDataFile;
+        private static VariableLengthRecordFile sDataFile;
+
+        /// <summary>
+        /// The number of active instances of this DiaryCreator class.
+        /// </summary>
+        private static int mDiaryCreatorCount;
 
         // Track whether Dispose has been called.
         private bool disposed = false;
@@ -25,7 +30,13 @@ namespace Diary
 
             var persistenceFolderPath = ConfigurationManager.AppSettings["PersistenceFolderPath"];
             sKeyFile = new KeyFile(persistenceFolderPath, ConfigurationManager.AppSettings["PersistenceKeyFileNameWithoutExtension"]);
-            sDataFile = new VariableLengthRecordFile(persistenceFolderPath, ConfigurationManager.AppSettings["PersistenceDataFileNameWithoutExtension"]);
+
+            if (mDiaryCreatorCount == 0)
+            { 
+                sDataFile = new VariableLengthRecordFile(persistenceFolderPath, ConfigurationManager.AppSettings["PersistenceDataFileNameWithoutExtension"]);
+            }
+
+            mDiaryCreatorCount++;
         }
 
         /// <summary>
@@ -109,13 +120,20 @@ namespace Diary
         /// Close the persistence mechanism.
         /// </summary>
         /// <param name="disposing"></param>
+        /// <remarks>We need one and only VariableLengthRecordFile open. The class doesn't expose a way to open files, this is done through its constructor.
+        /// The class appends on an open handle until complete. This class (DiaryCreator) needs to close its usage, and the only way to do that is in the destructor.
+        /// It should only close access when all consumers of it are complete.</remarks>
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
             {
                 if (disposing)
                 {
-                    sDataFile.Close();
+                    mDiaryCreatorCount--;
+                    if (mDiaryCreatorCount == 0)
+                    { 
+                        sDataFile.Close();
+                    }
                 }
 
                 disposed = true;

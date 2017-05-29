@@ -6,7 +6,6 @@ namespace Diary
     /// <summary>
     /// Handles random access file functionality.
     /// </summary>
-    /// <remarks>The java library is no longer supported in Visual Studio (deprecated along with Visual J#).</remarks>
     public class RandomAccessFile
     {
         private FileStream mFileStream;
@@ -44,7 +43,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Writes len bytes from the specified byte array starting at offset off to this file.
+        /// Writes the input value starting at offset to this file.
         /// </summary>
         /// <param name="value"></param>
         public void writeInt(int value)
@@ -84,11 +83,19 @@ namespace Diary
             return dataSizeBytes;
         }
 
+        /// <summary>
+        /// Returns the next integer from this file.
+        /// </summary>
+        /// <returns></returns>
         public int readInt()
         {
             return mBinaryReader.ReadInt32();
         }
 
+        /// <summary>
+        /// Sets the file pointer to the input location. 
+        /// </summary>
+        /// <param name="offset"></param>
         public void seek(long offset)
         {
             mFileStream.Seek(offset, SeekOrigin.Begin);
