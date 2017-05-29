@@ -24,7 +24,7 @@ namespace DiaryTest
         /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
         /// <param name="builder"></param>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
+        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, Diary.DateTime, string)">For more context on the problem.</seealso>
         internal void ConstructorAliasingTest(AppointmentBuilder builder)
         {
             var dateTime = new Diary.DateTime();
@@ -44,7 +44,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the StartTime field cannot be modified outside of its accessor.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
+        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, Diary.DateTime, string)">For more context on the problem.</seealso>
         internal void GetStartTimeAliasingTest(AppointmentBuilder builder)
         {
             var appointment = (Appointment)builder.Build();

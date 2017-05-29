@@ -90,27 +90,6 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual, "Input Date:<{0}>. Hours:<{1}>. Minutes:<{2}>.", DateTest.ToString(date), expectedHours, expectedMinutes);
         }
-
-        /// <summary>
-        /// Single scenario constructor(DateTime) test. 
-        /// Also checks that the Date field passed into the constructor cannot be modified outside the System Under Test.
-        /// </summary>
-        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html"/>
-        [TestMethod]
-        public void InputDateTimeConstructorTest()
-        {
-            var date = new Date(1, Date.Month.DECEMBER, 2000);
-            var expected = new Diary.DateTime(date, 8, 15);
-            var actual = new Diary.DateTime(expected);
-
-            Assert.AreEqual(ToString(expected), ToString(actual), "Original");
-
-            // Now modify the reference value outside the System Under Test accessors.
-            date.AddDays(1);
-
-            // The data should not have changed.
-            Assert.AreEqual(ToString(expected), ToString(actual), "After");
-        }
         #endregion
 
         #region Comparison Tests
