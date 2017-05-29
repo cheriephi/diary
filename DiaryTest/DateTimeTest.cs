@@ -47,10 +47,10 @@ namespace DiaryTest
         [TestMethod]
         public void DefaultConstructorTest()
         {
-            var expected = ToString(new Diary.DateTime(new Date(), 0, 0));
-            var actual = ToString(new Diary.DateTime());
+            var builder = new DateTimeBuilder();
+            var actual = new Diary.DateTime();
 
-            Assert.AreEqual(expected, actual);
+            Helper.AssertAreEqual(builder, actual, "");
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace DiaryTest
         [TestMethod]
         public void InputDateConstructorTest()
         {
-            var expectedDate = new Date(30, Date.Month.APRIL, 2017);
-            var expectedHours = 3;
-            var expectedMinutes = 42;
+            var builder = new DateTimeBuilder();
+            builder.SetDay(30);
+            builder.SetMonth(4);
+            builder.SetYear(2017);
+            builder.SetHours(3);
+            builder.SetMinutes(42);
 
-            var expected = ToString(expectedDate, expectedHours, expectedMinutes);
-            var actual = ToString(new Diary.DateTime(expectedDate, expectedHours, expectedMinutes));
-
-            Assert.AreEqual(expected, actual);
+            Helper.AssertAreEqual(builder, builder.Build(), "");
         }
 
         /// <summary>
@@ -110,30 +110,6 @@ namespace DiaryTest
 
             // The data should not have changed.
             Assert.AreEqual(ToString(expected), ToString(actual), "After");
-        }
-        #endregion
-
-        #region Aliasing Tests
-        /// <summary>
-        /// Tests that the Date field cannot be modified outside its accessor.
-        /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
-        [TestMethod]
-        public void GetDateAliasingTest()
-        {
-            var dateTime = new Diary.DateTime();
-
-            var expected = 1;
-            var actualDate = dateTime.GetDate();
-            var actual = actualDate.GetDay();
-            Assert.AreEqual(expected, actual, "Original");
-
-            actualDate.AddDays(1);
-
-            actualDate = dateTime.GetDate();
-            actual = actualDate.GetDay();
-
-            Assert.AreEqual(expected, actual, "After");
         }
         #endregion
 
@@ -212,12 +188,15 @@ namespace DiaryTest
         [TestMethod]
         public void AddTimeTest()
         {
-            var expected = new Diary.DateTime(new Date(1, Date.Month.JANUARY, 1900), 1, 1);
+            var expected = new DateTimeBuilder();
+            expected.SetDay(1).SetMonth(1).SetYear(1900);
+            expected.SetHours(1).SetMinutes(1);
+
             var actual = new Diary.DateTime(new Date(1, Date.Month.JANUARY, 1900), 0, 0);
 
             actual.AddTime(1, 1);
 
-            Assert.AreEqual(ToString(expected), ToString(actual));
+            Helper.AssertAreEqual(expected, actual, "");
         }
         #endregion
     }

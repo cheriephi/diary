@@ -47,6 +47,22 @@ namespace DiaryTest
         }
 
         /// <summary>
+        /// Tests all DateTime fields match the expected values.
+        /// </summary>
+        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html">About deep copy and aliasing bugs.</see>
+        internal static void AssertAreEqual(DateTimeBuilder expected, Diary.DateTime actual, string message)
+        {
+            Assert.AreEqual(expected.GetDay(), actual.GetDate().GetDay(), String.Format("{0} day", message));
+            Assert.AreEqual(expected.GetMonth(), (int)actual.GetDate().GetMonth(), String.Format("{0} month", message));
+            Assert.AreEqual(expected.GetYear(), actual.GetDate().GetYear(), String.Format("{0} year", message));
+
+            Assert.AreEqual(expected.GetHours(), actual.GetHours(), String.Format("{0} hours", message));
+            Assert.AreEqual(expected.GetMinutes(), actual.GetMinutes(), String.Format("{0} minutes", message));
+
+            Assert.AreNotSame(expected.Build().GetDate(), actual.GetDate(), String.Format("{0} date deep copy", message));
+        }
+
+        /// <summary>
         /// Tests all PeriodicAppointment fields match the expected values.
         /// </summary>
         internal static void AssertAreEqual(PeriodicAppointmentBuilder expected, PeriodicAppointment actual, string message)
