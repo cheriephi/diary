@@ -1,5 +1,4 @@
 ﻿using Diary;
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DiaryTest
@@ -44,19 +43,6 @@ namespace DiaryTest
             builder.SetDetails("Test Details");
 
             Helper.AssertAreEqual(builder, (Reminder)builder.Build(), "");
-        }
-
-        /// <summary>
-        /// Simple data test of IsRepeating method.
-        /// </summary>
-        [TestMethod]
-        public void IsRepeatingTest()
-        {
-            var reminder = (Reminder)new ReminderBuilder().Build();
-
-            var actual = reminder.IsRepeating();
-
-            Assert.AreEqual(false, actual, "Event Label:<{0}>.", reminder.GetLabel());
         }
 
         /// <summary>

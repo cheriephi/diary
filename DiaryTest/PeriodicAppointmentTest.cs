@@ -33,19 +33,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple test of the IsRepeating method.
-        /// </summary>
-        [TestMethod]
-        public void IsRepeatingTest()
-        {
-            var periodicAppointment = (PeriodicAppointment)new PeriodicAppointmentBuilder().Build();
-
-            var actual = periodicAppointment.IsRepeating();
-
-            Assert.AreEqual(true, actual, "Event Label:<{0}>.", periodicAppointment.GetLabel());
-        }
-
-        /// <summary>
         /// Data testing of end time method.
         /// </summary>
         [TestMethod]

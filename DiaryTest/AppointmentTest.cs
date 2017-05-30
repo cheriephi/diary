@@ -84,19 +84,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Simple data test of the IsRepeating method.
-        /// </summary>
-        [TestMethod]
-        public void IsRepeatingTest()
-        {
-            var appointment = (Appointment)new AppointmentBuilder().Build();
-
-            var actual = appointment.IsRepeating();
-
-            Assert.AreEqual(false, actual, "Event Label:<{0}>.", appointment.GetLabel());
-        }
-
-        /// <summary>
         /// Tests the boundaries around the IsOccuring method for a simple scenario.
         /// </summary>
         [TestMethod]

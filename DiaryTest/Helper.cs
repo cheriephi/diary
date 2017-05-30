@@ -41,15 +41,18 @@ namespace DiaryTest
         /// </summary>
         internal static void AssertAreEqual(AppointmentBuilder expected, Appointment actual, string message)
         {
-            Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Format("{0} details", message));
-            Assert.AreEqual(expected.GetDurationMinutes(), actual.GetDurationMinutes(), String.Format("{0} durationMinutes", message));
-            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
+            var messagePrefix = String.Format("{0} Label:<{1}>.", message, expected.GetLabel());
 
-            Assert.AreEqual(ToString(expected.GetOccurs()), ToString(actual.GetStartTime()), String.Format("{0} startTime", message));
-            Assert.AreNotSame(actual.GetStartTime(), actual.GetStartTime(), String.Format("{0} startTime deep copy", message));
+            Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Concat(messagePrefix, " details"));
+            Assert.AreEqual(expected.GetDurationMinutes(), actual.GetDurationMinutes(), String.Concat(messagePrefix, " durationMinutes"));
+            Assert.AreEqual(false, actual.IsRepeating(), String.Concat(messagePrefix, " IsRepeating"));
+            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Concat(messagePrefix, " label"));
+
+            Assert.AreEqual(ToString(expected.GetOccurs()), ToString(actual.GetStartTime()), String.Concat(messagePrefix, " startTime"));
+            Assert.AreNotSame(actual.GetStartTime(), actual.GetStartTime(), String.Concat(messagePrefix, " startTime deep copy"));
 
             var expectedClassId = new ClassId("Appointment");
-            Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Format("{0} classId", message));
+            Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Concat(messagePrefix, " classId"));
         }
 
         /// <summary>
@@ -94,15 +97,18 @@ namespace DiaryTest
         /// </summary>
         internal static void AssertAreEqual(PeriodicAppointmentBuilder expected, PeriodicAppointment actual, string message)
         {
-            Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Format("{0} details", message));
-            Assert.AreEqual(expected.GetDurationMinutes(), actual.GetDurationMinutes(), String.Format("{0} durationMinutes", message));
-            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
+            var messagePrefix = String.Format("{0} Label:<{1}>.", message, expected.GetLabel());
 
-            Assert.AreEqual(ToString(expected.GetOccurs()), ToString(actual.GetStartTime()), String.Format("{0} startTime", message));
-            Assert.AreNotSame(actual.GetStartTime(), actual.GetStartTime(), String.Format("{0} startTime deep copy", message));
+            Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Concat(messagePrefix, " details"));
+            Assert.AreEqual(expected.GetDurationMinutes(), actual.GetDurationMinutes(), String.Concat(messagePrefix, " durationMinutes"));
+            Assert.AreEqual(true, actual.IsRepeating(), String.Concat(messagePrefix, " IsRepeating"));
+            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Concat(messagePrefix, " label"));
+
+            Assert.AreEqual(ToString(expected.GetOccurs()), ToString(actual.GetStartTime()), String.Concat(messagePrefix, " startTime"));
+            Assert.AreNotSame(actual.GetStartTime(), actual.GetStartTime(), String.Concat(messagePrefix, " startTime deep copy"));
 
             var expectedClassId = new ClassId("PeriodicAppointment");
-            Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Format("{0} classId", message));
+            Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Concat(messagePrefix, " classId"));
         }
 
         /// <summary>
@@ -110,11 +116,14 @@ namespace DiaryTest
         /// </summary>
         internal static void AssertAreEqual(ReminderBuilder expected, Reminder actual, string message)
         {
-            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Format("{0} label", message));
-            Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Format("{0} details", message));
+            var messagePrefix = String.Format("{0} Label:<{1}>.", message, expected.GetLabel());
+
+            Assert.AreEqual(expected.GetDetails(), actual.GetDetails(), String.Concat(messagePrefix, " details"));
+            Assert.AreEqual(false, actual.IsRepeating(), String.Concat(messagePrefix, " IsRepeating"));
+            Assert.AreEqual(expected.GetLabel(), actual.GetLabel(), String.Concat(messagePrefix, " label"));
 
             var expectedClassId = new ClassId("Reminder");
-            Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Format("{0} classId", message));
+            Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Concat(messagePrefix, " classId"));
         }
         #endregion
     }

@@ -9,20 +9,9 @@ namespace DiaryTest
     /// <see cref="DiaryBuilder"/>
     internal class ReminderBuilder : DiaryBuilder
     {
-        private String label = "";
         private Date date = new Date();
         private String details = "";
-
-        internal String GetLabel()
-        {
-            return label;
-        }
-
-        internal ReminderBuilder SetLabel(String label)
-        {
-            this.label = label;
-            return this;
-        }
+        private String label = "";
 
         internal ReminderBuilder SetDate(Date date)
         {
@@ -38,6 +27,17 @@ namespace DiaryTest
         internal ReminderBuilder SetDetails(String details)
         {
             this.details = details;
+            return this;
+        }
+
+        internal String GetLabel()
+        {
+            return label;
+        }
+
+        internal ReminderBuilder SetLabel(String label)
+        {
+            this.label = label;
             return this;
         }
 
