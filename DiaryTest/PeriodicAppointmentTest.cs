@@ -139,7 +139,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the notToExceedDateTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
-        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, DateTime, string)">For more context on the problem.</seealso>
+        /// <seealso cref="Helper.AssertAreEqual(AppointmentBuilder, Appointment, string)">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorNotToExceedDateTimeAliasingTest()
         {

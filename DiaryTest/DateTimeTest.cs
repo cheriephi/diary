@@ -23,10 +23,9 @@ namespace DiaryTest
         [TestMethod]
         public void DefaultConstructorTest()
         {
-            var builder = new DateTimeBuilder();
             var actual = new Diary.DateTime();
 
-            Helper.AssertAreEqual(builder, actual, "");
+            Assert.AreEqual("1900-01-01 00:00", Helper.ToString(actual));
         }
 
         /// <summary>
@@ -35,12 +34,7 @@ namespace DiaryTest
         [TestMethod]
         public void InputDateConstructorTest()
         {
-            var builder = new DateTimeBuilder();
-            builder.SetDate(new Date(30, Date.Month.APRIL, 2017));
-            builder.SetHours(3);
-            builder.SetMinutes(42);
-
-            Helper.AssertAreEqual(builder, builder.Build(), "");
+            Assert.AreEqual("2017-04-30 03:42", Helper.ToString(new Diary.DateTime(new Date(30, Date.Month.APRIL, 2017), 3, 42)));
         }
 
         /// <summary>
@@ -74,34 +68,26 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTime\CompareDateTimeData.xml", "add", DataAccessMethod.Sequential)]
         public void CompareToTest()
         {
-            var builder = new DateTimeBuilder();
-
             var day = int.Parse(TestContext.DataRow["day"].ToString());
             var month = int.Parse(TestContext.DataRow["month"].ToString());
             var year = int.Parse(TestContext.DataRow["year"].ToString());
-            builder.SetDate(new Date(day, (Date.Month)month, year));
-
-            builder.SetHours(int.Parse(TestContext.DataRow["hours"].ToString()));
-            builder.SetMinutes(int.Parse(TestContext.DataRow["minutes"].ToString()));
-
-            var compareBuilder = new DateTimeBuilder();
+            var hours = int.Parse(TestContext.DataRow["hours"].ToString());
+            var minutes = int.Parse(TestContext.DataRow["minutes"].ToString());
 
             var compareDay = int.Parse(TestContext.DataRow["compareDay"].ToString());
             var compareMonth = int.Parse(TestContext.DataRow["compareMonth"].ToString());
             var compareYear = int.Parse(TestContext.DataRow["compareYear"].ToString());
-            compareBuilder.SetDate(new Date(compareDay, (Date.Month)compareMonth, compareYear));
-
-            compareBuilder.SetHours(int.Parse(TestContext.DataRow["compareHours"].ToString()));
-            compareBuilder.SetMinutes(int.Parse(TestContext.DataRow["compareMinutes"].ToString()));
+            var compareHours = int.Parse(TestContext.DataRow["compareHours"].ToString());
+            var compareMinutes = int.Parse(TestContext.DataRow["compareMinutes"].ToString());
 
             var expected = int.Parse(TestContext.DataRow["expectedResult"].ToString());
 
-            var dateTime = builder.Build();
-            var compareDateTime = compareBuilder.Build();
+            var dateTime = new Diary.DateTime(new Date(day, (Date.Month)month, year), hours, minutes);
+            var compareDateTime = new Diary.DateTime(new Date(compareDay, (Date.Month)compareMonth, compareYear), compareHours, compareMinutes);
 
             var actual = dateTime.CompareTo(compareDateTime);
 
-            Assert.AreEqual(expected, actual, "Input DateTime:<{0}>. Input Compare DateTime:<{1}>.", builder.ToString(), compareBuilder.ToString());
+            Assert.AreEqual(expected, actual, "Input DateTime:<{0}>. Input Compare DateTime:<{1}>.", Helper.ToString(dateTime), Helper.ToString(compareDateTime));
         }
 
         /// <summary>
@@ -111,46 +97,35 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\DateTime\BetweenDateTimeData.xml", "add", DataAccessMethod.Sequential)]
         public void IsBetweenTest()
         {
-            var startBuilder = new DateTimeBuilder();
-
             var startDay = int.Parse(TestContext.DataRow["startDay"].ToString());
             var startMonth = int.Parse(TestContext.DataRow["startMonth"].ToString());
             var startYear = int.Parse(TestContext.DataRow["startYear"].ToString());
-            startBuilder.SetDate(new Date(startDay, (Date.Month)startMonth, startYear));
-
-            startBuilder.SetHours(int.Parse(TestContext.DataRow["startHours"].ToString()));
-            startBuilder.SetMinutes(int.Parse(TestContext.DataRow["startMinutes"].ToString()));
-
-            var endBuilder = new DateTimeBuilder();
+            var startHours= int.Parse(TestContext.DataRow["startHours"].ToString());
+            var startMinutes = int.Parse(TestContext.DataRow["startMinutes"].ToString());
 
             var endDay = int.Parse(TestContext.DataRow["endDay"].ToString());
             var endMonth = int.Parse(TestContext.DataRow["endMonth"].ToString());
             var endYear = int.Parse(TestContext.DataRow["endYear"].ToString());
-            endBuilder.SetDate(new Date(endDay, (Date.Month)endMonth, endYear));
-
-            endBuilder.SetHours(int.Parse(TestContext.DataRow["endHours"].ToString()));
-            endBuilder.SetMinutes(int.Parse(TestContext.DataRow["endMinutes"].ToString()));
-
-            var builder = new DateTimeBuilder();
+            var endHours = int.Parse(TestContext.DataRow["endHours"].ToString());
+            var endMinutes = int.Parse(TestContext.DataRow["endMinutes"].ToString());
 
             var day = int.Parse(TestContext.DataRow["Day"].ToString());
             var month = int.Parse(TestContext.DataRow["Month"].ToString());
             var year = int.Parse(TestContext.DataRow["Year"].ToString());
-            builder.SetDate(new Date(day, (Date.Month)month, year));
-
-            builder.SetHours(int.Parse(TestContext.DataRow["hours"].ToString()));
-            builder.SetMinutes(int.Parse(TestContext.DataRow["minutes"].ToString()));
+            var hours = int.Parse(TestContext.DataRow["hours"].ToString());
+            var minutes = int.Parse(TestContext.DataRow["minutes"].ToString());
 
             var expectedIsBetweenString = TestContext.DataRow["isBetween"].ToString();
             bool expected = (expectedIsBetweenString == "1");
 
-            var startDateTime = startBuilder.Build();
-            var endDateTime = endBuilder.Build();
-            var dateTime = builder.Build();
+            var startDateTime = new Diary.DateTime(new Date(startDay, (Date.Month)startMonth, startYear), startHours, startMinutes);
+            var endDateTime = new Diary.DateTime(new Date(endDay, (Date.Month)endMonth, endYear), endHours, endMinutes);
+            var dateTime = new Diary.DateTime(new Date(day, (Date.Month)month, year), hours, minutes);
 
             var actual = dateTime.IsBetween(startDateTime, endDateTime);
 
-            Assert.AreEqual(expected, actual, "Input DateTime:<{0}>. Input Start DateTime:<{1}>. Input End DateTime:<{2}>.", builder.ToString(), startBuilder.ToString(), endBuilder.ToString());
+            var message = String.Format("Input DateTime:<{0}>. Input Start DateTime:<{1}>. Input End DateTime:<{2}>.", Helper.ToString(dateTime), Helper.ToString(startDateTime), Helper.ToString(endDateTime));
+            Assert.AreEqual(expected, actual, message);
         }
         #endregion
 
@@ -161,15 +136,11 @@ namespace DiaryTest
         [TestMethod]
         public void AddTimeTest()
         {
-            var expected = new DateTimeBuilder();
-            expected.SetDate(new Date(1, Date.Month.JANUARY, 1900));
-            expected.SetHours(1).SetMinutes(1);
+            var dateTime = new Diary.DateTime(new Date(1, Date.Month.JANUARY, 1900), 0, 0);
+            dateTime.AddTime(1, 1);
 
-            var actual = new Diary.DateTime(new Date(1, Date.Month.JANUARY, 1900), 0, 0);
-
-            actual.AddTime(1, 1);
-
-            Helper.AssertAreEqual(expected, actual, "");
+ 
+            Assert.AreEqual("1900-01-01 01:01", Helper.ToString(dateTime));
         }
         #endregion
     }

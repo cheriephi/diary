@@ -39,6 +39,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests all Appointment fields match the expected values.
         /// </summary>
+        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html">About deep copy and aliasing bugs.</see>
         internal static void AssertAreEqual(AppointmentBuilder expected, Appointment actual, string message)
         {
             var messagePrefix = String.Format("{0} Label:<{1}>.", message, expected.GetLabel());
@@ -76,20 +77,6 @@ namespace DiaryTest
             Assert.AreEqual(expected.GetDay(), actual.GetDay(), String.Format("{0} day", message));
             Assert.AreEqual(expected.GetMonth(), (int)actual.GetMonth(), String.Format("{0} month", message));
             Assert.AreEqual(expected.GetYear(), actual.GetYear(), String.Format("{0} year", message));
-        }
-
-        /// <summary>
-        /// Tests all DateTime fields match the expected values.
-        /// </summary>
-        /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html">About deep copy and aliasing bugs.</see>
-        internal static void AssertAreEqual(DateTimeBuilder expected, Diary.DateTime actual, string message)
-        {
-            Assert.AreEqual(ToString(expected.GetDate()), ToString(actual.GetDate()), String.Format("{0} day", message));
-
-            Assert.AreEqual(expected.GetHours(), actual.GetHours(), String.Format("{0} hours", message));
-            Assert.AreEqual(expected.GetMinutes(), actual.GetMinutes(), String.Format("{0} minutes", message));
-
-            Assert.AreNotSame(actual.GetDate(), actual.GetDate(), String.Format("{0} date deep copy", message));
         }
 
         /// <summary>

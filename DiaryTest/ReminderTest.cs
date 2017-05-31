@@ -13,7 +13,7 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
-        /// <seealso cref="Helper.AssertAreEqual(DateTimeBuilder, Diary.DateTime, string)">For more context on the problem.</seealso>
+        /// <seealso cref="Helper.AssertAreEqual(AppointmentBuilder, Appointment, string)">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorAliasingTest()
         {
