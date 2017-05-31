@@ -7,6 +7,9 @@ namespace Diary
     /// </summary>
     public class PeriodicAppointment : Appointment
     {
+        private DateTime mNotToExceedDateTime;
+        private int mPeriodHours;
+
         /// <summary>
         /// Creates a Periodic Appointment.
         /// </summary>
@@ -73,8 +76,5 @@ namespace Diary
 
             return false;
         }
-
-        private DateTime mNotToExceedDateTime;
-        private int mPeriodHours;
     }
 }

@@ -42,23 +42,18 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Tests the GetChild method shallow copy using a relation that is mutable.
+        /// Tests the GetChild method shallow copy.
         /// </summary>
         [TestMethod]
         public void GetChildDateTest()
         {
-            var date = new Date();
-
             var relation = new Relation1M<Date>();
-            relation.Add(date);
+            relation.Add(new Date());
 
             var actual = relation.GetChild(0);
-            Assert.AreEqual(1, actual.GetDay(), "Original");
 
-            date.AddDays(1);
-
-            actual = relation.GetChild(0);
-            Assert.AreNotEqual(1, actual.GetDay(), "After");
+            Assert.AreEqual(1, actual.GetDay(), "day");
+            Assert.AreSame(actual.GetDay(), actual.GetDay(), "day shallow copy");
         }
 
         /// <summary>
