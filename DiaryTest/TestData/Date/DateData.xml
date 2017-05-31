@@ -7,24 +7,28 @@
             <day>5</day>
             <!--  http://aa.usno.navy.mil/data/docs/JulianDate.php and feedback from Luke Gilfeather -->
             <dayOfWeek>WEDNESDAY</dayOfWeek>
+            <date>0050-01-05</date>
     </add>
       <add>
             <year>1957</year>
             <month>2</month>
             <day>1</day>
             <dayOfWeek>FRIDAY</dayOfWeek>
-    </add>
+            <date>1957-02-01</date>
+      </add>
       <add>
             <year>1492</year>
             <month>3</month>
             <day>15</day>
             <dayOfWeek>TUESDAY</dayOfWeek>
-    </add>
+            <date>1492-03-15</date>
+      </add>
       <add>
             <!--Future.-->
             <year>2050</year>
             <month>12</month>
             <day>25</day>
             <dayOfWeek>SUNDAY</dayOfWeek>
-    </add>
+            <date>2050-12-25</date>
+      </add>
 </tests>

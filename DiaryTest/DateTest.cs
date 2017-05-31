@@ -28,10 +28,7 @@ namespace DiaryTest
         [TestMethod]
         public void DefaultConstructorTest()
         {
-            var builder = new DateBuilder();
-            var actual = new Date();
-
-            Helper.AssertAreEqual(builder, actual, "");
+            Assert.AreEqual("1900-01-01", Helper.ToString(new Date()));
         }
 
         /// <summary>
@@ -41,12 +38,14 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\DateData.xml", "add", DataAccessMethod.Sequential)]
         public void InputDateConstructorTest()
         {
-            var builder = new DateBuilder();
-            builder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
-            builder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
-            builder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
+            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var month = int.Parse(TestContext.DataRow["month"].ToString());
+            var year = int.Parse(TestContext.DataRow["year"].ToString());
+            var expected = TestContext.DataRow["date"].ToString();
 
-            Helper.AssertAreEqual(builder, builder.Build(), "");
+            var date = new Date(day, (Date.Month)month, year);
+
+            Assert.AreEqual(expected, Helper.ToString(date));
         }
 
         /// <summary>
@@ -93,24 +92,22 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\CompareDateData.xml", "add", DataAccessMethod.Sequential)]
         public void CompareToTest()
         {
-            var dateBuilder = new DateBuilder();
-            dateBuilder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
-            dateBuilder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
-            dateBuilder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
+            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var month = int.Parse(TestContext.DataRow["month"].ToString());
+            var year = int.Parse(TestContext.DataRow["year"].ToString());
 
-            var compareDateBuilder = new DateBuilder();
-            compareDateBuilder.SetDay(int.Parse(TestContext.DataRow["compareDay"].ToString()));
-            compareDateBuilder.SetMonth(int.Parse(TestContext.DataRow["compareMonth"].ToString()));
-            compareDateBuilder.SetYear(int.Parse(TestContext.DataRow["compareYear"].ToString()));
+            var compareDay = int.Parse(TestContext.DataRow["compareDay"].ToString());
+            var compareMonth = int.Parse(TestContext.DataRow["compareMonth"].ToString());
+            var compareYear = int.Parse(TestContext.DataRow["compareYear"].ToString());
 
             var expected = int.Parse(TestContext.DataRow["expectedResult"].ToString());
 
-            var date = dateBuilder.Build();
-            var compareDate = compareDateBuilder.Build();
+            var date = new Date(day, (Date.Month)month, year);
+            var compareDate = new Date(compareDay, (Date.Month)compareMonth, compareYear);
 
             var actual = date.CompareTo(compareDate);
 
-            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", dateBuilder.ToString(), compareDateBuilder.ToString());
+            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Compare Date:<{1}>.", Helper.ToString(date), Helper.ToString(compareDate));
         }
 
         /// <summary>
@@ -120,31 +117,28 @@ namespace DiaryTest
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Date\BetweenDateData.xml", "add", DataAccessMethod.Sequential)]
         public void IsBetweenTest()
         {
-            var startBuilder = new DateBuilder();
-            startBuilder.SetDay(int.Parse(TestContext.DataRow["startDay"].ToString()));
-            startBuilder.SetMonth(int.Parse(TestContext.DataRow["startMonth"].ToString()));
-            startBuilder.SetYear(int.Parse(TestContext.DataRow["startYear"].ToString()));
+            var startDay = int.Parse(TestContext.DataRow["startDay"].ToString());
+            var startMonth = int.Parse(TestContext.DataRow["startMonth"].ToString());
+            var startYear = int.Parse(TestContext.DataRow["startYear"].ToString());
 
-            var endBuilder = new DateBuilder();
-            endBuilder.SetDay(int.Parse(TestContext.DataRow["endDay"].ToString()));
-            endBuilder.SetMonth(int.Parse(TestContext.DataRow["endMonth"].ToString()));
-            endBuilder.SetYear(int.Parse(TestContext.DataRow["endYear"].ToString()));
+            var endDay = int.Parse(TestContext.DataRow["endDay"].ToString());
+            var endMonth = int.Parse(TestContext.DataRow["endMonth"].ToString());
+            var endYear = int.Parse(TestContext.DataRow["endYear"].ToString());
 
-            var builder = new DateBuilder();
-            builder.SetDay(int.Parse(TestContext.DataRow["day"].ToString()));
-            builder.SetMonth(int.Parse(TestContext.DataRow["month"].ToString()));
-            builder.SetYear(int.Parse(TestContext.DataRow["year"].ToString()));
+            var day = int.Parse(TestContext.DataRow["day"].ToString());
+            var month = int.Parse(TestContext.DataRow["month"].ToString());
+            var year = int.Parse(TestContext.DataRow["year"].ToString());
 
             var expectedIsBetweenString = TestContext.DataRow["isBetween"].ToString();
             bool expected = (expectedIsBetweenString == "1");
 
-            var startDate = startBuilder.Build();
-            var endDate = endBuilder.Build();
-            var date = builder.Build();
+            var startDate = new Date(startDay, (Date.Month)startMonth, startYear);
+            var endDate = new Date(endDay, (Date.Month)endMonth, endYear);
+            var date = new Date(day, (Date.Month)month, year);
 
             var actual = date.IsBetween(startDate, endDate);
 
-            Assert.AreEqual(expected, actual, "Input Date:<{0}>. Input Start Date:<{1}>. Input End Date:<{2}>.", builder.ToString(), startBuilder.ToString(), endBuilder.ToString());
+            Assert.AreEqual(expected, actual, "Date:<{0}>. Start Date:<{1}>. End Date:<{2}>.", Helper.ToString(date), Helper.ToString(startDate), Helper.ToString(endDate));
         }
         #endregion
 
@@ -155,15 +149,10 @@ namespace DiaryTest
         [TestMethod]
         public void AddDaysTest()
         {
-            var builder = new DateBuilder();
-            builder.SetDay(3);
-            builder.SetMonth(1);
-            builder.SetYear(1900);
-
-            var actual = new Date();
+            var actual = new Date(3, Date.Month.JANUARY, 1900);
             actual.AddDays(2);
 
-            Helper.AssertAreEqual(builder, actual, "");
+            Assert.AreEqual("1900-01-05", Helper.ToString(actual));
         }
 
         /// <summary>
@@ -172,15 +161,10 @@ namespace DiaryTest
         [TestMethod]
         public void SubtractDaysTest()
         {
-            var builder = new DateBuilder();
-            builder.SetDay(30);
-            builder.SetMonth(12);
-            builder.SetYear(1899);
-
-            var actual = new Date();
+            var actual = new Date(30, Date.Month.DECEMBER, 1899);
             actual.SubtractDays(2);
 
-            Helper.AssertAreEqual(builder, actual, "");
+            Assert.AreEqual("1899-12-28", Helper.ToString(actual));
         }
 
         /// <summary>

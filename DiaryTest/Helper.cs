@@ -70,16 +70,6 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Tests all Date fields match the expected values.
-        /// </summary>
-        internal static void AssertAreEqual(DateBuilder expected, Date actual, string message)
-        {
-            Assert.AreEqual(expected.GetDay(), actual.GetDay(), String.Format("{0} day", message));
-            Assert.AreEqual(expected.GetMonth(), (int)actual.GetMonth(), String.Format("{0} month", message));
-            Assert.AreEqual(expected.GetYear(), actual.GetYear(), String.Format("{0} year", message));
-        }
-
-        /// <summary>
         /// Tests all PeriodicAppointment fields match the expected values.
         /// </summary>
         internal static void AssertAreEqual(PeriodicAppointmentBuilder expected, PeriodicAppointment actual, string message)
