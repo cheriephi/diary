@@ -1,5 +1,6 @@
 ﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace DiaryTest.Creators
 {
@@ -54,60 +55,37 @@ namespace DiaryTest.Creators
         [TestMethod]
         public void SaveAndLoadTest()
         {
-            DateTime yogaDateTime;
-            DateTime doctorsDateTime;
-            DateTime teacherDateTime;
-            DateTime reviewDateTime;
-
-            ObjectId objectId1;
-            ObjectId objectId2;
-            ObjectId objectId3;
-            ObjectId objectId4;
+            var appointments = new Appointment[4];
 
             using (var creator = new AppointmentCreator())
             {
-                yogaDateTime = new DateTime(new Date(1, Date.Month.FEBRUARY, 2017), 6, 30);
-                objectId1 = creator.CreateNew("Yoga", yogaDateTime, 45, "Downward Dog").GetObjectId();
+                var yogaDateTime = new Diary.DateTime(new Date(1, Date.Month.FEBRUARY, 2017), 6, 30);
+                appointments[0] = (Appointment)creator.CreateNew("Yoga", yogaDateTime, 45, "Downward Dog");
 
-                doctorsDateTime = new DateTime(new Date(2, Date.Month.MARCH, 2017), 8, 20);
-                objectId2 = creator.CreateNew("Ear Doctor", doctorsDateTime, 30, "Annual Cleaning").GetObjectId();
+                var doctorsDateTime = new Diary.DateTime(new Date(2, Date.Month.MARCH, 2017), 8, 20);
+                appointments[1] = (Appointment)creator.CreateNew("Ear Doctor", doctorsDateTime, 30, "Annual Cleaning");
 
-                teacherDateTime = new DateTime(new Date(7, Date.Month.APRIL, 2017), 12, 00);
-                objectId3 = creator.CreateNew("School", teacherDateTime, 25, "5th Grade Arithmatic").GetObjectId();
+                var teacherDateTime = new Diary.DateTime(new Date(7, Date.Month.APRIL, 2017), 12, 00);
+                appointments[2] = (Appointment)creator.CreateNew("School", teacherDateTime, 25, "5th Grade Arithmatic");
 
-                reviewDateTime = new DateTime(new Date(30, Date.Month.MAY, 2017), 18, 30);
-                objectId4 = creator.CreateNew("Performance Review", reviewDateTime, 60, "6 Month Evaluation").GetObjectId();
+                var reviewDateTime = new Diary.DateTime(new Date(30, Date.Month.MAY, 2017), 18, 30);
+                appointments[3] = (Appointment)creator.CreateNew("Performance Review", reviewDateTime, 60, "6 Month Evaluation");
 
                 creator.Save();
             }
 
-            Appointment yogaAppointment;
-            Appointment drAppointment;
-            Appointment teacherAppointment;
-            Appointment reviewAppointment;
-
-            using (var creator = new AppointmentCreator()) // Re-open the files
+            using (var appointmentCreator = new AppointmentCreator()) // Re-open the files
             {
-                yogaAppointment = (Appointment)creator.Create(objectId1);
-                Assert.IsTrue(yogaAppointment.GetLabel().CompareTo("Yoga") == 0);
-                Assert.IsTrue(yogaAppointment.GetStartTime().CompareTo(yogaDateTime) == 0);
-                Assert.IsTrue(yogaAppointment.GetDurationMinutes() == 45);
+                foreach (var appointment in appointments)
+                {
+                    var objectId = appointment.GetObjectId();
+                    var savedAppointment = (Appointment)appointmentCreator.Create(objectId);
 
-
-                drAppointment = (Appointment)creator.Create(objectId2);
-                Assert.IsTrue(drAppointment.GetLabel().CompareTo("Ear Doctor") == 0);
-                Assert.IsTrue(drAppointment.GetStartTime().CompareTo(doctorsDateTime) == 0);
-                Assert.IsTrue(drAppointment.GetDurationMinutes() == 30);
-
-                teacherAppointment = (Appointment)creator.Create(objectId3);
-                Assert.IsTrue(teacherAppointment.GetLabel().CompareTo("School") == 0);
-                Assert.IsTrue(teacherAppointment.GetStartTime().CompareTo(teacherDateTime) == 0);
-                Assert.IsTrue(teacherAppointment.GetDurationMinutes() == 25);
-
-                reviewAppointment = (Appointment)creator.Create(objectId4);
-                Assert.IsTrue(reviewAppointment.GetLabel().CompareTo("Performance Review") == 0);
-                Assert.IsTrue(reviewAppointment.GetStartTime().CompareTo(reviewDateTime) == 0);
-                Assert.IsTrue(reviewAppointment.GetDurationMinutes() == 60);
+                    Assert.AreEqual(appointment.GetLabel(), savedAppointment.GetLabel(), "Label");
+                    Assert.IsTrue(appointment.GetStartTime().CompareTo(savedAppointment.GetStartTime()) == 0, "StartTime");
+                    Assert.AreEqual(appointment.GetDurationMinutes(), savedAppointment.GetDurationMinutes(), "DurationMinutes");
+                    Assert.AreEqual(appointment.GetContacts().GetChildCount(), savedAppointment.GetContacts().GetChildCount(), "Contacts.ChildCount");
+                }
 
                 // Now add some contacts to the existing appointments
                 using (var contactCreator = new ContactCreator())
@@ -117,31 +95,35 @@ namespace DiaryTest.Creators
                     var contact3 = (Contact)contactCreator.CreateNew("Jenny", "Twotone", "(210) 867-5308");
                     contactCreator.Save();
 
+                    var drAppointment = (Appointment)appointmentCreator.Create(appointments[1].GetObjectId());
                     drAppointment.AddRelation(contact1);
                     drAppointment.AddRelation(contact2);
 
+                    var reviewAppointment = (Appointment)appointmentCreator.Create(appointments[3].GetObjectId());
                     reviewAppointment.AddRelation(contact3);
-                    creator.Save();
+                    appointmentCreator.Save();
                 }
             }
 
             using (var creator = new AppointmentCreator())   // Re-open the files
             {
-                drAppointment = (Appointment)creator.Create(objectId2);
-                Assert.IsTrue(drAppointment.GetLabel().CompareTo("Ear Doctor") == 0);
-                Assert.IsTrue(drAppointment.GetStartTime().CompareTo(doctorsDateTime) == 0);
-                Assert.IsTrue(drAppointment.GetDurationMinutes() == 30);
-                Assert.IsTrue(drAppointment.GetContacts().GetChildCount() == 2);
+                foreach (var appointment in appointments)
+                {
+                    var objectId = appointment.GetObjectId();
+                    var savedAppointment = (Appointment)creator.Create(objectId);
 
-                reviewAppointment = (Appointment)creator.Create(objectId4);
-                Assert.IsTrue(reviewAppointment.GetLabel().CompareTo("Performance Review") == 0);
-                Assert.IsTrue(reviewAppointment.GetStartTime().CompareTo(reviewDateTime) == 0);
-                Assert.IsTrue(reviewAppointment.GetDurationMinutes() == 60);
-                Assert.IsTrue(reviewAppointment.GetContacts().GetChildCount() == 1);
+                    Assert.AreEqual(appointment.GetLabel(), savedAppointment.GetLabel(), "Label Post Contact Save");
+                    Assert.IsTrue(appointment.GetStartTime().CompareTo(savedAppointment.GetStartTime()) == 0, "StartTime Post Contact Save");
+                    Assert.AreEqual(appointment.GetDurationMinutes(), savedAppointment.GetDurationMinutes(), "DurationMinutes Post Contact Save");
+                }
 
+                var drAppointment = (Appointment)creator.Create(appointments[1].GetObjectId());
+                Assert.AreEqual(2,drAppointment.GetContacts().GetChildCount(), String.Format("drAppointment Contacts.ChildCount Post Contact Save"));
+
+                var reviewAppointment = (Appointment)creator.Create(appointments[3].GetObjectId());
+                Assert.AreEqual(1, reviewAppointment.GetContacts().GetChildCount(), String.Format("review Contacts.ChildCount Post Contact Save"));
             }
         }
-
     }
 }
 

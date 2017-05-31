@@ -78,20 +78,20 @@ namespace DiaryTest
         [TestMethod]
         public void SaveAndLoadTest()
         {
-            var Reminders = new Reminder[3];
+            var reminders = new Reminder[3];
 
             using (var creator = new ReminderCreator())
             {
-                Reminders[0] = (Reminder)creator.CreateNew("Label 1", new Date(1, Date.Month.MAY, 2017), "Details 1");
-                Reminders[1] = (Reminder)creator.CreateNew("Label 2", new Date(3, Date.Month.MAY, 2017), "Details 2");
-                Reminders[2] = (Reminder)creator.CreateNew("Label 3", new Date(5, Date.Month.MAY, 2017), "Details 3");
+                reminders[0] = (Reminder)creator.CreateNew("Label 1", new Date(1, Date.Month.MAY, 2017), "Details 1");
+                reminders[1] = (Reminder)creator.CreateNew("Label 2", new Date(3, Date.Month.MAY, 2017), "Details 2");
+                reminders[2] = (Reminder)creator.CreateNew("Label 3", new Date(5, Date.Month.MAY, 2017), "Details 3");
 
                 creator.Save();
             }
 
             using (var creator = new ReminderCreator())  // Re-open the files.
             {
-                foreach (var reminder in Reminders)
+                foreach (var reminder in reminders)
                 {
                     var objectId = reminder.GetObjectId();
                     var savedReminder = (Reminder)creator.Create(objectId);
