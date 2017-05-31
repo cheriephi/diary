@@ -53,7 +53,7 @@ namespace DiaryTest
             var actual = relation.GetChild(0);
 
             Assert.AreEqual(1, actual.GetDay(), "day");
-            Assert.AreSame(actual.GetDay(), actual.GetDay(), "day shallow copy");
+            Assert.AreSame(relation.GetChild(0), relation.GetChild(0), "shallow copy");
         }
 
         /// <summary>
