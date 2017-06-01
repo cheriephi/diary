@@ -36,24 +36,6 @@ namespace DiaryTest
         #endregion
 
         /// <summary>
-        /// Tests the Reminder accessors through the ReminderCreator constructor.
-        /// </summary>
-        [TestMethod]
-        public void ReminderCreatorConstructorTest()
-        {
-            using (var creator = new ReminderCreator())
-            {
-                var builder = new ReminderBuilder();
-                builder.SetCreator(creator);
-                builder.SetLabel("Test Label");
-                builder.SetDetails("Test Details");
-
-                Helper.AssertAreEqual(builder, (Reminder)builder.Build(), "");
-            }
-        }
-
-
-        /// <summary>
         /// Tests the boundaries around the IsOccuring method for a simple scenario.
         /// </summary>
         [TestMethod]
@@ -73,31 +55,44 @@ namespace DiaryTest
 
 
         /// <summary>
-        /// Tests persistence via the ReminderCreator.
+        /// Tests the Reminder accessors and persistence via the ReminderCreator.
         /// </summary>
         [TestMethod]
         public void SaveAndLoadTest()
         {
-            var reminders = new Reminder[3];
+            var builders = new ReminderBuilder[3]
+            {
+                new ReminderBuilder(),
+                new ReminderBuilder(),
+                new ReminderBuilder()
+            };
 
             using (var creator = new ReminderCreator())
             {
-                reminders[0] = (Reminder)creator.CreateNew("Label 1", new Date(1, Date.Month.MAY, 2017), "Details 1");
-                reminders[1] = (Reminder)creator.CreateNew("Label 2", new Date(3, Date.Month.MAY, 2017), "Details 2");
-                reminders[2] = (Reminder)creator.CreateNew("Label 3", new Date(5, Date.Month.MAY, 2017), "Details 3");
+                builders[0].SetLabel("Label 1").SetDate(new Date(1, Date.Month.MAY, 2017)).SetDetails("Details 1");
+                builders[1].SetLabel("Label 2").SetDate(new Date(3, Date.Month.MAY, 2017)).SetDetails("Details 2");
+                builders[2].SetLabel("Label 3").SetDate(new Date(5, Date.Month.MAY, 2017)).SetDetails("Details 3");
+
+                foreach (var builder in builders)
+                {
+                    builder.SetCreator(creator);
+                    var reminder = (Reminder)builder.Build();
+                    builder.SetObjectId(reminder.GetObjectId());
+
+                    Helper.AssertAreEqual(builder, reminder, "Original");
+                }
 
                 creator.Save();
             }
 
             using (var creator = new ReminderCreator())  // Re-open the files.
             {
-                foreach (var reminder in reminders)
+                foreach (var builder in builders)
                 {
-                    var objectId = reminder.GetObjectId();
+                    var objectId = builder.GetObjectId();
                     var savedReminder = (Reminder)creator.Create(objectId);
 
-                    Assert.AreEqual(reminder.GetLabel(), savedReminder.GetLabel(), "Label");
-                    Assert.AreEqual(reminder.GetDetails(), savedReminder.GetDetails(), "Details");
+                    Helper.AssertAreEqual(builder, savedReminder, "Saved");
                 }
             }
         }

@@ -34,53 +34,46 @@ namespace DiaryTest
             fixture.Cleanup();
         }
         #endregion
-        
-        /// <summary>
-        /// Tests the Contact accessors through the ContactCreator constructor.
-        /// </summary>
-        [TestMethod]
-        public void ContactCreatorConstructorTest()
-        {
-            // Wrap the creator in a using block so its resources will get released when the program no longer needs it.
-            using (var creator = new ContactCreator())
-            {
-                var builder = new ContactBuilder();
-                builder.SetCreator(creator);
-                builder.SetFirstName("First").SetLastName("Last");
-                builder.SetContactInfo("ContactInfo");
-
-                Helper.AssertAreEqual(builder, (Contact)builder.Build(), "");
-            }
-        }
 
         /// <summary>
-        /// Tests persistence via the ContactCreator.
+        /// Tests the Contact accessors and persistence through the ContactCreator.
         /// </summary>
         [TestMethod]
         public void SaveAndLoadTest()
         {
-            var contacts = new Contact[3];
+            var builders = new ContactBuilder[3]
+            {
+                new ContactBuilder(),
+                new ContactBuilder(),
+                new ContactBuilder()
+            };
 
             using (var creator = new ContactCreator())
             {
-                contacts[0] = (Contact)creator.CreateNew("Brian", "Rothwell", "brothwell@q.com");
-                contacts[1] = (Contact)creator.CreateNew("Billy", "Bob", "slingblade@msn.com");
-                contacts[2] = (Contact)creator.CreateNew("Jenny", "Twotone", "(210) 867-5308");
+                builders[0].SetFirstName("Brian").SetLastName("Rothwell").SetContactInfo("brothwell@q.com");
+                builders[1].SetFirstName("Billy").SetLastName("Bob").SetContactInfo("slingblade@msn.com");
+                builders[2].SetFirstName("Jenny").SetLastName("Twotone").SetContactInfo("(210) 867-5308");
+
+                foreach (var builder in builders)
+                {
+                    builder.SetCreator(creator);
+                    var contact = (Contact)builder.Build();
+                    builder.SetObjectId(contact.GetObjectId());
+
+                    Helper.AssertAreEqual(builder, contact, "Original");
+                }
 
                 creator.Save();
             }
 
             using (var creator = new ContactCreator())  // Re-open the files.
             {
-                foreach (var contact in contacts)
+                foreach (var builder in builders)
                 {
-                    var objectId = contact.GetObjectId();
+                    var objectId = builder.GetObjectId();
                     var savedContact = (Contact)creator.Create(objectId);
 
-                    Assert.AreEqual(contact.GetName()[0], savedContact.GetName()[0], "firstName");
-                    Assert.AreEqual(contact.GetName()[1], savedContact.GetName()[1], "lastName");
-
-                    Assert.IsTrue(savedContact.GetContactInfo().CompareTo(contact.GetContactInfo()) == 0, "contactInfo");
+                    Helper.AssertAreEqual(builder, savedContact, "Saved");
                 }
             }
         }
