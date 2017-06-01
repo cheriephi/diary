@@ -58,6 +58,7 @@
     <Compile Include="Builders\ContactBuilder.cs" />
     <Compile Include="Builders\DiaryBuilder.cs" />
     <Compile Include="Creators\AppointmentCreatorTest.cs" />
+    <Compile Include="Creators\PeriodicAppointmentCreatorTest.cs" />
     <Compile Include="Creators\ReminderCreatorTest.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Persistence\ClassIdTest.cs" />

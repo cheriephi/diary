@@ -47,11 +47,17 @@ namespace DiaryTest.Creators
             {
                 var builder = new AppointmentBuilder();
                 builder.SetCreator(creator);
+                builder.SetOccurs(new Diary.DateTime(new Date(15, Date.Month.FEBRUARY, 2008), 15, 30));
+                builder.SetLabel("Dr Apt");
+                builder.SetDetails("At the library");
 
                 Helper.AssertAreEqual(builder, (Appointment)builder.Build(), "");
             }
         }
 
+        /// <summary>
+        /// Tests persistence via the AppointmentCreator.
+        /// </summary>
         [TestMethod]
         public void SaveAndLoadTest()
         {
