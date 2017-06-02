@@ -36,25 +36,6 @@ namespace DiaryTest
         #endregion
 
         /// <summary>
-        /// Tests the boundaries around the IsOccuring method for a simple scenario.
-        /// </summary>
-        [TestMethod]
-        public void IsOccuringOnTest()
-        {
-            using (var creator = new ReminderCreator())
-            {
-                var reminderDate = new Date(30, Date.Month.SEPTEMBER, 2000);
-                var reminder = (Reminder)new ReminderBuilder().SetDate(reminderDate).SetCreator(creator).Build();
-
-                var expectedStartDate = reminderDate;
-                var expectedEndDate = new Date(reminderDate.GetDay(), reminderDate.GetMonth(), reminderDate.GetYear());
-
-                CalendarEventTest.IsOccuringOnTest(reminder, expectedStartDate, expectedEndDate);
-            }
-        }
-
-
-        /// <summary>
         /// Tests the Reminder accessors and persistence via the ReminderCreator.
         /// </summary>
         [TestMethod]

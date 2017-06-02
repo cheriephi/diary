@@ -101,6 +101,9 @@ namespace DiaryTest
 
             var expectedClassId = new ClassId("Reminder");
             Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Concat(messagePrefix, " classId"));
+
+            // Test the Reminder.Date; which is exposed through the IsOccuringOn method.
+            CalendarEventTest.IsOccuringOnTest(actual, expected.GetDate(), expected.GetDate());
         }
         #endregion
     }

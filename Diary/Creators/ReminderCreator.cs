@@ -90,7 +90,7 @@ namespace Diary
 
                 var record = new VariableLengthRecord();
                 record.AppendValue(reminder.GetLabel());
-                record.AppendValue(new Date().DaysUntil(new Date())); //TODO: No accessor for Reminder.Date
+                record.AppendValue(reminder.GetDate().DaysUntil(new Date()));
                 record.AppendValue(reminder.GetDetails());
 
                 Write(reminder.GetObjectId(), record);

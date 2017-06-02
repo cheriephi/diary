@@ -21,7 +21,7 @@ namespace Diary
             : base(new ClassId("Reminder"), objectId, label)
         {
             mDetails = details;
-            // Deep copy the input date to prevent aliasing bugs
+            // Deep copy the input date to prevent aliasing bugs.
             mOccurs = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
         }
 
@@ -44,7 +44,7 @@ namespace Diary
         }
         
         /// <summary>
-        /// Returns whether or not the reminder occurs on the date in question
+        /// Returns whether or not the reminder occurs on the date in question.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -52,6 +52,16 @@ namespace Diary
         {
             int compare = date.CompareTo(mOccurs);
             return (compare == 0);
+        }
+
+        /// <summary>
+        /// GetDate accessor to support persistence.
+        /// </summary>
+        /// <returns></returns>
+        internal Date GetDate()
+        {
+            // Deep copy the input date to prevent aliasing bugs.
+            return new Date(mOccurs.GetDay(), mOccurs.GetMonth(), mOccurs.GetYear());
         }
     }
 }

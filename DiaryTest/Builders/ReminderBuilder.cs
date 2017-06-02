@@ -13,6 +13,11 @@ namespace DiaryTest
         private String details = "";
         private String label = "";
 
+        internal Date GetDate()
+        {
+            return date;
+        }
+
         internal ReminderBuilder SetDate(Date date)
         {
             this.date = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
