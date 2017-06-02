@@ -40,24 +40,10 @@ namespace DiaryTest
         {
             var builder = new ReminderBuilder();
             builder.SetLabel("Test Label");
+            builder.SetDate(new Date(30, Date.Month.SEPTEMBER, 2000));
             builder.SetDetails("Test Details");
 
             Helper.AssertAreEqual(builder, (Reminder)builder.Build(), "");
-        }
-
-        /// <summary>
-        /// Tests the boundaries around the IsOccuring method for a simple scenario.
-        /// </summary>
-        [TestMethod]
-        public void IsOccuringOnTest()
-        {
-            var reminderDate = new Date(30, Date.Month.SEPTEMBER, 2000);
-            var reminder = (Reminder)new ReminderBuilder().SetDate(reminderDate).Build();
-
-            var expectedStartDate = reminderDate;
-            var expectedEndDate = new Date(reminderDate.GetDay(), reminderDate.GetMonth(), reminderDate.GetYear());
-
-            CalendarEventTest.IsOccuringOnTest(reminder, expectedStartDate, expectedEndDate);
         }
 
         #region Persistence Tests
