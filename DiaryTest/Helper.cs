@@ -40,6 +40,8 @@ namespace DiaryTest
         /// Tests all Appointment fields match the expected values.
         /// </summary>
         /// <see href="https://www.martinfowler.com/bliki/AliasingBug.html">About deep copy and aliasing bugs.</see>
+        /// <remarks>Calculated fields, such as EndTime, are tested elsewhere because they are not required
+        /// to validate all the data fields passed into the constructor match expected values.</remarks>
         internal static void AssertAreEqual(AppointmentBuilder expected, Appointment actual, string message)
         {
             var messagePrefix = String.Format("{0} Label:<{1}>.", message, expected.GetLabel());

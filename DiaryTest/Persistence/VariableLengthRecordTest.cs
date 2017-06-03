@@ -2,15 +2,44 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Configuration;
 
 namespace DiaryTest
 {
     /// <summary>
     /// Tests the variable length record class.
     /// </summary>
+    /// <see cref="ObjectIdTest"/>
+    /// <remarks>Not all tests currently get persisted, but a fresh fixture is set for each one to simplify the test code and its maintenance.</remarks>
     [TestClass]
-    public class VariableLengthRecordTest
+    public unsafe class VariableLengthRecordTest
     {
+        private TransientPersistenceFreshFixture fixture;
+
+        #region Test Initialize and Cleanup Methods
+        /// <summary>
+        /// Resets the environment.
+        /// </summary>
+        /// <see cref="TransientPersistenceFreshFixture"/>
+        [TestInitialize]
+        public void Init()
+        {
+            fixture = new TransientPersistenceFreshFixture();
+            fixture.Init();
+        }
+
+        /// <summary>
+        /// Reverts the environment back to its original state.
+        /// </summary>
+        /// <see cref="TransientPersistenceFreshFixture"/>
+        [TestCleanup]
+        public void Cleanup()
+        {
+            fixture.Cleanup();
+        }
+        #endregion
+
+        #region Data Type Tests
         /// <summary>
         /// Tests boolean values work as expected.
         /// </summary>
@@ -172,12 +201,59 @@ namespace DiaryTest
         }
 
         /// <summary>
+        /// Tests Date values work as expected.
+        /// </summary>
+        [TestMethod]
+        public void TestDateElement()
+        {
+            var record = new VariableLengthRecord();
+
+            var value1 = new Date(3, Date.Month.JUNE, 2017);
+            Assert.AreEqual(0, record.GetCount());
+            record.AppendValue(value1);
+            Assert.AreEqual(1, record.GetCount());
+            var value = new Date();
+            Assert.IsTrue(record.GetValue(0, ref value));
+            Assert.AreEqual(Helper.ToString(value1), Helper.ToString(value));
+
+            var value2 = new Date(15, Date.Month.APRIL, 1970);
+            record.AppendValue(value2);
+            Assert.AreEqual(2, record.GetCount());
+            Assert.IsTrue(record.GetValue(1, ref value));
+            Assert.AreEqual(Helper.ToString(value2), Helper.ToString(value));
+        }
+
+        /// <summary>
+        /// Tests DateTime values work as expected.
+        /// </summary>
+        [TestMethod]
+        public void TestDateTimeElement()
+        {
+            var record = new VariableLengthRecord();
+
+            var value1 = new Diary.DateTime(new Date(30, Date.Month.JUNE, 2018), 6, 15);
+            Assert.AreEqual(0, record.GetCount());
+            record.AppendValue(value1);
+            Assert.AreEqual(1, record.GetCount());
+            var value = new Diary.DateTime();
+            Assert.IsTrue(record.GetValue(0, ref value));
+            Assert.AreEqual(Helper.ToString(value1), Helper.ToString(value));
+
+            var value2 = new Diary.DateTime(new Date(15, Date.Month.JANUARY, 1980), 21, 30);
+            record.AppendValue(value2);
+            Assert.AreEqual(2, record.GetCount());
+            Assert.IsTrue(record.GetValue(1, ref value));
+            Assert.AreEqual(Helper.ToString(value2), Helper.ToString(value));
+        }
+        #endregion
+
+        /// <summary>
         /// Tests object serialization \ deserialization.
         /// </summary>
         [TestMethod]
         public void TestReadWrite()
         {
-            VariableLengthRecord outputRecord = new VariableLengthRecord();
+            var outputRecord = new VariableLengthRecord();
             outputRecord.AppendValue(100);     // unsigned int value 
             outputRecord.AppendValue(200.0F);   // float value 
             outputRecord.AppendValue(300.0);    // double value 
@@ -185,20 +261,30 @@ namespace DiaryTest
             outputRecord.AppendValue("Testing");    //string value 
             outputRecord.AppendValue(true);     // boolean value
 
-            try
+            var dateValue = new Date(31, Date.Month.DECEMBER, 2100);
+            outputRecord.AppendValue(dateValue);
+
+            var dateTimeValue = new Diary.DateTime(new Date(6, Date.Month.SEPTEMBER, 1950), 12, 15);
+            outputRecord.AppendValue(dateTimeValue);
+
+            String persistenceFilePath = String.Concat(ConfigurationManager.AppSettings["PersistenceFolderPath"], "/TestFile.txt");
+            var folder = Path.GetDirectoryName(persistenceFilePath);
+            // Create the persistence directory if it doesn't exist.
+            if (!Directory.Exists(folder))
             {
-                const String persistenceFilePath = "C:/Persistence/TestFile.txt";
-                var outputStream = new RandomAccessFile(persistenceFilePath);
+                Directory.CreateDirectory(folder);
+            }
+            var outputStream = new RandomAccessFile(persistenceFilePath);
 
-                outputRecord.Serialize(outputStream);
-                outputStream.close();
+            outputRecord.Serialize(outputStream);
+            outputStream.close();
 
-                VariableLengthRecord inputRecord = new VariableLengthRecord();
+            var inputRecord = new VariableLengthRecord();
 
-                var inputStream = new RandomAccessFile(persistenceFilePath);
-
+            using (var inputStream = new RandomAccessFile(persistenceFilePath))
+            {
                 Assert.IsTrue(inputRecord.Deserialize(inputStream));
-                Assert.AreEqual(inputRecord.GetCount(), 6);
+                Assert.AreEqual(inputRecord.GetCount(), 8, "Count");
 
                 int value0 = 0;
                 Assert.IsTrue(inputRecord.GetValue(0, ref value0));
@@ -224,15 +310,16 @@ namespace DiaryTest
                 Assert.IsTrue(inputRecord.GetValue(5, ref value5));
                 Assert.AreEqual(value5, true);
 
-                inputStream.close();
+                var value6 = new Date();
+                Assert.IsTrue(inputRecord.GetValue(6, ref value6), "Date");
+                Assert.AreEqual(Helper.ToString(dateValue), Helper.ToString(value6));
 
-                // Clean up.
-                if (File.Exists(persistenceFilePath))
-                {
-                    File.Delete(persistenceFilePath);
-                }
+                var value7 = new Diary.DateTime();
+                Assert.IsTrue(inputRecord.GetValue(7, ref value7), "DateTime");
+                Assert.AreEqual(Helper.ToString(dateTimeValue), Helper.ToString(value7));
+
+                inputStream.close(); 
             }
-            catch (Exception) { }
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// GetDate accessor to support persistence.
+        /// Date accessor to support persistence.
         /// </summary>
         /// <returns></returns>
         internal Date GetDate()

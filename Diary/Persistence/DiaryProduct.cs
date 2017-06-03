@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Diary
+﻿namespace Diary
 {
     /// <summary>
     /// This is the base class for all the domain classes.

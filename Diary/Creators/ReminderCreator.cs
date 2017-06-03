@@ -58,11 +58,9 @@ namespace Diary
                 var label = String.Empty;
                 if (record.GetValue(0, ref label))
                 {
-                    int offsetValue = 0;
-                    if (record.GetValue(1, ref offsetValue))
+                    var date = new Date();
+                    if (record.GetValue(1, ref date))
                     {
-                        var date = new Date();
-                        date.AddDays(offsetValue);
                         var details = String.Empty;
                         if (record.GetValue(2, ref details))
                         {
@@ -90,7 +88,7 @@ namespace Diary
 
                 var record = new VariableLengthRecord();
                 record.AppendValue(reminder.GetLabel());
-                record.AppendValue(reminder.GetDate().DaysUntil(new Date()));
+                record.AppendValue(reminder.GetDate());
                 record.AppendValue(reminder.GetDetails());
 
                 Write(reminder.GetObjectId(), record);

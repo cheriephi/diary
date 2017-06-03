@@ -9,6 +9,9 @@ namespace Diary
     /// </summary>
     public class VariableLengthRecord
     {
+        private const long MINUTESINHOUR = 60;
+        private const long MINUTESINDAY = MINUTESINHOUR * 24;
+
         private List<RecordElement> mElements;
 
         #region Enums
@@ -23,7 +26,9 @@ namespace Diary
             FLOAT,
             DOUBLE,
             STRING,
-            OBJECT_ID
+            OBJECT_ID,
+            DATE,
+            DATETIME
         }
         #endregion
 
@@ -85,13 +90,11 @@ namespace Diary
 
         public void AppendValue(float value)
         {
-            mElements.Add(new RecordElement(RecordElementType.FLOAT,
-            value.ToString()));
+            mElements.Add(new RecordElement(RecordElementType.FLOAT, value.ToString()));
         }
         public void AppendValue(double value)
         {
-            mElements.Add(new RecordElement(RecordElementType.DOUBLE,
-            value.ToString()));
+            mElements.Add(new RecordElement(RecordElementType.DOUBLE, value.ToString()));
         }
 
         public void AppendValue(String value)
@@ -102,6 +105,21 @@ namespace Diary
         public void AppendValue(ObjectId value)
         {
             mElements.Add(new RecordElement(RecordElementType.OBJECT_ID, value.AsInt().ToString()));
+        }
+
+        public void AppendValue(Date value)
+        {
+            var daysUntil = value.DaysUntil(new Date());
+            mElements.Add(new RecordElement(RecordElementType.DATE, daysUntil.ToString()));
+        }
+
+        public void AppendValue(DateTime value)
+        {
+            var daysUntil = value.GetDate().DaysUntil(new Date());
+            var minutesUntil = (long)daysUntil * MINUTESINDAY;
+            var totalMinutes = ((long)value.GetHours() * MINUTESINHOUR) + (long)value.GetMinutes();
+            minutesUntil += totalMinutes;
+            mElements.Add(new RecordElement(RecordElementType.DATETIME, minutesUntil.ToString()));
         }
         #endregion
 
@@ -207,9 +225,47 @@ namespace Diary
             {
                 if (mElements[elementIndex].mType == RecordElementType.OBJECT_ID)
                 {
-                    int objectIdValue =
-                    Convert.ToInt32(mElements[elementIndex].mText);
+                    int objectIdValue = Convert.ToInt32(mElements[elementIndex].mText);
                     value = new ObjectId(objectIdValue);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool GetValue(int elementIndex, ref Date value)
+        {
+            if (mElements.Count > elementIndex)
+            {
+                if (mElements[elementIndex].mType == RecordElementType.DATE)
+                {
+                    value = new Date();
+                    value.AddDays(Convert.ToInt32(mElements[elementIndex].mText));
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool GetValue(int elementIndex, ref DateTime value)
+        {
+            if (mElements.Count > elementIndex)
+            {
+                if (mElements[elementIndex].mType == RecordElementType.DATETIME)
+                {
+                    var totalMinutes = Convert.ToInt64(mElements[elementIndex].mText);
+                    var daysUntil = (int)(totalMinutes / MINUTESINDAY);
+
+                    // Convert data offset to real date.
+                    var startDate = new Date();
+                    startDate.AddDays(daysUntil);
+
+                    var minutesRemainder = totalMinutes % MINUTESINDAY;
+                    var hours = (int)(minutesRemainder / MINUTESINHOUR);
+                    var minutes = (int)(totalMinutes % MINUTESINHOUR);
+
+                    value = new DateTime(startDate, hours, minutes);
+
                     return true;
                 }
             }
@@ -282,9 +338,10 @@ namespace Diary
                 }
                 return true;
             }
-            catch (Exception) { }
-
-            return false;
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

@@ -6,11 +6,14 @@ namespace Diary
     /// <summary>
     /// Handles random access file functionality.
     /// </summary>
-    public class RandomAccessFile
+    /// <see cref="DiaryCreator">For more inline comments on disposing resources.</see>
+    public class RandomAccessFile : IDisposable
     {
         private FileStream mFileStream;
         private BinaryReader mBinaryReader;
         private BinaryWriter mBinaryWriter;
+
+        private bool disposed = false;
 
         /// <summary>
         /// Initializes a RandomAccessFile stream to read from, and optionally to write to, a file with the specified name.
@@ -99,6 +102,42 @@ namespace Diary
         public void seek(long offset)
         {
             mFileStream.Seek(offset, SeekOrigin.Begin);
-        }        
+        }
+
+        #region Cleanup
+        /// <summary>
+        /// Closes open streams.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Close the persistence mechanism.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.close();
+                }
+
+                disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// RandomAccessFile Destructor and clean up.
+        /// </summary>
+        ~RandomAccessFile()
+        {
+            Dispose(false);
+        }
+        #endregion
     }
 }

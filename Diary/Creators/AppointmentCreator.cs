@@ -61,32 +61,19 @@ namespace Diary
                     String details = String.Empty;
                     if (record.GetValue(1, ref details))
                     {
-                        int offsetValue = 0;
-                        if (record.GetValue(2, ref offsetValue))
+                        var occurs = new DateTime();
+                        if (record.GetValue(2, ref occurs))
                         {
-                            int totalMinutes = 0;
-                            if (record.GetValue(3, ref totalMinutes))
+                            int durationMinutes = 0;
+                            if (record.GetValue(3, ref durationMinutes))
                             {
-                                // Convert data offset to real date.
-                                var date = new Date();
-                                date.AddDays(offsetValue);
+                                var appointment = new Appointment(objectId, label, occurs, durationMinutes, details);
 
-                                int hours = totalMinutes / 60;   // Convert total minutes to hours
-                                int minutes = totalMinutes % 60; //   and minutes
+                                mAppointments.Add(appointment);
 
-                                var occurs = new DateTime(date, hours, minutes);
+                                LoadContacts(4, appointment, record); // Now take care of any Contacts 
 
-                                int durationMinutes = 0;
-                                if (record.GetValue(4, ref durationMinutes))
-                                {
-                                    var appointment = new Appointment(objectId, label, occurs, durationMinutes, details);
-
-                                    mAppointments.Add(appointment);
-
-                                    LoadContacts(5, appointment, record); // Now take care of any Contacts 
-
-                                    return appointment;
-                                }
+                                return appointment;
                             }
                         }
                     }
@@ -109,11 +96,7 @@ namespace Diary
                 var record = new VariableLengthRecord();
                 record.AppendValue(appointment.GetLabel());   //#1
                 record.AppendValue(appointment.GetDetails());  //#2
-
-                var datetime = appointment.GetStartTime();
-                record.AppendValue(datetime.GetDate().DaysUntil(new Date())); // #3
-                int totalMinutes = datetime.GetHours() * 60 + datetime.GetMinutes();
-                record.AppendValue(totalMinutes);   //#4
+                record.AppendValue(appointment.GetStartTime());   //#3
                 record.AppendValue(appointment.GetDurationMinutes());   //#4
 
                 // Now take care of contacts appointment might be related to
@@ -121,7 +104,6 @@ namespace Diary
 
                 Write(appointment.GetObjectId(), record);
             }
-
         }
 
         /// <summary>
@@ -130,10 +112,10 @@ namespace Diary
         protected void SaveContacts(Appointment appointment, VariableLengthRecord record)
         {
             Relation1M<Contact> contacts = appointment.GetContacts();
-            record.AppendValue(contacts.GetChildCount());   //#5  //might be a 0
+            record.AppendValue(contacts.GetChildCount());   //#4  //might be a 0
             for (int contactIndex = 0; contactIndex < contacts.GetChildCount(); ++contactIndex)
             {
-                record.AppendValue(contacts.GetChild(contactIndex).GetObjectId());   //#6 - N  
+                record.AppendValue(contacts.GetChild(contactIndex).GetObjectId());   //#5 - N  
             }
         }
 
