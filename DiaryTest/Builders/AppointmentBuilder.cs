@@ -37,6 +37,17 @@ namespace DiaryTest
             return this;
         }
 
+        internal String GetDetails()
+        {
+            return details;
+        }
+
+        internal AppointmentBuilder SetDetails(String details)
+        {
+            this.details = details;
+            return this;
+        }
+        
         internal String GetLabel()
         {
             return label;
@@ -74,17 +85,6 @@ namespace DiaryTest
         internal AppointmentBuilder SetDurationMinutes(int durationMinutes)
         {
             this.durationMinutes = durationMinutes;
-            return this;
-        }
-
-        internal String GetDetails()
-        {
-            return details;
-        }
-
-        internal AppointmentBuilder SetDetails(String details)
-        {
-            this.details = details;
             return this;
         }
 

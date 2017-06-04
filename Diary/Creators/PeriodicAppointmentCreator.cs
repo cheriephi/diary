@@ -8,11 +8,14 @@ namespace Diary
     /// <see cref="DiaryCreator"/>
     public class PeriodicAppointmentCreator : DiaryCreator
     {
+        private Relation1M<PeriodicAppointment> mPeriodicAppointments;
+
         /// <summary>
         /// Initializes a PeriodicAppointmentCreator.
         /// </summary>
-        public PeriodicAppointmentCreator() : base(new ClassId(""))
+        public PeriodicAppointmentCreator() : base(new ClassId("PeriodicAppointment"))
         {
+            mPeriodicAppointments = new Relation1M<PeriodicAppointment>();
         }
 
         /// <summary>
@@ -27,7 +30,10 @@ namespace Diary
         /// <returns></returns>
         public DiaryProduct CreateNew(String label, DateTime firstOccurs, int durationMinutes, DateTime notToExceedDateTime, int periodHours, String details)
         {
-            return new PeriodicAppointment(new ObjectId(), "", new DateTime(), 0, new DateTime(), 0, "");
+            var objectId = new ObjectId();
+            var periodicAppointment = new PeriodicAppointment(objectId, label, firstOccurs, durationMinutes, notToExceedDateTime, periodHours, details);
+            mPeriodicAppointments.Add(periodicAppointment);
+            return periodicAppointment;
         }
 
         /// <summary>
@@ -37,7 +43,52 @@ namespace Diary
         /// <returns></returns>
         public override DiaryProduct Create(ObjectId objectId)
         {
-            return new PeriodicAppointment(new ObjectId(), "", new DateTime(), 0, new DateTime(), 0, "");
+            // Check if it already exists
+            for (int childIndex = 0; childIndex < mPeriodicAppointments.GetChildCount(); ++childIndex)
+            {
+                PeriodicAppointment periodicAppointment = mPeriodicAppointments.GetChild(childIndex);
+                if (periodicAppointment.GetObjectId() == objectId)
+                {
+                    return periodicAppointment;
+                }
+            }
+
+            // Not already loaded ?
+            VariableLengthRecord record = Read(objectId);
+            if (record != null)
+            {
+                var label = String.Empty;
+                if (record.GetValue(0, ref label))
+                {
+                    var firstOccurs = new DateTime(); 
+                    if (record.GetValue(1, ref firstOccurs))
+                    {
+                        int durationMinutes = 0; 
+                        if (record.GetValue(2, ref durationMinutes))
+                        {
+                            var notToExceedDateTime = new DateTime();
+                            if (record.GetValue(3, ref notToExceedDateTime))
+                            {
+                                int periodHours = 0;
+                                if (record.GetValue(4, ref periodHours))
+                                 { 
+                                    var details = String.Empty;
+                                    if (record.GetValue(5, ref details))
+                                    {
+                                        var periodicAppointment = new PeriodicAppointment(objectId, label, firstOccurs, durationMinutes, notToExceedDateTime, periodHours, details);
+
+                                        mPeriodicAppointments.Add(periodicAppointment);
+
+                                        return periodicAppointment;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;  // No such appointment
         }
 
         /// <summary>
@@ -45,6 +96,22 @@ namespace Diary
         /// </summary>
         public override void Save()
         {
+            // Step through any previously loaded records and save to file.
+            for (int childIndex = 0; childIndex < mPeriodicAppointments.GetChildCount(); ++childIndex)
+            {
+                PeriodicAppointment periodicAppointment = mPeriodicAppointments.GetChild(childIndex);
+
+                var record = new VariableLengthRecord();
+                record.AppendValue(periodicAppointment.GetLabel());   //#1
+                record.AppendValue(periodicAppointment.GetStartTime());   //#2
+                record.AppendValue(periodicAppointment.GetDurationMinutes());   //#3
+                record.AppendValue(periodicAppointment.GetNotToExceedDateTime());   //#4
+                record.AppendValue(periodicAppointment.GetPeriodHours());   //#5
+                record.AppendValue(periodicAppointment.GetDetails());  //#6
+
+                Write(periodicAppointment.GetObjectId(), record);
+            }
+
         }
     }
 }

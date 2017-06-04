@@ -7,6 +7,7 @@ namespace DiaryTest.Creators
     /// Tests the PeriodicAppointmentCreator class.
     /// </summary>
     /// <see cref="ObjectIdTest">About thread safety.</see>
+    [TestClass]
     public unsafe class PeriodicAppointmentCreatorTest
     {
         private TransientPersistenceFreshFixture fixture;

@@ -76,5 +76,23 @@ namespace Diary
 
             return false;
         }
+
+        /// <summary>
+        /// NotToExceedDateTime accessor to support persistence.
+        /// </summary>
+        /// <returns></returns>
+        internal DateTime GetNotToExceedDateTime()
+        {
+            return new DateTime(mNotToExceedDateTime);
+        }
+
+        /// <summary>
+        /// PeriodHours accessor to support persistence.
+        /// </summary>
+        /// <returns></returns>
+        internal int GetPeriodHours()
+        {
+            return mPeriodHours;
+        }
     }
 }

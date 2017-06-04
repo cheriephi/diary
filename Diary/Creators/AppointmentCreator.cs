@@ -55,10 +55,10 @@ namespace Diary
             VariableLengthRecord record = Read(objectId);
             if (record != null)
             {
-                String label = String.Empty;
+                var label = String.Empty;
                 if (record.GetValue(0, ref label))
                 {
-                    String details = String.Empty;
+                    var details = String.Empty;
                     if (record.GetValue(1, ref details))
                     {
                         var occurs = new DateTime();
