@@ -5,11 +5,16 @@ namespace DiaryTest
     /// <summary>
     /// Periodic Appointment creator.
     /// </summary>
-    /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
+    /// <see cref="AppointmentBuilder"/>
     internal class PeriodicAppointmentBuilder : AppointmentBuilder
     {
         private Diary.DateTime notToExceedDateTime = new Diary.DateTime();
         private int periodHours = 0;
+
+        internal Diary.DateTime GetNotToExceedDateTime()
+        {
+            return notToExceedDateTime;
+        }
 
         internal PeriodicAppointmentBuilder SetNotToExceedDateTime(Diary.DateTime notToExceedDateTime)
         {
@@ -18,15 +23,32 @@ namespace DiaryTest
             return this;
         }
 
+        internal int GetPeriodHours()
+        {
+            return periodHours;
+        }
+
         internal PeriodicAppointmentBuilder SetPeriodHours(int periodHours)
         {
             this.periodHours = periodHours;
             return this;
         }
 
-        internal override Appointment Build()
+        internal override DiaryProduct Build()
         {
-            var periodicAppointment = new PeriodicAppointment(base.GetObjectId(), base.GetLabel(), base.GetOccurs(), base.GetDurationMinutes(), notToExceedDateTime, periodHours, base.GetDetails());
+            var creator = (PeriodicAppointmentCreator)this.GetCreator();
+
+            PeriodicAppointment periodicAppointment;
+
+            if (creator != null)
+            {
+                periodicAppointment = (PeriodicAppointment)creator.CreateNew(base.GetLabel(), base.GetOccurs(), base.GetDurationMinutes(), notToExceedDateTime, periodHours, base.GetDetails());
+            }
+            else
+            {
+                periodicAppointment = new PeriodicAppointment(base.GetObjectId(), base.GetLabel(), base.GetOccurs(), base.GetDurationMinutes(), notToExceedDateTime, periodHours, base.GetDetails());
+            }
+
             return periodicAppointment;
         }
     }

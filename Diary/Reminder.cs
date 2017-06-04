@@ -3,21 +3,25 @@
 namespace Diary
 {
     /// <summary>
-    /// Daily reminders
+    /// Daily reminders.
     /// </summary>
     public class Reminder: CalendarEvent
     {
+        private Date mOccurs;
+        private String mDetails;
+        
         /// <summary>
-        /// Creates a reminder
+        /// Initializes a reminder.
         /// </summary>
         /// <param name="objectId"></param>
         /// <param name="label"></param>
         /// <param name="date"></param>
         /// <param name="details"></param>
-        public Reminder(ObjectId objectId, String label, Date date, String details) : base(new ClassId("Reminder"), objectId, label)
+        public Reminder(ObjectId objectId, String label, Date date, String details) 
+            : base(new ClassId("Reminder"), objectId, label)
         {
             mDetails = details;
-            // Deep copy the input date to prevent aliasing bugs
+            // Deep copy the input date to prevent aliasing bugs.
             mOccurs = new Date(date.GetDay(), date.GetMonth(), date.GetYear());
         }
 
@@ -40,7 +44,7 @@ namespace Diary
         }
         
         /// <summary>
-        /// Returns whether or not the reminder occurs on the date in question
+        /// Returns whether or not the reminder occurs on the date in question.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
@@ -50,7 +54,14 @@ namespace Diary
             return (compare == 0);
         }
 
-        private Date mOccurs;
-        private String mDetails;
+        /// <summary>
+        /// Date accessor to support persistence.
+        /// </summary>
+        /// <returns></returns>
+        internal Date GetDate()
+        {
+            // Deep copy the input date to prevent aliasing bugs.
+            return new Date(mOccurs.GetDay(), mOccurs.GetMonth(), mOccurs.GetYear());
+        }
     }
 }

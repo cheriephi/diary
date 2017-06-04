@@ -23,7 +23,7 @@ namespace DiaryTest
         [TestInitialize]
         public void Init()
         {
-            fixture = new TransientPersistenceFreshFixture("ObjectId");
+            fixture = new TransientPersistenceFreshFixture();
             fixture.Init();
         }
 
@@ -45,7 +45,7 @@ namespace DiaryTest
         /// <param name="objectIdInt"></param>
         /// <param name="objectIdString"></param>
         /// <returns>"AsInt:n. ToString:n."</returns>
-        /// <seealso cref="DateTest.ToString(int, int, int)"/>
+        /// <seealso cref="Helper.ToString(Date)"/>
         public static string ToString(int objectIdInt, String objectIdString)
         {
             return String.Format("AsInt:<{0}>. ToString<{1}>.", objectIdInt, objectIdString);

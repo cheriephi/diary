@@ -13,11 +13,15 @@ namespace Diary
     public class ObjectId : IComparable<ObjectId>
     {
         private int mObjectId;
-        private static String mPersistenceFilePath = ConfigurationManager.AppSettings["PersistenceObjectIdFilePath"];
+        private static String mPersistenceFilePath = String.Concat(
+            ConfigurationManager.AppSettings["PersistenceFolderPath"], 
+            @"\", 
+            ConfigurationManager.AppSettings["PersistenceObjectIdFileName"]
+            );
 
         #region Constructors
         /// <summary>
-        /// Creates a new Object Id.
+        /// Initializes a new ObjectId.
         /// </summary>
         public ObjectId()
         {
@@ -25,7 +29,7 @@ namespace Diary
         }
 
         /// <summary>
-        /// Re-creates an existing Object Id.
+        /// Re-creates an existing ObjectId.
         /// </summary>
         /// <param name="objectId"></param>
         public ObjectId(int objectId)
@@ -36,7 +40,7 @@ namespace Diary
 
         #region Accessors
         /// <summary>
-        /// Returns the Object's string identifier.
+        /// Returns the ObjectId's string identifier.
         /// </summary>
         /// <returns></returns>
         public override String ToString()

@@ -4,27 +4,18 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Builder factory pattern (a creational design pattern), to enable anoymous creation of the System Under Test, but parameterize necessary values.
-    /// The object can be incrementally built from parameters.
-    /// This keeps tests clutter free from in-line setup and minimizes obscure tests.
+    /// Builder factory pattern for Reminder class.
     /// </summary>
-    internal class ReminderBuilder
+    /// <see cref="DiaryBuilder"/>
+    internal class ReminderBuilder : DiaryBuilder
     {
-        private ObjectId objectId = new ObjectId();
-        private String label = "";
         private Date date = new Date();
         private String details = "";
+        private String label = "";
 
-        internal ReminderBuilder SetObjectId(ObjectId objectId)
+        internal Date GetDate()
         {
-            this.objectId = objectId;
-            return this;
-        }
-
-        internal ReminderBuilder SetLabel(String label)
-        {
-            this.label = label;
-            return this;
+            return date;
         }
 
         internal ReminderBuilder SetDate(Date date)
@@ -33,15 +24,42 @@ namespace DiaryTest
             return this;
         }
 
+        internal String GetDetails()
+        {
+            return details;
+        }
+
         internal ReminderBuilder SetDetails(String details)
         {
             this.details = details;
             return this;
         }
 
-        internal Reminder Build()
+        internal String GetLabel()
         {
-            var reminder = new Reminder(objectId, label, date, details);
+            return label;
+        }
+
+        internal ReminderBuilder SetLabel(String label)
+        {
+            this.label = label;
+            return this;
+        }
+
+        internal override DiaryProduct Build()
+        {
+            var creator = (ReminderCreator)this.GetCreator();
+
+            Reminder reminder;
+            if (creator != null)
+            {
+                reminder = (Reminder)creator.CreateNew(label, date, details);
+            }
+            else
+            {
+                reminder = new Reminder(base.GetObjectId(), label, date, details);
+            }
+
             return reminder;
         }
     }

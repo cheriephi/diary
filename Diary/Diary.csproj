@@ -22,7 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Diary.xml</DocumentationFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,16 +46,25 @@
   <ItemGroup>
     <Compile Include="Appointment.cs" />
     <Compile Include="CalendarEvent.cs" />
+    <Compile Include="Creators\AppointmentCreator.cs" />
+    <Compile Include="Creators\PeriodicAppointmentCreator.cs" />
+    <Compile Include="Creators\ReminderCreator.cs" />
     <Compile Include="Persistence\ClassId.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="DateTime.cs" />
     <Compile Include="Persistence\DiaryProduct.cs" />
+    <Compile Include="Persistence\KeyFile.cs" />
     <Compile Include="Persistence\ObjectId.cs" />
     <Compile Include="PeriodicAppointment.cs" />
+    <Compile Include="Persistence\VariableLengthRecordFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Persistence\RandomAccessFile.cs" />
     <Compile Include="Relation1M.cs" />
     <Compile Include="Reminder.cs" />
+    <Compile Include="Persistence\VariableLengthRecord.cs" />
+    <Compile Include="Creators\ContactCreator.cs" />
+    <Compile Include="Creators\DiaryCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

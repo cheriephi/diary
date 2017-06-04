@@ -12,58 +12,16 @@ namespace DiaryTest
     public class ContactTest
     {
         /// <summary>
-        /// Simple data testing of GetName method
+        /// Tests the Contact accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetNameTest()
+        public void ContactConstructorTest()
         {
-            var firstName = "First";
-            var lastName = "Last";
-            var contact = new ContactBuilder().SetFirstName(firstName).SetLastName(lastName).Build();
+            var builder = new ContactBuilder();
+            builder.SetFirstName("First").SetLastName("Last");
+            builder.SetContactInfo("ContactInfo");
 
-            // Concatenate the results so all the values can be compared at once
-            var expected = String.Concat(firstName, ",", lastName);
-            var name = contact.GetName();
-            var actual = String.Join(",", name);
-
-            Assert.AreEqual(expected, actual);
+            Helper.AssertAreEqual(builder, (Contact)builder.Build(), "");
         }
-
-        /// <summary>
-        /// Simple data testing of GetContactInfo method
-        /// </summary>
-        [TestMethod]
-        public void GetContactInfo()
-        {
-            var expected = "Contact Info";
-            var contact = new ContactBuilder().SetContactInfo(expected).Build();
-
-            var actual = contact.GetContactInfo();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        #region Persistence Tests
-        /// <summary>
-        /// Tests the ClassId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetClassIdTest()
-        {
-            var contact = new ContactBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(contact, "Contact");
-        }
-
-        /// <summary>
-        /// Tests the ObjectId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetObjectIdTest()
-        {
-            var objectId = new ObjectId();
-            var contact = new ContactBuilder().SetObjectId(objectId).Build();
-            new DiaryProductTest().GetObjectIdTest(contact, objectId);
-        }
-        #endregion
     }
 }

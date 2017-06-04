@@ -4,20 +4,18 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Contact creator.
+    /// Builder factory pattern for Contact class.
     /// </summary>
-    /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
-    internal class ContactBuilder
+    /// <see cref="DiaryBuilder"/>
+    internal class ContactBuilder : DiaryBuilder
     {
-        private ObjectId objectId = new ObjectId();
         private String firstName = "";
         private String lastName = "";
         private String contactInfo = "";
 
-        internal ContactBuilder SetObjectId(ObjectId objectId)
+        internal String GetFirstName()
         {
-            this.objectId = objectId;
-            return this;
+            return firstName;
         }
 
         internal ContactBuilder SetFirstName(String firstName)
@@ -26,10 +24,20 @@ namespace DiaryTest
             return this;
         }
 
+        internal String GetLastName()
+        {
+            return lastName;
+        }
+
         internal ContactBuilder SetLastName(String lastName)
         {
             this.lastName = lastName;
             return this;
+        }
+
+        internal String GetContactInfo()
+        {
+            return contactInfo;
         }
 
         internal ContactBuilder SetContactInfo(String contactInfo)
@@ -38,10 +46,21 @@ namespace DiaryTest
             return this;
         }
 
-        internal Contact Build()
+        internal override DiaryProduct Build()
         {
-            var reminder = new Contact(objectId, firstName, lastName, contactInfo);
-            return reminder;
+            var creator = (ContactCreator)this.GetCreator();
+
+            Contact contact;
+            if (creator != null)
+            {
+                contact = (Contact)creator.CreateNew(firstName, lastName, contactInfo);
+            }
+            else
+            {
+                contact = new Contact(base.GetObjectId(), firstName, lastName, contactInfo);
+            }
+
+            return contact;
         }
     }
 }

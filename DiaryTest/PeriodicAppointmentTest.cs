@@ -16,64 +16,20 @@ namespace DiaryTest
         public TestContext TestContext { get; set; }
 
         /// <summary>
-        /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
-        /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
-        [TestMethod]
-        public void ConstructorAliasingTest()
-        {
-            new AppointmentTest().ConstructorAliasingTest(new PeriodicAppointmentBuilder());
-        }
-
-        /// <summary>
-        /// Simple data test of GetLabel method.
+        /// Tests the PeriodicAppointment accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetLabelTest()
+        public void PeriodicAppointmentConstructorTest()
         {
-            new AppointmentTest().GetLabelTest(new PeriodicAppointmentBuilder());
-        }
-
-        /// <summary>
-        /// Simple test of the IsRepeating method.
-        /// </summary>
-        [TestMethod]
-        public void IsRepeatingTest()
-        {
-            var expected = true;
-            
-            var periodicAppointment = new PeriodicAppointmentBuilder().Build();
-
-            CalendarEventTest.IsRepeatingTest(periodicAppointment, expected);
-        }
-
-        /// <summary>
-        /// Data testing of start time method.
-        /// </summary>
-        [TestMethod]
-        public void GetStartTimeTest()
-        {
-            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
             var builder = new PeriodicAppointmentBuilder();
-            builder.SetOccurs(appointmentStartTime);
-            builder.SetNotToExceedDateTime(appointmentStartTime);
+            builder.SetLabel("Test Label");
+            builder.SetDetails("Detail text");
 
-            var appointment = builder.Build();
+            builder.SetOccurs(new DateTime(new Date(1, Date.Month.JANUARY, 2003), 0, 0));
+            builder.SetNotToExceedDateTime(new DateTime(new Date(2, Date.Month.JANUARY, 2003), 0, 0));
+            builder.SetDurationMinutes(42);
 
-            var expected = DateTimeTest.ToString(appointmentStartTime);
-            var actual = DateTimeTest.ToString(appointment.GetStartTime());
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Tests that the StartTime field cannot be modified outside of its accessor.
-        /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
-        [TestMethod]
-        public void GetStartTimeAliasingTest()
-        {
-            new AppointmentTest().GetStartTimeAliasingTest(new PeriodicAppointmentBuilder());
+            Helper.AssertAreEqual(builder, (PeriodicAppointment)builder.Build(), "");
         }
 
         /// <summary>
@@ -103,19 +59,6 @@ namespace DiaryTest
             var endTime = new Diary.DateTime(new Date(endDay, (Date.Month)endMonth, endYear), endHours, endMinutes);
 
             new AppointmentTest().GetEndTimeTest(new PeriodicAppointmentBuilder().SetNotToExceedDateTime(endTime), occurs, endTime, durationMinutes);
-        }
-
-        /// <summary>
-        /// Data testing of start time method.
-        /// </summary>
-        [TestMethod]
-        public void GetDurationMinutesTest()
-        {
-            var builder = new PeriodicAppointmentBuilder();
-            builder.SetOccurs(new DateTime(new Date(1, Date.Month.JANUARY, 2003), 0, 0));
-            builder.SetNotToExceedDateTime(new DateTime(new Date(2, Date.Month.JANUARY, 2003), 0, 0));
-
-            new AppointmentTest().GetDurationMinutesTest(builder);
         }
 
         /// <summary>
@@ -151,7 +94,7 @@ namespace DiaryTest
             builder.SetDurationMinutes(durationMinutes);
             builder.SetNotToExceedDateTime(notToExceedDateTime);
             builder.SetPeriodHours(periodHours);
-            var appointment = builder.Build();
+            var appointment = (PeriodicAppointment)builder.Build();
 
             // Look up and evaluate each occurence
             DataRow[] occurencesRows = TestContext.DataRow.GetChildRows("add_occurences");
@@ -186,17 +129,17 @@ namespace DiaryTest
         {
             var severalDaysWorthOfMinutes = 1440 * 3;
 
-            PeriodicAppointmentBuilder builder = new PeriodicAppointmentBuilder();
+            var builder = new PeriodicAppointmentBuilder();
             builder.SetOccurs(new Diary.DateTime());
             builder.SetDurationMinutes(severalDaysWorthOfMinutes);
             builder.SetNotToExceedDateTime(new Diary.DateTime());
-            var appointment = builder.Build();
+            var appointment = (PeriodicAppointment)builder.Build();
         }
 
         /// <summary>
         /// Tests that the notToExceedDateTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
+        /// <seealso cref="Helper.AssertAreEqual(AppointmentBuilder, Appointment, string)">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorNotToExceedDateTimeAliasingTest()
         {
@@ -209,7 +152,7 @@ namespace DiaryTest
             builder.SetOccurs(occurs);
             builder.SetPeriodHours(24);
             builder.SetNotToExceedDateTime(notToExceedDateTime);
-            var appointment = builder.Build();
+            var appointment = (PeriodicAppointment)builder.Build();
 
             var expected = false;
             var actual = appointment.IsOccuringOn(occurenceDate);
@@ -222,17 +165,27 @@ namespace DiaryTest
             Assert.AreEqual(expected, actual, "After");
         }
 
-        #region Persistence Tests
         /// <summary>
-        /// Tests the ClassId accessor.
+        /// Periodic appointment get contacts test.
         /// </summary>
         [TestMethod]
-        public void GetClassIdTest()
+        public void GetContactsTest()
         {
-            var periodicAppointment = new PeriodicAppointmentBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(periodicAppointment, "PeriodicAppointment");
+            var builder = new PeriodicAppointmentBuilder();
+
+            var appointment = (PeriodicAppointment)builder.SetContactBuilders().Build();
+
+            var contactBuilders = builder.GetContactBuilders();
+            foreach (var contactBuilder in contactBuilders)
+            {
+                appointment.AddRelation((Contact)contactBuilder.Build());
+            }
+
+            Helper.AssertAreEqual(builder, appointment, "");
         }
 
+
+        #region Persistence Tests
         /// <summary>
         /// Tests the ObjectId accessor.
         /// </summary>

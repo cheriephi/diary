@@ -4,28 +4,50 @@ using System;
 namespace DiaryTest
 {
     /// <summary>
-    /// Appointment creator.
+    /// Builder factory pattern for Appointment class.
     /// </summary>
-    /// <seealso cref="ReminderBuilder">For more details on the Builder pattern.</seealso>
-    internal class AppointmentBuilder
+    /// <see cref="DiaryBuilder"/>
+    internal class AppointmentBuilder : DiaryBuilder
     {
-        private ObjectId objectId = new ObjectId();
+        private ContactBuilder[] contactBuilders = new ContactBuilder[] { };
+        private String details = "";
+        private int durationMinutes = 0;
         private String label = "";
         private Diary.DateTime occurs = new Diary.DateTime();
-        private int durationMinutes = 0;
-        private String details = "";
 
-        internal ObjectId GetObjectId()
+        internal ContactBuilder[] GetContactBuilders()
         {
-            return objectId;
+            return contactBuilders;
         }
 
-        internal AppointmentBuilder SetObjectId(ObjectId objectId)
+        /// <summary>
+        /// Creates test data for Contact relations.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>A factory method. Does not actually attach the data to the created appointment, but makes this data
+        /// available to the tests to simplify comparisons.</remarks>
+        internal AppointmentBuilder SetContactBuilders()
         {
-            this.objectId = objectId;
+            contactBuilders = new ContactBuilder[3]
+            {
+                new ContactBuilder().SetFirstName("Brian").SetLastName("Rothwell").SetContactInfo("brothwell@q.com"),
+                new ContactBuilder().SetFirstName("Billy").SetLastName("Bob").SetContactInfo("slingblade@msn.com"),
+                new ContactBuilder().SetFirstName("Jenny").SetLastName("Twotone").SetContactInfo("(210) 867-5308")
+            };
             return this;
         }
 
+        internal String GetDetails()
+        {
+            return details;
+        }
+
+        internal AppointmentBuilder SetDetails(String details)
+        {
+            this.details = details;
+            return this;
+        }
+        
         internal String GetLabel()
         {
             return label;
@@ -49,7 +71,7 @@ namespace DiaryTest
             // Add descriptive info to the label if we don't have an explicit one provided. This provide identifying information for debugging.
             if (label == String.Empty)
             {
-                label = String.Format("Event Label <{0}>.", DateTimeTest.ToString(occurs));
+                label = String.Format("Event Label <{0}>.", Helper.ToString(occurs));
             }
 
             return this;
@@ -66,20 +88,20 @@ namespace DiaryTest
             return this;
         }
 
-        internal String GetDetails()
+        internal override DiaryProduct Build()
         {
-            return details;
-        }
+            var creator = (AppointmentCreator)this.GetCreator();
 
-        internal AppointmentBuilder SetDetails(String details)
-        {
-            this.details = details;
-            return this;
-        }
+            Appointment appointment;
+            if (creator != null)
+            {
+                appointment = (Appointment)creator.CreateNew(label, occurs, durationMinutes, details);
+            }
+            else
+            {
+                appointment = new Appointment(base.GetObjectId(), label, occurs, durationMinutes, details);
+            }
 
-        internal virtual Appointment Build()
-        {
-            var appointment = new Appointment(objectId, label, occurs, durationMinutes, details);
             return appointment;
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Diary;
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DiaryTest
@@ -14,12 +13,12 @@ namespace DiaryTest
         /// <summary>
         /// Tests that the Date field passed into the constructor cannot be modified outside the System Under Test.
         /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
+        /// <seealso cref="Helper.AssertAreEqual(AppointmentBuilder, Appointment, string)">For more context on the problem.</seealso>
         [TestMethod]
         public void ConstructorAliasingTest()
         {
             var date = new Date();
-            var reminder = new ReminderBuilder().SetDate(date).Build();
+            var reminder = (Reminder)new ReminderBuilder().SetDate(date).Build();
 
             var expected = true;
             var actual = reminder.IsOccuringOn(date);
@@ -32,73 +31,22 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual, "After");
         }
-        
-        /// <summary>
-        /// Simple data test of GetLabel method.
-        /// </summary>
-        [TestMethod]
-        public void GetLabelTest()
-        {
-            var expected = "Test Label";
-
-            var reminder = new ReminderBuilder().SetLabel(expected).Build();
-
-            CalendarEventTest.GetLabelTest(reminder, expected);
-        }
 
         /// <summary>
-        /// Simple data test of GetDetails method.
+        /// Tests the Reminder accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetDetailsTest()
+        public void ReminderConstructorTest()
         {
-            var expected = "Test Details";
+            var builder = new ReminderBuilder();
+            builder.SetLabel("Test Label");
+            builder.SetDate(new Date(30, Date.Month.SEPTEMBER, 2000));
+            builder.SetDetails("Test Details");
 
-            var reminder = new ReminderBuilder().SetDetails(expected).Build();
-            var actual = reminder.GetDetails();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Simple data test of IsRepeating method.
-        /// </summary>
-        [TestMethod]
-        public void IsRepeatingTest()
-        {
-            var expected = false;
-
-            var reminder = new ReminderBuilder().Build();
-
-            CalendarEventTest.IsRepeatingTest(reminder, expected);
-        }
-
-        /// <summary>
-        /// Tests the boundaries around the IsOccuring method for a simple scenario.
-        /// </summary>
-        [TestMethod]
-        public void IsOccuringOnTest()
-        {
-            var reminderDate = new Date(30, Date.Month.SEPTEMBER, 2000);
-            var reminder = new ReminderBuilder().SetDate(reminderDate).Build();
-
-            var expectedStartDate = reminderDate;
-            var expectedEndDate = new Date(reminderDate.GetDay(), reminderDate.GetMonth(), reminderDate.GetYear());
-
-            CalendarEventTest.IsOccuringOnTest(reminder, expectedStartDate, expectedEndDate);
+            Helper.AssertAreEqual(builder, (Reminder)builder.Build(), "");
         }
 
         #region Persistence Tests
-        /// <summary>
-        /// Tests the ClassId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetClassIdTest()
-        {
-            var reminder = new ReminderBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(reminder, "Reminder");
-        }
-
         /// <summary>
         /// Tests the ObjectId accessor.
         /// </summary>
@@ -106,7 +54,7 @@ namespace DiaryTest
         public void GetObjectIdTest()
         {
             var objectId = new ObjectId();
-            var reminder = new ReminderBuilder().SetObjectId(objectId).Build();
+            var reminder = (Reminder)new ReminderBuilder().SetObjectId(objectId).Build();
             new DiaryProductTest().GetObjectIdTest(reminder, objectId);
         }
         #endregion

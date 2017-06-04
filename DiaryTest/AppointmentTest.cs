@@ -21,14 +21,35 @@ namespace DiaryTest
 
         #region Polymorphic test functions
         /// <summary>
+        /// Testing of end time method.
+        /// </summary>
+        internal void GetEndTimeTest(AppointmentBuilder builder, Diary.DateTime occurs, Diary.DateTime endTime, int durationMinutes)
+        {
+            var appointment = (Appointment)builder.SetOccurs(occurs).SetDurationMinutes(durationMinutes).Build();
+            var actualEndTime = appointment.GetEndTime();
+
+            // Validate results.
+            var expected = Helper.ToString(endTime);
+            var actual = Helper.ToString(actualEndTime);
+
+            Assert.AreEqual(expected, actual, "Input occurs:<{0}>. Input durationMinutes:<{1}>.", Helper.ToString(occurs), durationMinutes);
+        }
+        #endregion
+
+        /// <summary>
         /// Tests that the StartTime field passed into the constructor cannot be modified outside of its accessor.
         /// </summary>
-        /// <param name="builder"></param>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
-        internal void ConstructorAliasingTest(AppointmentBuilder builder)
+        /// <remarks>This tests that the startTime passed into the constructor is deep copied prior to its usage, regardless of whether it is
+        /// deep copied when exposed via getters. The only way to test this is to actually modify the data.
+        /// This test should cover any path through the constructor; be it through the constructor, a derived class constructor, or a creator.
+        /// Theoretically every constructor in this class would require the same test; however because of knowledge of constructor chaining in the design,
+        /// the extra tests are skipped.</remarks>
+        [TestMethod]
+        public void ConstructorAliasingTest()
         {
+            var builder = new AppointmentBuilder();
             var dateTime = new Diary.DateTime();
-            var appointment = builder.SetOccurs(dateTime).Build();
+            var appointment = (Appointment)builder.SetOccurs(dateTime).Build();
 
             var expected = 0;
             var actual = appointment.GetStartTime().GetMinutes();
@@ -39,100 +60,6 @@ namespace DiaryTest
             actual = appointment.GetStartTime().GetMinutes();
 
             Assert.AreEqual(expected, actual, "After");
-        }
-
-        /// <summary>
-        /// Simple data test of GetLabel method.
-        /// </summary>
-        /// <param name="builder"></param>
-        internal void GetLabelTest(AppointmentBuilder builder)
-        {
-            var expected = "Test Label";
-
-            var appointment = builder.SetLabel(expected).Build();
-
-            CalendarEventTest.GetLabelTest(appointment, expected);
-        }
-
-
-        /// <summary>
-        /// Tests that the StartTime field cannot be modified outside of its accessor.
-        /// </summary>
-        /// <seealso cref="DateTimeTest.InputDateTimeConstructorTest">For more context on the problem.</seealso>
-        internal void GetStartTimeAliasingTest(AppointmentBuilder builder)
-        {
-            var appointment = builder.Build();
-
-            var expected = 0;
-            var startTime = appointment.GetStartTime();
-            var actual = startTime.GetMinutes();
-            Assert.AreEqual(expected, actual, "Original");
-
-            startTime.AddTime(0, 1);
-
-            actual = appointment.GetStartTime().GetMinutes();
-
-            Assert.AreEqual(expected, actual, "After");
-        }
-
-        /// <summary>
-        /// Testing of end time method.
-        /// </summary>
-        internal void GetEndTimeTest(AppointmentBuilder builder, Diary.DateTime occurs, Diary.DateTime endTime, int durationMinutes)
-        {
-            var appointment = builder.SetOccurs(occurs).SetDurationMinutes(durationMinutes).Build();
-            var actualEndTime = appointment.GetEndTime();
-
-            // Validate results.
-            var expected = DateTimeTest.ToString(endTime);
-            var actual = DateTimeTest.ToString(actualEndTime);
-
-            Assert.AreEqual(expected, actual, "Input occurs:<{0}>. Input durationMinutes:<{1}>.", DateTimeTest.ToString(occurs), durationMinutes);
-        }
-
-        /// <summary>
-        /// Simple data test of DurationMinutes method using polymorphism.
-        /// </summary>
-        internal void GetDurationMinutesTest(AppointmentBuilder builder)
-        {
-            var expected = 42;
-
-            var appointment = builder.SetDurationMinutes(expected).Build();
-            var actual = appointment.GetDurationMinutes();
-
-            Assert.AreEqual(expected, actual);
-        }
-        #endregion
-
-        /// <summary>
-        /// Appointment constructor aliasing test.
-        /// </summary>
-        [TestMethod]
-        public void ConstructorAliasingTest()
-        {
-            ConstructorAliasingTest(new AppointmentBuilder());
-        }
-        
-        /// <summary>
-        /// Appointment GetLabel test.
-        /// </summary>
-        [TestMethod]
-        public void GetLabelTest()
-        {
-            GetLabelTest(new AppointmentBuilder());
-        }
-
-        /// <summary>
-        /// Simple data test of the IsRepeating method.
-        /// </summary>
-        [TestMethod]
-        public void IsRepeatingTest()
-        {
-            var expected = false;
-
-            var appointment = new AppointmentBuilder().Build();
-
-            CalendarEventTest.IsRepeatingTest(appointment, expected);
         }
 
         /// <summary>
@@ -160,38 +87,14 @@ namespace DiaryTest
             // Create appointment and exercise the method under test.
             var expectedStartDate = new Date(startDay, (Date.Month)startMonth, startYear);
             var appointmentTime = new Diary.DateTime(expectedStartDate, startHours, startMinutes);
-            var appointment = new AppointmentBuilder().SetOccurs(appointmentTime).SetDurationMinutes(durationMinutes).Build();
+            var appointment = (Appointment)new AppointmentBuilder().SetOccurs(appointmentTime).SetDurationMinutes(durationMinutes).Build();
             var expectedEndDate = new Date(endDay, (Date.Month)endMonth, endYear);
 
             CalendarEventTest.IsOccuringOnTest(appointment, expectedStartDate, expectedEndDate);
         }
 
         /// <summary>
-        /// Tests the Appointment.GetStartTime method.
-        /// </summary>
-        [TestMethod]
-        public void GetStartTimeTest()
-        {
-            var appointmentStartTime = new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3);
-            var expected = DateTimeTest.ToString(appointmentStartTime);
-
-            var appointment = new AppointmentBuilder().SetOccurs(appointmentStartTime).Build();
-            var actual = DateTimeTest.ToString(appointment.GetStartTime());
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        /// Tests that the Appointment.StartTime field cannot be modified outside of its accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetStartTimeAliasingTest()
-        {
-            GetStartTimeAliasingTest(new AppointmentBuilder());
-        }
-
-        /// <summary>
-        /// Data driven testing of Appointment get end time method.
+        /// Data driven testing of Appointment.GetEndTime method.
         /// </summary>
         [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"TestData\Appointment\AppointmentData.xml", "add", DataAccessMethod.Sequential)]
@@ -220,25 +123,40 @@ namespace DiaryTest
         }
 
         /// <summary>
-        /// Appointment get duration minutes test.
+        /// Tests the Appointment accessors through its constructor.
         /// </summary>
         [TestMethod]
-        public void GetDurationMinutesTest()
+        public void AppointmentConstructorTest()
         {
-            GetDurationMinutesTest(new AppointmentBuilder());
+            var builder = new AppointmentBuilder();
+            builder.SetLabel("Test Label");
+            builder.SetDetails("Detail text");
+            builder.SetOccurs(new Diary.DateTime(new Date(6, Date.Month.MAY, 2017), 10, 3));
+            builder.SetDurationMinutes(42);
+
+            Helper.AssertAreEqual(builder, (Appointment)builder.Build(), "");
+        }
+
+        /// <summary>
+        /// Appointment get contacts test.
+        /// </summary>
+        [TestMethod]
+        public void GetContactsTest()
+        {
+            var builder = new AppointmentBuilder();
+
+            var appointment = (Appointment)builder.SetContactBuilders().Build();
+
+            var contactBuilders = builder.GetContactBuilders();
+            foreach (var contactBuilder in contactBuilders)
+            {
+                appointment.AddRelation((Contact)contactBuilder.Build());
+            }
+
+            Helper.AssertAreEqual(builder, appointment, "");
         }
 
         #region Persistence Tests
-        /// <summary>
-        /// Tests the ClassId accessor.
-        /// </summary>
-        [TestMethod]
-        public void GetClassIdTest()
-        {
-            var appointment = new AppointmentBuilder().Build();
-            new DiaryProductTest().GetClassIdTest(appointment, "Appointment");
-        }
-
         /// <summary>
         /// Tests the ObjectId accessor.
         /// </summary>

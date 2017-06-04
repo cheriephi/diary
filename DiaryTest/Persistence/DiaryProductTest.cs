@@ -13,8 +13,7 @@ namespace DiaryTest
     [TestClass]
     public class DiaryProductTest
     {
-        private TransientPersistenceFreshFixture classFixture;
-        private TransientPersistenceFreshFixture objectFixture;
+        private TransientPersistenceFreshFixture fixture;
 
         #region Test Initialize and Cleanup Methods
         /// <summary>
@@ -24,11 +23,8 @@ namespace DiaryTest
         [TestInitialize]
         public void Init()
         {
-            objectFixture = new TransientPersistenceFreshFixture("ObjectId");
-            objectFixture.Init();
-
-            classFixture = new TransientPersistenceFreshFixture("ClassId");
-            classFixture.Init();
+            fixture = new TransientPersistenceFreshFixture();
+            fixture.Init();
         }
 
         /// <summary>
@@ -38,8 +34,7 @@ namespace DiaryTest
         [TestCleanup]
         public void Cleanup()
         {
-            objectFixture.Cleanup();
-            classFixture.Cleanup();
+            fixture.Cleanup();
         }
         #endregion
 
@@ -83,12 +78,13 @@ namespace DiaryTest
         /// <summary>
         /// Tests the ObjectId method using polymorphism.
         /// </summary>
-        [TestMethod]
         public void GetObjectIdTest(DiaryProduct product, ObjectId objectId)
         {
             var actual = product.GetObjectId();
 
-            Assert.AreEqual(objectId.AsInt(), actual.AsInt());
+            Assert.AreEqual(objectId.AsInt(), actual.AsInt(), "Data");
+
+            Assert.AreEqual(objectId.GetHashCode(), actual.GetHashCode(), "Identity");
         }
     }
 }
