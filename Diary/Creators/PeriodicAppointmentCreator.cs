@@ -79,6 +79,8 @@ namespace Diary
 
                                         mPeriodicAppointments.Add(periodicAppointment);
 
+                                        LoadContacts(6, periodicAppointment, record); // Now take care of any Contacts
+
                                         return periodicAppointment;
                                     }
                                 }
@@ -109,9 +111,54 @@ namespace Diary
                 record.AppendValue(periodicAppointment.GetPeriodHours());   //#5
                 record.AppendValue(periodicAppointment.GetDetails());  //#6
 
+                // Now take care of contacts appointment might be related to
+                SaveContacts(periodicAppointment, record);
+
                 Write(periodicAppointment.GetObjectId(), record);
             }
+        }
 
+        /// <summary>
+        /// Saves Contacts in memory to persistent storage.
+        /// </summary>
+        protected void SaveContacts(PeriodicAppointment appointment, VariableLengthRecord record)
+        {
+            Relation1M<Contact> contacts = appointment.GetContacts();
+            record.AppendValue(contacts.GetChildCount());   //#4  //might be a 0
+            for (int contactIndex = 0; contactIndex < contacts.GetChildCount(); ++contactIndex)
+            {
+                record.AppendValue(contacts.GetChild(contactIndex).GetObjectId());   //#5 - N  
+            }
+        }
+
+        /// <summary>
+        /// Recreates existing Contacts from persistent storage.
+        /// </summary>
+        /// <param name="startingField"></param>
+        /// <param name="appointment"></param>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        protected int LoadContacts(int startingField, PeriodicAppointment appointment, VariableLengthRecord record)
+        {
+            using (var creator = new ContactCreator())
+            {
+                int contactCount = 0;
+                if (record.GetValue(startingField, ref contactCount) && contactCount > 0)
+                {
+                    int endingField = startingField + 1 + contactCount;
+                    for (int field = startingField + 1; field < endingField; field++)
+                    {
+                        var objectId = new ObjectId();
+                        if (record.GetValue(field, ref objectId))
+                        {
+                            var contact = (Contact)creator.Create(objectId);
+                            appointment.AddRelation(contact);
+                        }
+                    }
+                    return endingField;  // Next possible field
+                }
+                return startingField + 1;  // Should not get here
+            }
         }
     }
 }

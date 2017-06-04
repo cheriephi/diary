@@ -83,14 +83,49 @@ namespace DiaryTest.Creators
                 creator.Save();
             }
 
-            using (var creator = new PeriodicAppointmentCreator())  // Re-open the files.
+            using (var appointmentCreator = new PeriodicAppointmentCreator())  // Re-open the files.
             {
                 foreach (var builder in builders)
                 {
                     var objectId = builder.GetObjectId();
-                    var savedPeriodicAppointment = (PeriodicAppointment)creator.Create(objectId);
+                    var savedPeriodicAppointment = (PeriodicAppointment)appointmentCreator.Create(objectId);
 
                     Helper.AssertAreEqual(builder, savedPeriodicAppointment, "Saved");
+                }
+
+
+                // Now add some contacts to the existing appointments
+                using (var contactCreator = new ContactCreator())
+                {
+                    builders[1].SetContactBuilders();
+                    var contactBuilders = builders[1].GetContactBuilders();
+                    var contacts = new Contact[contactBuilders.Length];
+                    for (int i = 0; i < contactBuilders.Length; i++)
+                    {
+                        contactBuilders[i].SetCreator(contactCreator);
+                        contacts[i] = (Contact)contactBuilders[i].Build();
+                    }
+
+                    contactCreator.Save();
+
+                    var drAppointment = (PeriodicAppointment)appointmentCreator.Create(builders[1].GetObjectId());
+                    for (int i = 0; i < contacts.Length; i++)
+                    {
+                        drAppointment.AddRelation(contacts[i]);
+                    }
+
+                    appointmentCreator.Save();
+                }
+
+                using (var creator = new PeriodicAppointmentCreator())   // Re-open the files
+                {
+                    foreach (var builder in builders)
+                    {
+                        var objectId = builder.GetObjectId();
+                        var savedAppointment = (PeriodicAppointment)creator.Create(objectId);
+
+                        Helper.AssertAreEqual(builder, savedAppointment, "Post Contact Save");
+                    }
                 }
             }
         }
