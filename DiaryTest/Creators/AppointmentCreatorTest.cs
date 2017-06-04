@@ -1,6 +1,5 @@
 ﻿using Diary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace DiaryTest.Creators
 {
@@ -62,7 +61,7 @@ namespace DiaryTest.Creators
 
                 var teacherDateTime = new Diary.DateTime(new Date(7, Date.Month.APRIL, 2017), 12, 00);
                 builders[2].SetLabel("School").SetOccurs(teacherDateTime).SetDurationMinutes(25);
-                builders[2].SetDetails("5th Grade Arithmatic");
+                builders[2].SetDetails("5th Grade Arithmetic");
 
                 var reviewDateTime = new Diary.DateTime(new Date(30, Date.Month.MAY, 2017), 18, 30);
                 builders[3].SetLabel("Performance Review").SetOccurs(reviewDateTime).SetDurationMinutes(60);
@@ -88,23 +87,31 @@ namespace DiaryTest.Creators
                     var savedAppointment = (Appointment)appointmentCreator.Create(objectId);
 
                     Helper.AssertAreEqual(builder, savedAppointment, "Saved");
-                    Assert.AreEqual(0, savedAppointment.GetContacts().GetChildCount(), "Contacts.ChildCount");
                 }
 
                 // Now add some contacts to the existing appointments
                 using (var contactCreator = new ContactCreator())
                 {
-                    var contact1 = (Contact)contactCreator.CreateNew("Brian", "Rothwell", "brothwell@q.com");
-                    var contact2 = (Contact)contactCreator.CreateNew("Billy", "Bob", "slingblade@msn.com");
-                    var contact3 = (Contact)contactCreator.CreateNew("Jenny", "Twotone", "(210) 867-5308");
+                    builders[1].SetContactBuilders();
+                    builders[3].SetContactBuilders();
+                    var contactBuilders = builders[1].GetContactBuilders();
+                    var contacts = new Contact[contactBuilders.Length];
+                    for (int i = 0; i < contactBuilders.Length; i++)
+                    {
+                        contactBuilders[i].SetCreator(contactCreator);
+                        contacts[i] = (Contact)contactBuilders[i].Build();
+                    }
+
                     contactCreator.Save();
 
                     var drAppointment = (Appointment)appointmentCreator.Create(builders[1].GetObjectId());
-                    drAppointment.AddRelation(contact1);
-                    drAppointment.AddRelation(contact2);
-
                     var reviewAppointment = (Appointment)appointmentCreator.Create(builders[3].GetObjectId());
-                    reviewAppointment.AddRelation(contact3);
+                    for (int i = 0; i < contacts.Length; i++)
+                    { 
+                        drAppointment.AddRelation(contacts[i]);
+                        reviewAppointment.AddRelation(contacts[i]);
+                    }
+
                     appointmentCreator.Save();
                 }
             }
@@ -118,12 +125,6 @@ namespace DiaryTest.Creators
 
                     Helper.AssertAreEqual(builder, savedAppointment, "Post Contact Save");
                 }
-
-                var drAppointment = (Appointment)creator.Create(builders[1].GetObjectId());
-                Assert.AreEqual(2,drAppointment.GetContacts().GetChildCount(), String.Format("drAppointment Contacts.ChildCount Post Contact Save"));
-
-                var reviewAppointment = (Appointment)creator.Create(builders[3].GetObjectId());
-                Assert.AreEqual(1, reviewAppointment.GetContacts().GetChildCount(), String.Format("review Contacts.ChildCount Post Contact Save"));
             }
         }
     }

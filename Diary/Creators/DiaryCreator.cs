@@ -9,7 +9,7 @@ namespace Diary
     public abstract class DiaryCreator : IDisposable
     {
         private ClassId mClassId;
-        private KeyFile sKeyFile;
+        private static KeyFile sKeyFile;
         private static VariableLengthRecordFile sDataFile;
 
         /// <summary>
@@ -29,11 +29,11 @@ namespace Diary
             mClassId = classId;
 
             var persistenceFolderPath = ConfigurationManager.AppSettings["PersistenceFolderPath"];
-            sKeyFile = new KeyFile(persistenceFolderPath, ConfigurationManager.AppSettings["PersistenceKeyFileNameWithoutExtension"]);
 
             if (mDiaryCreatorCount == 0)
             { 
                 sDataFile = new VariableLengthRecordFile(persistenceFolderPath, ConfigurationManager.AppSettings["PersistenceDataFileNameWithoutExtension"]);
+                sKeyFile = new KeyFile(persistenceFolderPath, ConfigurationManager.AppSettings["PersistenceKeyFileNameWithoutExtension"]);
             }
 
             mDiaryCreatorCount++;

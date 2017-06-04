@@ -56,6 +56,16 @@ namespace DiaryTest
 
             var expectedClassId = new ClassId("Appointment");
             Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Concat(messagePrefix, " classId"));
+
+            //Test Contact relations
+            var relation = actual.GetContacts();
+            var contactBuilders = expected.GetContactBuilders();
+            Assert.AreEqual(contactBuilders.Length, relation.GetChildCount(), String.Concat(messagePrefix, " contacts.Count"));
+
+            for (int i = 0; i < contactBuilders.Length; i++)
+            {
+                Helper.AssertAreEqual(contactBuilders[i], relation.GetChild(i), String.Concat(messagePrefix, " contacts[", i.ToString(), "].Data"));
+            }
         }
 
         /// <summary>
@@ -88,6 +98,16 @@ namespace DiaryTest
 
             var expectedClassId = new ClassId("PeriodicAppointment");
             Assert.AreEqual(0, actual.GetClassId().CompareTo(expectedClassId), String.Concat(messagePrefix, " classId"));
+
+            //Test Contact relations
+            var relation = actual.GetContacts();
+            var contactBuilders = expected.GetContactBuilders();
+            Assert.AreEqual(contactBuilders.Length, relation.GetChildCount(), String.Concat(messagePrefix, " contacts.Count"));
+
+            for (int i = 0; i < contactBuilders.Length; i++)
+            {
+                Helper.AssertAreEqual(contactBuilders[i], relation.GetChild(i), String.Concat(messagePrefix, " contacts[", i.ToString(), "].Data"));
+            }
         }
 
         /// <summary>

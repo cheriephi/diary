@@ -171,7 +171,17 @@ namespace DiaryTest
         [TestMethod]
         public void GetContactsTest()
         {
-            new AppointmentTest().GetContactsTest(new PeriodicAppointmentBuilder());
+            var builder = new PeriodicAppointmentBuilder();
+
+            var appointment = (PeriodicAppointment)builder.SetContactBuilders().Build();
+
+            var contactBuilders = builder.GetContactBuilders();
+            foreach (var contactBuilder in contactBuilders)
+            {
+                appointment.AddRelation((Contact)contactBuilder.Build());
+            }
+
+            Helper.AssertAreEqual(builder, appointment, "");
         }
 
 

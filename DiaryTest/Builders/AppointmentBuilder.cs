@@ -9,10 +9,33 @@ namespace DiaryTest
     /// <see cref="DiaryBuilder"/>
     internal class AppointmentBuilder : DiaryBuilder
     {
+        private ContactBuilder[] contactBuilders = new ContactBuilder[] { };
+        private String details = "";
+        private int durationMinutes = 0;
         private String label = "";
         private Diary.DateTime occurs = new Diary.DateTime();
-        private int durationMinutes = 0;
-        private String details = "";
+
+        internal ContactBuilder[] GetContactBuilders()
+        {
+            return contactBuilders;
+        }
+
+        /// <summary>
+        /// Creates test data for Contact relations.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>A factory method. Does not actually attach the data to the created appointment, but makes this data
+        /// available to the tests to simplify comparisons.</remarks>
+        internal AppointmentBuilder SetContactBuilders()
+        {
+            contactBuilders = new ContactBuilder[3]
+            {
+                new ContactBuilder().SetFirstName("Brian").SetLastName("Rothwell").SetContactInfo("brothwell@q.com"),
+                new ContactBuilder().SetFirstName("Billy").SetLastName("Bob").SetContactInfo("slingblade@msn.com"),
+                new ContactBuilder().SetFirstName("Jenny").SetLastName("Twotone").SetContactInfo("(210) 867-5308")
+            };
+            return this;
+        }
 
         internal String GetLabel()
         {

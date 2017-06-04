@@ -34,27 +34,6 @@ namespace DiaryTest
 
             Assert.AreEqual(expected, actual, "Input occurs:<{0}>. Input durationMinutes:<{1}>.", Helper.ToString(occurs), durationMinutes);
         }
-
-        /// <summary>
-        /// Tests GetContacts method using polymorphism.
-        /// </summary>
-        internal void GetContactsTest(AppointmentBuilder builder)
-        {
-            var appointment = (Appointment)builder.Build();
-
-            var contactBuilder = new ContactBuilder();
-            contactBuilder.SetFirstName("Yogi").SetLastName("Bear");
-            var contact = (Contact)contactBuilder.Build();
-
-            appointment.AddRelation((Contact)new ContactBuilder().Build());
-            appointment.AddRelation(contact);
-            appointment.AddRelation((Contact)new ContactBuilder().Build());
-
-            var relation = appointment.GetContacts();
-            Assert.AreEqual(3, relation.GetChildCount(), "Count");
-
-            Helper.AssertAreEqual(contactBuilder, relation.GetChild(1), "Data");
-        }
         #endregion
 
         /// <summary>
@@ -164,7 +143,17 @@ namespace DiaryTest
         [TestMethod]
         public void GetContactsTest()
         {
-            GetContactsTest(new AppointmentBuilder());
+            var builder = new AppointmentBuilder();
+
+            var appointment = (Appointment)builder.SetContactBuilders().Build();
+
+            var contactBuilders = builder.GetContactBuilders();
+            foreach (var contactBuilder in contactBuilders)
+            {
+                appointment.AddRelation((Contact)contactBuilder.Build());
+            }
+
+            Helper.AssertAreEqual(builder, appointment, "");
         }
 
         #region Persistence Tests
